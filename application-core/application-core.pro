@@ -10,11 +10,17 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    applicationcore.cpp
+    application.cpp \
+    applicationcore.cpp \
+    applicationdao.cpp \
+    version.cpp
 
 HEADERS += \
     application-core_global.h \
-    applicationcore.h
+    application.h \
+    applicationcore.h \
+    applicationdao.h \
+    version.h
 
 # Default rules for deployment.
 unix {
