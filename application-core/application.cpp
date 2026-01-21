@@ -1,12 +1,13 @@
 #include "application.h"
 
 //CONSTRUCTOR
-Application::Application(const QString& name, const QString& description, const QString& imageUrl, const QString& executableFile, const bool& isLiked, const bool& isDownloaded, const QList<Version>& versions)
+Application::Application(const QString& name, const QString& description, const QString& imageUrl, const QString& executableFile, const QDate& expirationDate, const bool& isLiked, const bool& isDownloaded, const QList<Version>& versions)
     : mId(-1)
     , mName(name)
     , mDescription(description)
     , mImageUrl(imageUrl)
     , mExecutableFile(executableFile)
+    , mExpirationDate(expirationDate)
     , mIsLiked(isLiked)
     , mIsDownloaded(isDownloaded)
     , mVersions()
@@ -24,6 +25,11 @@ QString Application::name() const
     return mName;
 }
 
+QString Application::description() const
+{
+    return mDescription;
+}
+
 QString Application::imageUrl() const
 {
     return mImageUrl;
@@ -32,6 +38,11 @@ QString Application::imageUrl() const
 QString Application::executableFile() const
 {
     return mExecutableFile;
+}
+
+QDate Application::expirationDate() const
+{
+    return mExpirationDate;
 }
 
 bool Application::isLiked() const
@@ -60,6 +71,11 @@ void Application::setName(const QString& name)
     mName = name;
 }
 
+void Application::setDescription(const QString& description)
+{
+    mDescription = description;
+}
+
 void Application::setImageUrl(const QString& imageUrl)
 {
     mImageUrl = imageUrl;
@@ -73,6 +89,11 @@ void Application::setExecutableFile(const QString& executableFile)
 void Application::setIsLiked(const bool& isLiked)
 {
     mIsLiked = isLiked;
+}
+
+void Application::setExpirationDate(const QDate& expirationDate)
+{
+    mExpirationDate = expirationDate;
 }
 
 void Application::setIsDownloaded(const bool& isDownloaded)
