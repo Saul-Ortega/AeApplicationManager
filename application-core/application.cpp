@@ -1,7 +1,7 @@
 #include "application.h"
 
 //CONSTRUCTOR
-Application::Application(const QString& name, const QString& description, const QString& imageUrl, const QString& executableFile, const bool& isLiked, const bool& isDownloaded)
+Application::Application(const QString& name, const QString& description, const QString& imageUrl, const QString& executableFile, const bool& isLiked, const bool& isDownloaded, const QList<Version>& versions)
     : mId(-1)
     , mName(name)
     , mDescription(description)
@@ -9,6 +9,7 @@ Application::Application(const QString& name, const QString& description, const 
     , mExecutableFile(executableFile)
     , mIsLiked(isLiked)
     , mIsDownloaded(isDownloaded)
+    , mVersions()
 {
 }
 
@@ -43,6 +44,11 @@ bool Application::isDownloaded() const
     return mIsDownloaded;
 }
 
+QList<Version> Application::versions() const
+{
+    return mVersions;
+}
+
 //SETTERS
 void Application::setId(int id)
 {
@@ -72,4 +78,9 @@ void Application::setIsLiked(const bool& isLiked)
 void Application::setIsDownloaded(const bool& isDownloaded)
 {
     mIsDownloaded = isDownloaded;
+}
+
+void Application::setVersions(const QList<Version>& versions)
+{
+    mVersions = versions;
 }
