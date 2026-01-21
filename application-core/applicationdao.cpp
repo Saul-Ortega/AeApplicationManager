@@ -64,15 +64,35 @@ QList<Application> ApplicationDao::loadApplication() const
 
     // recorrer cada elemento del array
     for (const QJsonValue& value : jsonArray) {
-        //FALTA
+
+        if (!value.isObject())
+            continue;
+
+        QJsonObject obj = value.toObject();
+
+        Application app;
+        app.id = obj["id"].toInt();
+        app.name = obj["name"].toString();
+        app.description = obj["description"].toString();
+        app.imageUrl = obj["image_url"].toString();
+        app.executableFile = obj["executable_file"].toString();
+        app.expirationDate = obj["expiration_date"].toString();
+        app.isLiked = obj["is_liked"].toBool();
+        app.isDownloaded = obj["is_downloaded"].toBool();
+
+        // falta cargar versiones
+
+        list.append(app);
     }
+
 
     return list;
 }
 
-// === save all ===
+// === SAVE ALL ===
 void ApplicationDao::saveAll(const QList<Application>& apps)
 {
+    //array principal para todas las apps
     QJsonArray json_array;
 
     // recorrer todas las aplicaciones
@@ -87,7 +107,6 @@ void ApplicationDao::saveAll(const QList<Application>& apps)
         json_obj["expiration_date"] = app.expirationDate;
         json_obj["is_liked"] = app.isLiked;
         json_obj["is_downloaded"] = app.isDownloaded;
-        json_obj["id_version_installed"] = app.idVersionInstalled;
 
         // array para las versiones
         QJsonArray versionsArray;
@@ -99,6 +118,7 @@ void ApplicationDao::saveAll(const QList<Application>& apps)
             versionObj["size"] = version.size;
             versionObj["last_modification"] = version.lastModification;
             versionObj["expiration_date"] = version.expirationDate;
+            versionObj["is_installed"] = version.is_installed;
 
             versionsArray.append(versionObj);
         }

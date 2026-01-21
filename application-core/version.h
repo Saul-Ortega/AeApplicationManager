@@ -7,11 +7,12 @@
 class Version
 {
 public:
-    int id{};
-    QString name{};
-    double size{};
-    QString lastModification{};
-    QString expirationDate{};
+    int id=0;
+    QString name="";
+    double size=0.0;
+    QString lastModification="";
+    QString expirationDate="";
+    bool is_installed;
     };
 
 #endif // VERSION_H
