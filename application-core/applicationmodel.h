@@ -6,14 +6,14 @@
 #include <vector>
 #include <memory>
 
-#include "application-core_global.h";
+#include "application-core_global.h"
 #include "application.h"
+#include "applicationdao.h"
 
 class APPLICATION_CORE_EXPORT ApplicationModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    //TODO: AÑADIR ENUM
     enum ApplicationRoles {
         IdRole = Qt::UserRole + 1,
         NameRole,
@@ -34,6 +34,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
 
 private:
+    ApplicationDao mApplicationDao;
     std::unique_ptr<std::vector<std::unique_ptr<Application>>> mApplications;
 };
 

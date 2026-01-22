@@ -3,8 +3,9 @@
 //CONSTRUCTOR
 ApplicationModel::ApplicationModel(QObject* parent)
     : QAbstractListModel(parent)
-    //TODO: AÑADIR EL DAO.APPLICATIONS CUANDO ESTÉ HECHO
-    , mApplications()
+    //TODO: MODIFICAR PARA QUE TENGA LA RUTA AL JSON
+    , mApplicationDao("")
+    , mApplications(mApplicationDao.applications())
 {
 }
 
@@ -78,7 +79,7 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
             application.setVersions(value.value<QList<Version>>());
     }
 
-    //TODO: LLAMAR AL DAO PARA ACTUALIZAR LA APLICACIÓN
+    mApplicationDao.updateApplication(application);
     emit dataChanged(index, index);
     return true;
 }
