@@ -83,7 +83,7 @@ void VersionModel::installVersion(int row) {
     beginResetModel();
     endResetModel();
 
-    ApplicationDao::updateApplication();
+    // ApplicationDao::updateApplication();
 }
 
 void VersionModel::uninstallVersion(int row){
@@ -100,5 +100,5 @@ void VersionModel::uninstallVersion(int row){
     beginResetModel();
     endResetModel();
 
-    ApplicationDao::updateApplication();
+    // ApplicationDao::updateApplication();
 }

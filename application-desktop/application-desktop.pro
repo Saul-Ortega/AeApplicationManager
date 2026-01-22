@@ -9,13 +9,16 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    applicationmanagerwidget.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    applicationmanagerwidget.h \
     mainwindow.h
 
 FORMS += \
+    applicationmanagerwidget.ui \
     mainwindow.ui
 
 # Default rules for deployment.
@@ -29,3 +32,7 @@ else:unix: LIBS += -L$$OUT_PWD/../application-core/ -lapplication-core
 
 INCLUDEPATH += $$PWD/../application-core
 DEPENDPATH += $$PWD/../application-core
+
+RESOURCES += \
+    Resource.qrc \
+    Resource.qrc
