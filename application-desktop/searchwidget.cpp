@@ -1,6 +1,6 @@
 #include "searchwidget.h"
 #include "ui_searchwidget.h"
-#include "searchdelegate.h"
+#include "applicationinfodelegate.h"
 
 SearchWidget::SearchWidget(QWidget *parent)
     : QWidget(parent)
