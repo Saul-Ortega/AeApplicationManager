@@ -11,15 +11,18 @@ CONFIG += c++17
 SOURCES += \
     applicationmanagerwidget.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    searchwidget.cpp
 
 HEADERS += \
     applicationmanagerwidget.h \
-    mainwindow.h
+    mainwindow.h \
+    searchwidget.h
 
 FORMS += \
     applicationmanagerwidget.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    searchwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

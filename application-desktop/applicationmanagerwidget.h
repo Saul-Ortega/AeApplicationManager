@@ -4,19 +4,19 @@
 #include <QWidget>
 
 namespace Ui {
-class ApplicationManager;
+class ApplicationManagerWidget;
 }
 
-class ApplicationManager : public QWidget
+class ApplicationManagerWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ApplicationManager(QWidget *parent = nullptr);
-    ~ApplicationManager();
+    explicit ApplicationManagerWidget(QWidget *parent = nullptr);
+    ~ApplicationManagerWidget();
 
 private:
-    Ui::ApplicationManager *ui;
+    Ui::ApplicationManagerWidget *ui;
 };
 
 #endif // APPLICATIONMANAGERWIDGET_H

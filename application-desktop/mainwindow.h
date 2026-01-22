@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QStackedWidget>
+#include <applicationmanagerwidget.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,5 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    ApplicationManagerWidget* mApplicationManagerWidget;
+    QStackedWidget* mStackedWidget;
 };
 #endif // MAINWINDOW_H

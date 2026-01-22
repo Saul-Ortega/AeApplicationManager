@@ -20,7 +20,9 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: &quot;#A1A1A1&quot;</string>
+   <string notr="true">QMainWindow {
+	background-color: &quot;#333333&quot;;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">

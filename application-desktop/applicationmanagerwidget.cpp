@@ -1,14 +1,14 @@
 #include "applicationmanagerwidget.h"
 #include "ui_applicationmanagerwidget.h"
 
-ApplicationManager::ApplicationManager(QWidget *parent)
+ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::ApplicationManager)
+    , ui(new Ui::ApplicationManagerWidget)
 {
     ui->setupUi(this);
 }
 
-ApplicationManager::~ApplicationManager()
+ApplicationManagerWidget::~ApplicationManagerWidget()
 {
     delete ui;
 }

@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/assets">
         <file>Logo-Aerolaser.png</file>
+        <file>lupa.png</file>
     </qresource>
 </RCC>
