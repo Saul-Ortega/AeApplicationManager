@@ -10,14 +10,11 @@ class APPLICATION_CORE_EXPORT ApplicationDao
 {
 public:
     //CONSTRUCTOR -> RUTA DEL ARCHIVO
-    explicit ApplicationDao(const QString& filePath);
+    explicit ApplicationDao();
     //ACTUALIZA UNA APLICACIÓN
     void updateApplication(const Application& application) const;
     //CARGA TODAS LAS APLICACIONES DEL JSON
     std::unique_ptr<std::vector<std::unique_ptr<Application>>> applications() const;
-    
-private:
-    QString mFilePath; //RUTA DEL JSON
 };
 
 #endif // APPLICATIONDAO_H

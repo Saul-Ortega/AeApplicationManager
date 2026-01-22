@@ -4,7 +4,7 @@
 ApplicationModel::ApplicationModel(QObject* parent)
     : QAbstractListModel(parent)
     //TODO: MODIFICAR PARA QUE TENGA LA RUTA AL JSON
-    , mApplicationDao("")
+    , mApplicationDao()
     , mApplications(mApplicationDao.applications())
 {
 }

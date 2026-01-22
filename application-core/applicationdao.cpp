@@ -11,14 +11,16 @@
 #include "version.h"
 
 //CONSTRUCTOR
-ApplicationDao::ApplicationDao(const QString& filePath)
-    : mFilePath("C://Users//AlejandroRodriguez//Desktop//RepositoriosGit//AeApplicationManager//application-core//applications.json")
+ApplicationDao::ApplicationDao()
 {
 }
 
 //ACTUALIZA UNA APLICACIÓN
 void ApplicationDao::updateApplication(const Application& application) const
 {
+    //COGE LA TURA DESDE RESOURCE.QRC
+    QFile jsonFile("../../application-core/applications.json");
+
     //ARRAY PRINCIPAL DONDE SE GUARDARÁN TODAS LAS APLICACIONES
     QJsonArray jsonArray;
 
@@ -61,12 +63,11 @@ void ApplicationDao::updateApplication(const Application& application) const
     QJsonDocument document(jsonArray);
 
     //ABRIR EL ARCHIVO PARA ESCRITURA
-    QFile jsonFile(mFilePath);
     jsonFile.open(QIODevice::WriteOnly);
 
     //COMPROBAR SI SE ABRIÓ CORRECTAMENTE
     if (!jsonFile.isOpen()) {
-        qDebug() << "No se pudo abrir el archivo para escribir: " << mFilePath;
+        qDebug() << "No se pudo abrir el archivo para escribir: ";
         return;
     }
 
