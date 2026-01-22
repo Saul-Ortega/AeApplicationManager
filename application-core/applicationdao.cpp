@@ -10,14 +10,76 @@
 #include <QJsonParseError>
 #include "version.h"
 
-// === constructor ===
-ApplicationDao::ApplicationDao(const QString& filePath) :
-    mFilePath("C://Users//AlejandroRodriguez//Desktop//RepositoriosGit//AeApplicationManager//application-core//applications.json")
+//CONSTRUCTOR
+ApplicationDao::ApplicationDao(const QString& filePath)
+    : mFilePath("C://Users//AlejandroRodriguez//Desktop//RepositoriosGit//AeApplicationManager//application-core//applications.json")
 {
 }
 
-// === load all ===
-QList<Application> ApplicationDao::loadApplications()
+//ACTUALIZA UNA APLICACIÓN
+void ApplicationDao::updateApplication(const Application& application) const
+{
+    //ARRAY PRINCIPAL DONDE SE GUARDARÁN TODAS LAS APLICACIONES
+    QJsonArray jsonArray;
+
+    //DECLARA UN QJSONOBJECT
+    QJsonObject appObj;
+    appObj["id"] = application.id();
+    appObj["name"] = application.name();
+    appObj["description"] = application.description();
+    appObj["image_url"] = application.imageUrl();
+    appObj["executable_file"] = application.executableFile();
+    appObj["expiration_date"] = application.expirationDate().toString();
+    appObj["is_liked"] = application.isLiked();
+    appObj["is_downloaded"] = application.isDownloaded();
+
+    //DECLARA UN QJSONARRAY PARA LAS GUARDAR LAS VERSIONES DE LA APLICACIÓN
+    QJsonArray versionsArray;
+
+    //ITERA SOBRE CADA VERSIÓN
+    for (const Version& version : application.versions()) {
+        //DECLARA UN QJSONOBJECT PARA UNA VERSIÓN
+        QJsonObject versionObj;
+        versionObj["id"] = version.id();
+        versionObj["name"] = version.name();
+        versionObj["size"] = version.size();
+        versionObj["last_modification"] = version.lastModification().toString();
+        versionObj["expiration_date"] = version.expirationDate().toString();
+        versionObj["is_installed"] = version.isInstalled();
+
+        //AÑADIR LA VERSIÓN AL ARRAY DE VERSIONES
+        versionsArray.append(versionObj);
+    }
+
+    //AÑADIR EL ARRAY DE VERSIONES AL OBJETO DE LA APLICACIÓN
+    appObj["versions"] = versionsArray;
+
+    //AÑADIR LA APLICACIÓN AL ARRAY PRINCIPAL
+    jsonArray.append(appObj);
+
+    //CONVERTIR EL ARRAY COMPLETO EN UN QJSONDOCUMENT
+    QJsonDocument document(jsonArray);
+
+    //ABRIR EL ARCHIVO PARA ESCRITURA
+    QFile jsonFile(mFilePath);
+    jsonFile.open(QIODevice::WriteOnly);
+
+    //COMPROBAR SI SE ABRIÓ CORRECTAMENTE
+    if (!jsonFile.isOpen()) {
+        qDebug() << "No se pudo abrir el archivo para escribir: " << mFilePath;
+        return;
+    }
+
+    //ESCRIBIR EL JSON CON FORMATO IDENTADO
+    jsonFile.write(document.toJson(QJsonDocument::Indented));
+    //CIERRA EL ARCHIVO JSON
+    jsonFile.close();
+
+    qDebug() << "Archivo guardado correctamente.";
+}
+
+//CARGA TODAS LAS APLICACIONES DEL JSON
+std::unique_ptr<std::vector<std::unique_ptr<Application>>> ApplicationDao::applications() const
 {
     //COGE LA RUTA DESDE RESOURCE.QRC
     QFile jsonFile(":/data/applications.json");
@@ -25,7 +87,7 @@ QList<Application> ApplicationDao::loadApplications()
     //COMPRUEBA SI EL ARCHIVO EXISTE
     if ( !jsonFile.exists() ) {
         qDebug() << "No se puede abrir el fichero";
-        return QList<Application>();
+        return std::unique_ptr<std::vector<std::unique_ptr<Application>>>();
     }
 
     //ABRE EL ARCHIVO CON PERMISO DE SÓLO LECTURE
@@ -43,13 +105,13 @@ QList<Application> ApplicationDao::loadApplications()
     //COMPRUEBA QUE EL DOCUMENTO JSON NO TENGA NINGÚN ERROR DE SINTAXIS
     if ( errorParser.error != 0 ) {
         qDebug() << errorParser.errorString();
-        return QList<Application>();
+        return std::unique_ptr<std::vector<std::unique_ptr<Application>>>();
     }
 
     //COMPRUEBA QUE EL QJSONDOCUMENT NO SEA NULO
     if ( jsonDocument.isNull() ) {
         qDebug() << "El archivo está vacío";
-        return QList<Application>();
+        return std::unique_ptr<std::vector<std::unique_ptr<Application>>>();
     }
 
     //COMPRUEBA SI EL QJSONDOCUMENT ES UN ARRAY DE OBJETOS
@@ -57,7 +119,7 @@ QList<Application> ApplicationDao::loadApplications()
         //CONVIERTE EL QJSONDOCUMENT EN UN QJSONARRAY
         QJsonArray jsonArray = jsonDocument.array();
 
-        QList<Application> applications;
+        std::unique_ptr<std::vector<std::unique_ptr<Application>>> applications(new std::vector<std::unique_ptr<Application>>());
 
         //ITERA SOBRE CADA APLICACIÓN
         for ( auto applicationElement : jsonArray ) {
@@ -66,18 +128,18 @@ QList<Application> ApplicationDao::loadApplications()
             //RECOGE LOS DATOS EN UN QVARIANTMAP QUE PERMITE ALMACENAR DATOS DE DISTINTOS TIPOS
             QVariantMap jsonMap = object.toVariantMap();
 
-            //DECLARA UN OBJETO DE TIPO APPLICATION
-            Application application;
+            //DECLARA UN PUNTERO DE TIPO APPLICATION
+            std::unique_ptr<Application> application(new Application());
 
             //SETEA LOS DATOS DE LA APLICACIÓN
-            application.setId(jsonMap["id"].toInt());
-            application.setName(jsonMap["name"].toString());
-            application.setDescription(jsonMap["description"].toString());
-            application.setImageUrl(jsonMap["image_url"].toString());
-            application.setExecutableFile(jsonMap["executable_file"].toString());
-            application.setExpirationDate(jsonMap["expiration_date"].toDate());
-            application.setIsLiked(jsonMap["is_liked"].toBool());
-            application.setIsDownloaded(jsonMap["is_downloaded"].toBool());
+            application->setId(jsonMap["id"].toInt());
+            application->setName(jsonMap["name"].toString());
+            application->setDescription(jsonMap["description"].toString());
+            application->setImageUrl(jsonMap["image_url"].toString());
+            application->setExecutableFile(jsonMap["executable_file"].toString());
+            application->setExpirationDate(jsonMap["expiration_date"].toDate());
+            application->setIsLiked(jsonMap["is_liked"].toBool());
+            application->setIsDownloaded(jsonMap["is_downloaded"].toBool());
 
             //DECLARA UNA LISTA DE TIPO VERSION
             QList<Version> versions;
@@ -106,81 +168,14 @@ QList<Application> ApplicationDao::loadApplications()
                 versions.append(version);
             }
 
-            application.setVersions(versions);
+            application->setVersions(versions);
 
             //AÑADE LA APLICACIÓN A LA LISTA DE APLICACIONES
-            applications.append(application);
+            applications->push_back(std::move(application));
         }
 
         return applications;
     }
 
-    return QList<Application>();
+    return std::unique_ptr<std::vector<std::unique_ptr<Application>>>();
 }
-
-// === SAVE ALL ===
-void ApplicationDao::saveAll(const QList<Application>& apps)
-{
-    // array principal donde se guardaran todas las aplicaciones
-    QJsonArray jsonArray;
-
-    // recorrer todas las aplicaciones
-    for (const Application& app : apps) {
-
-        // un objeto json para cada aplicacion
-        QJsonObject appObj;
-        appObj["id"] = app.id;
-        appObj["name"] = app.name;
-        appObj["description"] = app.description;
-        appObj["image_url"] = app.imageUrl;
-        appObj["executable_file"] = app.executableFile;
-        appObj["expiration_date"] = app.expirationDate;
-        appObj["is_liked"] = app.isLiked;
-        appObj["is_downloaded"] = app.isDownloaded;
-
-        // JsonArray para las versiones de esta aplicacion
-        QJsonArray versionsArray;
-
-        // recorrer todas las versiones
-        for (const Version& version : app.versions) {
-
-            // un objeto json para una version
-            QJsonObject versionObj;
-            versionObj["id"] = version.id;
-            versionObj["name"] = version.name;
-            versionObj["size"] = version.size;
-            versionObj["last_modification"] = version.lastModification;
-            versionObj["expiration_date"] = version.expirationDate;
-            versionObj["is_installed"] = version.is_installed;
-
-            // añadir la version al array de versiones
-            versionsArray.append(versionObj);
-        }
-
-        // añadir el array de versiones al objeto de la aplicacion
-        appObj["versions"] = versionsArray;
-
-        // añadir la aplicación al array principal
-        jsonArray.append(appObj);
-    }
-
-    // convertir el array completo en un documento json
-    QJsonDocument document(jsonArray);
-
-    // abrir el archivo para escritura
-    QFile jsonFile(mFilePath);
-    jsonFile.open(QIODevice::WriteOnly);
-
-    // comprobar si se abrio correctamente
-    if (!jsonFile.isOpen()) {
-        qDebug() << "no se pudo abrir el archivo para escribir:" << mFilePath;
-        return;
-    }
-
-    // escribir el json con formato indentado
-    jsonFile.write(document.toJson(QJsonDocument::Indented));
-    jsonFile.close();
-
-    qDebug() << "archivo guardado correctamente.";
-}
-

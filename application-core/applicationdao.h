@@ -9,19 +9,15 @@
 class APPLICATION_CORE_EXPORT ApplicationDao
 {
 public:
-    //=== CONSTRUCTOR === ruta del archivo JSON
+    //CONSTRUCTOR -> RUTA DEL ARCHIVO
     explicit ApplicationDao(const QString& filePath);
-
-    //carga en la lista todas las aplicaciones del JSON
-    QList <Application>loadApplications();
-
-    //guarda todos los cambios en el JSON
-    void extracted(const QList<Application> &apps);
-    // === SAVE ALL ===
-    void saveAll(const QList<Application> &apps);
+    //ACTUALIZA UNA APLICACIÓN
+    void updateApplication(const Application& application) const;
+    //CARGA TODAS LAS APLICACIONES DEL JSON
+    std::unique_ptr<std::vector<std::unique_ptr<Application>>> applications() const;
     
 private:
-    QString mFilePath; //ruta del JSON
+    QString mFilePath; //RUTA DEL JSON
 };
 
 #endif // APPLICATIONDAO_H
