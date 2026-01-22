@@ -13,7 +13,7 @@ public:
     explicit ApplicationDao(const QString& filePath);
 
     //carga en la lista todas las aplicaciones del JSON
-    QList <Application>loadApplication() const;
+    QList <Application>loadApplications();
 
     //guarda todos los cambios en el JSON
     void extracted(const QList<Application> &apps);
