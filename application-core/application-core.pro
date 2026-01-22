@@ -10,7 +10,7 @@ SOURCES += \
     applicationcore.cpp \
     applicationdao.cpp \
     applicationmodel.cpp \
-    version.cpp
+    version.cpp \
     application.cpp \
     applicationcore.cpp \
     applicationdao.cpp \
@@ -23,7 +23,7 @@ HEADERS += \
     applicationcore.h \
     applicationdao.h \
     applicationmodel.h \
-    version.h
+    version.h \
     versionmodel.h
 
 unix {
