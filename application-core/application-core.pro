@@ -10,22 +10,23 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    application.cpp \
     applicationcore.cpp \
-    datadecorator.cpp \
-    doubledecorator.cpp \
-    intdecorator.cpp \
-    stringdecorator.cpp
+    applicationdao.cpp \
+    version.cpp
 
 HEADERS += \
     application-core_global.h \
+    application.h \
     applicationcore.h \
-    datadecorator.h \
-    doubledecorator.h \
-    intdecorator.h \
-    stringdecorator.h
+    applicationdao.h \
+    version.h
 
 # Default rules for deployment.
 unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    applications.json
