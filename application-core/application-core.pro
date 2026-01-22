@@ -13,6 +13,7 @@ SOURCES += \
     application.cpp \
     applicationcore.cpp \
     applicationdao.cpp \
+    applicationmodel.cpp \
     version.cpp
 
 HEADERS += \
@@ -20,6 +21,7 @@ HEADERS += \
     application.h \
     applicationcore.h \
     applicationdao.h \
+    applicationmodel.h \
     version.h
 
 # Default rules for deployment.
