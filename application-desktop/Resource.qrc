@@ -2,4 +2,7 @@
     <qresource prefix="/assets">
         <file>Logo-Aerolaser.png</file>
     </qresource>
+    <qresource prefix="/apps">
+        <file>apps/LogoWhatsapp.jpg</file>
+    </qresource>
 </RCC>

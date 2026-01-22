@@ -3,7 +3,7 @@
         "id": 1,
         "name": "WhatsApp",
         "description": "Aplicación de mensajería para enviar textos, audios, fotos y hacer llamadas por internet.",
-        "image_url": "",
+        "image_url": ":/apps/LogoWhatsapp.jpg",
         "executable_file": "WhatsApp.exe",
         "expiration_date": "2026-05-11",
         "is_liked": true,

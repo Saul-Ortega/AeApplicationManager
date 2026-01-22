@@ -1,11 +1,12 @@
 #ifndef VERSIONMODEL_H
 #define VERSIONMODEL_H
 
+#include "application-core_global.h"
 #include <QAbstractListModel>
 #include "version.h"
 
 //QABSTRACTLISTMODEL PARA EXPONER DATOS A LA VISTA
-class VersionModel : public QAbstractListModel
+class APPLICATION_CORE_EXPORT VersionModel : public QAbstractListModel
 {
     Q_OBJECT
 
