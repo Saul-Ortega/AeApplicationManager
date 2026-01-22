@@ -9,14 +9,16 @@ SOURCES += \
     Version.cpp \
     application.cpp \
     applicationcore.cpp \
-    applicationdao.cpp
+    applicationdao.cpp \
+    versionmodel.cpp
 
 HEADERS += \
     Version.h \
     application-core_global.h \
     application.h \
     applicationcore.h \
-    applicationdao.h
+    applicationdao.h \
+    versionmodel.h
 
 unix {
     target.path = /usr/lib
