@@ -8,7 +8,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonParseError>
-#include "version.h"
+#include "Version.h"
 
 //CONSTRUCTOR
 ApplicationDao::ApplicationDao()
@@ -31,7 +31,7 @@ void ApplicationDao::updateApplication(const Application& application) const
     appObj["description"] = application.description();
     appObj["image_url"] = application.imageUrl();
     appObj["executable_file"] = application.executableFile();
-    appObj["expiration_date"] = application.expirationDate().toString();
+    appObj["expiration_date"] = application.expirationDate().toString("yyyy-MM-dd");
     appObj["is_liked"] = application.isLiked();
     appObj["is_downloaded"] = application.isDownloaded();
 
@@ -45,8 +45,8 @@ void ApplicationDao::updateApplication(const Application& application) const
         versionObj["id"] = version.id();
         versionObj["name"] = version.name();
         versionObj["size"] = version.size();
-        versionObj["last_modification"] = version.lastModification().toString();
-        versionObj["expiration_date"] = version.expirationDate().toString();
+        versionObj["last_modification"] = version.lastModification().toString("yyyy-MM-dd");
+        versionObj["expiration_date"] = version.expirationDate().toString("yyyy-MM-dd");
         versionObj["is_installed"] = version.isInstalled();
 
         //AÑADIR LA VERSIÓN AL ARRAY DE VERSIONES
@@ -83,20 +83,20 @@ void ApplicationDao::updateApplication(const Application& application) const
 std::unique_ptr<std::vector<std::unique_ptr<Application>>> ApplicationDao::applications() const
 {
     //COGE LA RUTA DESDE RESOURCE.QRC
-    QFile jsonFile(":/data/applications.json");
+    QFile jsonPath(":/data/applications.json");
 
     //COMPRUEBA SI EL ARCHIVO EXISTE
-    if ( !jsonFile.exists() ) {
+    if ( !jsonPath.exists() ) {
         qDebug() << "No se puede abrir el fichero";
         return std::unique_ptr<std::vector<std::unique_ptr<Application>>>();
     }
 
     //ABRE EL ARCHIVO CON PERMISO DE SÓLO LECTURE
-    jsonFile.open(QIODevice::ReadOnly);
+    jsonPath.open(QIODevice::ReadOnly);
     //CARGA TODOS LOS BYTES DEL ARCHIVO
-    QByteArray ba = jsonFile.readAll();
+    QByteArray ba = jsonPath.readAll();
     //CERRAMOS EL ARCHIVO DESPUES DE LEERLO
-    jsonFile.close();
+    jsonPath.close();
 
     //DECLARA UN ERROR PARSER PARA SABER SI EL JSON ESTÁ BIEN FORMADO
     QJsonParseError errorParser;

@@ -1,4 +1,5 @@
-#include "version.h"
+#include "Version.h"
+
 
 //CONSTRUCTOR
 Version::Version(const QString& name, const double& size, const QDate& lastModification, const QDate& expirationDate, const bool& isInstalled)
