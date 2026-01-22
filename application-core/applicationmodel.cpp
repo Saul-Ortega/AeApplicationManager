@@ -83,37 +83,9 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
     return true;
 }
 
-QModelIndex ApplicationModel::addApplication(const Application& application)
-{
-    int rowIndex = rowCount();
-    beginInsertRows(QModelIndex(), rowIndex, rowIndex);
-    std::unique_ptr<Application> newApplication(new Application(application));
-    //TODO: LLAMAR AL DAO PARA INSERTAR LA APLICACIÓN
-    mApplications->push_back(std::move(newApplication));
-    endInsertRows();
-    return index(rowIndex, 0);
-}
-
 int ApplicationModel::rowCount(const QModelIndex& parent) const
 {
     return mApplications->size();
-}
-
-bool ApplicationModel::removeRows(int row, int count, const QModelIndex& parent)
-{
-    if ( row < 0 || row >= rowCount() || count < 0 || (row + count) > rowCount() ) {
-        return false;
-    }
-
-    beginRemoveRows(parent, row, row + count -1);
-    int countLeft = count;
-    while ( countLeft-- ) {
-        const Application& application = *mApplications->at(row + countLeft);
-        //TODO: LLAMAR AL DAO PARA ELIMINAR EL ALBUM POR ID
-    }
-    mApplications->erase(mApplications->begin() + row, mApplications->begin() + row + count);
-    endRemoveRows();
-    return true;
 }
 
 QHash<int, QByteArray> ApplicationModel::roleNames() const
