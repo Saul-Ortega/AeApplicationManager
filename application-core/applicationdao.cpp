@@ -8,32 +8,29 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonParseError>
-#include "version.h"
+#include "Version.h"
 
-// === constructor ===
-ApplicationDao::ApplicationDao(const QString& filePath) :
-    mFilePath("C://Users//AlejandroRodriguez//Desktop//RepositoriosGit//AeApplicationManager//application-core//applications.json")
-{
-}
+// === CONSTRUCTOR ===
+ApplicationDao::ApplicationDao(){}
 
-// === load all ===
+// === LOAD ALL ===
 QList<Application> ApplicationDao::loadApplications()
 {
     //COGE LA RUTA DESDE RESOURCE.QRC
-    QFile jsonFile(":/data/applications.json");
+    QFile jsonPath(":/data/applications.json");
 
     //COMPRUEBA SI EL ARCHIVO EXISTE
-    if ( !jsonFile.exists() ) {
+    if ( !jsonPath.exists() ) {
         qDebug() << "No se puede abrir el fichero";
         return QList<Application>();
     }
 
     //ABRE EL ARCHIVO CON PERMISO DE SÓLO LECTURE
-    jsonFile.open(QIODevice::ReadOnly);
+    jsonPath.open(QIODevice::ReadOnly);
     //CARGA TODOS LOS BYTES DEL ARCHIVO
-    QByteArray ba = jsonFile.readAll();
+    QByteArray ba = jsonPath.readAll();
     //CERRAMOS EL ARCHIVO DESPUES DE LEERLO
-    jsonFile.close();
+    jsonPath.close();
 
     //DECLARA UN ERROR PARSER PARA SABER SI EL JSON ESTÁ BIEN FORMADO
     QJsonParseError errorParser;
@@ -121,66 +118,75 @@ QList<Application> ApplicationDao::loadApplications()
 // === SAVE ALL ===
 void ApplicationDao::saveAll(const QList<Application>& apps)
 {
-    // array principal donde se guardaran todas las aplicaciones
-    QJsonArray jsonArray;
+    //COGE LA RUTA DESDE RESOURCE.QRC
+    QFile jsonPath("../../application-core/applications.json");
 
-    // recorrer todas las aplicaciones
-    for (const Application& app : apps) {
 
-        // un objeto json para cada aplicacion
-        QJsonObject appObj;
-        appObj["id"] = app.id;
-        appObj["name"] = app.name;
-        appObj["description"] = app.description;
-        appObj["image_url"] = app.imageUrl;
-        appObj["executable_file"] = app.executableFile;
-        appObj["expiration_date"] = app.expirationDate;
-        appObj["is_liked"] = app.isLiked;
-        appObj["is_downloaded"] = app.isDownloaded;
-
-        // JsonArray para las versiones de esta aplicacion
-        QJsonArray versionsArray;
-
-        // recorrer todas las versiones
-        for (const Version& version : app.versions) {
-
-            // un objeto json para una version
-            QJsonObject versionObj;
-            versionObj["id"] = version.id;
-            versionObj["name"] = version.name;
-            versionObj["size"] = version.size;
-            versionObj["last_modification"] = version.lastModification;
-            versionObj["expiration_date"] = version.expirationDate;
-            versionObj["is_installed"] = version.is_installed;
-
-            // añadir la version al array de versiones
-            versionsArray.append(versionObj);
-        }
-
-        // añadir el array de versiones al objeto de la aplicacion
-        appObj["versions"] = versionsArray;
-
-        // añadir la aplicación al array principal
-        jsonArray.append(appObj);
+    //COMPRUEBA SI EL ARCHIVO EXISTE
+    if ( !jsonPath.exists() ) {
+        qDebug() << "El archivo JSON no existe";
+        //AUNQUE NO EXISTA, LO CREAMOS IGUAL
+        //NO HACEMOS RETURN PARA PERMITIR CREARLO
     }
 
-    // convertir el array completo en un documento json
-    QJsonDocument document(jsonArray);
-
-    // abrir el archivo para escritura
-    QFile jsonFile(mFilePath);
-    jsonFile.open(QIODevice::WriteOnly);
-
-    // comprobar si se abrio correctamente
-    if (!jsonFile.isOpen()) {
-        qDebug() << "no se pudo abrir el archivo para escribir:" << mFilePath;
+    //ABRE EL ARCHIVO CON PERMISO DE ESCRITURA
+    if ( !jsonPath.open(QIODevice::WriteOnly) ) {
+        qDebug() << "No se pudo abrir el archivo JSON para escribir";
         return;
     }
 
-    // escribir el json con formato indentado
-    jsonFile.write(document.toJson(QJsonDocument::Indented));
-    jsonFile.close();
+    //DECLARA UN QJSON ARRAY PRINCIPAL PARA TODAS LAS APLICACIONES
+    QJsonArray jsonArray;
 
-    qDebug() << "archivo guardado correctamente.";
+    //ITERA SOBRE TODAS LAS APLICACIONES
+    for (const Application& app : apps) {
+
+        //CREA UN OBJETO JSON PARA UNA APLICACIÓN
+        QJsonObject appObj;
+        appObj["id"] = app.id();
+        appObj["name"] = app.name();
+        appObj["description"] = app.description();
+        appObj["image_url"] = app.imageUrl();
+        appObj["executable_file"] = app.executableFile();
+        appObj["expiration_date"] = app.expirationDate().toString("yyyy-MM-dd");
+        appObj["is_liked"] = app.isLiked();
+        appObj["is_downloaded"] = app.isDownloaded();
+
+        //CREA UN ARRAY JSON PARA LAS VERSIONES DE ESTA APLICACIÓN
+        QJsonArray versionsArray;
+
+        //ITERA SOBRE TODAS LAS VERSIONES
+        for (const Version& version : app.versions()) {
+
+            //CREA UN OBJETO JSON PARA UNA VERSIÓN
+            QJsonObject versionObj;
+            versionObj["id"] = version.id();
+            versionObj["name"] = version.name();
+            versionObj["size"] = version.size();
+            versionObj["last_modification"] = version.lastModification().toString("yyyy-MM-dd");
+            versionObj["expiration_date"] = version.expirationDate().toString("yyyy-MM-dd");
+            versionObj["is_installed"] = version.isInstalled();
+
+            //AÑADE LA VERSIÓN AL ARRAY DE VERSIONES
+            versionsArray.append(versionObj);
+        }
+
+        //AÑADE EL ARRAY DE VERSIONES AL OBJETO DE LA APLICACIÓN
+        appObj["versions"] = versionsArray;
+
+        //AÑADE LA APLICACIÓN AL ARRAY PRINCIPAL
+        jsonArray.append(appObj);
+    }
+
+    //CONVIERTE EL ARRAY COMPLETO EN UN DOCUMENTO JSON
+    QJsonDocument document(jsonArray);
+
+    //ESCRIBE EL JSON EN EL ARCHIVO
+    jsonPath.write(document.toJson(QJsonDocument::Indented));
+
+    //CIERRA EL ARCHIVO
+    jsonPath.close();
+
+    qDebug() << "Archivo guardado correctamente.";
 }
 

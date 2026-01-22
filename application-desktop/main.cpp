@@ -3,13 +3,15 @@
 #include <QApplication>
 #include "Applicationdao.h"
 #include <QString>
+#include <QList>
+#include "Application.h"
 
 int main(int argc, char *argv[])
 {
-    QString d;
-    ApplicationDao t =ApplicationDao(d);
+    QList <Application> qq;
+    ApplicationDao t =ApplicationDao();
 
-    t.loadApplication();
+    t.saveAll(qq);
     QApplication a(argc, argv);
     //MainWindow w;
     //w.show();
