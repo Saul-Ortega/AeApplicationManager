@@ -23,7 +23,8 @@ public:
         ExpirationDateRole,
         IsLikedRole,
         IsDownloadedRole,
-        VersionsRole
+        VersionsRole,
+        SizeHintRole
     };
 
     ApplicationModel(QObject* parent = 0);

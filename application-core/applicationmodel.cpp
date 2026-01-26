@@ -1,23 +1,25 @@
 #include "applicationmodel.h"
+#include <QSize>
 
 //CONSTRUCTOR
 ApplicationModel::ApplicationModel(QObject* parent)
     : QAbstractListModel(parent)
-    //TODO: MODIFICAR PARA QUE TENGA LA RUTA AL JSON
     , mApplicationDao()
     , mApplications(mApplicationDao.applications())
 {
 }
 
-//MÉTODOS
+//METODOS
 QVariant ApplicationModel::data(const QModelIndex& index, int role) const
 {
     if ( !index.isValid() ) {
         return QVariant();
     }
 
+    //OBTENEMOS LA PALICACION MEDIANTE LA FILA
     const Application& application = *mApplications->at(index.row());
 
+    //DEVOLVEMOS EL VALOR SEGUN EL ROL SOLICITADO
     switch ( role ) {
     case ApplicationRoles::IdRole :
         return application.id();
@@ -38,6 +40,9 @@ QVariant ApplicationModel::data(const QModelIndex& index, int role) const
         return application.isDownloaded();
     case ApplicationRoles::VersionsRole :
         return QVariant::fromValue(application.versions());
+
+    case Qt::SizeHintRole:
+        return QSize(180, 150);
     default :
         return QVariant();
     }
@@ -45,7 +50,7 @@ QVariant ApplicationModel::data(const QModelIndex& index, int role) const
 
 bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
-    //COMPRUEBA QUE EL ÍNDICE SEA VÁLIDO Y EL ROL SEA ALGUNO DE LOS DEFINIDOS ANTERIORMENTE
+    //COMPRUEBA QUE EL INDICE SEA VALIDO Y EL ROL SEA VALIDO
     if ( !index.isValid()
         || role != ApplicationRoles::NameRole
         || role != ApplicationRoles::DescriptionRole
@@ -57,9 +62,10 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
         || role != ApplicationRoles::VersionsRole) {
         return false;
     }
-
+    //OBTENEMOS LA APLICACION A MODIFICAR
     Application& application = *mApplications->at(index.row());
 
+    //ACTUALIZAMOS EL CAMPO SEGUN EL ROL
     switch ( role ) {
         case ApplicationRoles::NameRole :
             application.setName(value.toString());
@@ -79,16 +85,19 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
             application.setVersions(value.value<QList<Version>>());
     }
 
+    //GUARDAMOS LOS CAMBIOS EN DAO
     mApplicationDao.updateApplication(application);
     emit dataChanged(index, index);
     return true;
 }
 
+    //DEVUELVE CUANTAS APLICACIONES HAY EN EL MODELO
 int ApplicationModel::rowCount(const QModelIndex& parent) const
 {
     return mApplications->size();
 }
 
+    //ASOCIAMOS CADA ROL CON UN NOMBRE
 QHash<int, QByteArray> ApplicationModel::roleNames() const
 {
     QHash<int, QByteArray> roles;

@@ -17,6 +17,11 @@ public:
     explicit AvailableApplicationsWidget(QWidget *parent = nullptr);
     ~AvailableApplicationsWidget();
 
+private slots:
+    void onInfoClicked(int row);
+    void onFavoriteClicked(int row);
+    void onDeleteClicked(int row);
+
 private:
     Ui::AvailableApplicationsWidget *ui;
     ApplicationModel *mModel;

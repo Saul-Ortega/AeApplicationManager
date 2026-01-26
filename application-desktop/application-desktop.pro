@@ -12,6 +12,7 @@ SOURCES += \
     applicationdelegate.cpp \
     applicationmanagerwidget.cpp \
     availableapplicationswidget.cpp \
+    availableitemwidget.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -19,11 +20,13 @@ HEADERS += \
     applicationdelegate.h \
     applicationmanagerwidget.h \
     availableapplicationswidget.h \
+    availableitemwidget.h \
     mainwindow.h
 
 FORMS += \
     applicationmanagerwidget.ui \
     availableapplicationswidget.ui \
+    availableitemwidget.ui \
     mainwindow.ui
 
 # Default rules for deployment.
