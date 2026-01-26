@@ -5,7 +5,7 @@
         "description": "Aplicación de mensajería para enviar textos, audios, fotos y hacer llamadas por internet.",
         "image_url": "",
         "executable_file": "WhatsApp.exe",
-        "expiration_date": "2026-05-11",
+        "expiration_date": "2026-05-11T00:00:00",
         "is_liked": true,
         "is_downloaded": true,
         "versions": [
@@ -13,16 +13,16 @@
                 "id": 1,
                 "name": "1.0.0",
                 "size": 3.3,
-                "last_modification": "2022-05-3",
-                "expiration_date": "2026-02-5",
+                "last_modification": "2022-05-03T00:00:00",
+                "expiration_date": "2026-02-5T00:00:00",
                 "is_installed": true
             },
             {
                 "id": 2,
                 "name": "1.1.0",
                 "size": 3.5,
-                "last_modification": "2024-06-15",
-                "expiration_date": "2026-02-1",
+                "last_modification": "2024-06-15T00:00:00",
+                "expiration_date": "2026-02-1T00:00:00",
                 "is_installed": false
             }
         ]
@@ -33,7 +33,7 @@
         "description": "Red social para compartir fotos y videos, con historias y mensajes directos.",
         "image_url": "",
         "executable_file": "Instagram.exe",
-        "expiration_date": "2026-05-4",
+        "expiration_date": "2026-05-4T00:00:00",
         "is_liked": false,
         "is_downloaded": false,
         "versions": [
@@ -41,24 +41,24 @@
                 "id": 1,
                 "name": "1.0.0",
                 "size": 5.7,
-                "last_modification": "2023-07-13",
-                "expiration_date": "2026-04-4",
+                "last_modification": "2023-07-13T00:00:00",
+                "expiration_date": "2026-04-4T00:00:00",
                 "is_installed": false
             },
             {
                 "id": 2,
                 "name": "1.1.0",
                 "size": 6.1,
-                "last_modification": "2023-12-22",
-                "expiration_date": "2026-03-20",
+                "last_modification": "2023-12-22T00:00:00",
+                "expiration_date": "2026-03-20T00:00:00",
                 "is_installed": true
             },
             {
                 "id": 3,
                 "name": "1.1.1",
                 "size": 6.4,
-                "last_modification": "2024-04-30",
-                "expiration_date": "2026-02-26",
+                "last_modification": "2024-04-30T00:00:00",
+                "expiration_date": "2026-02-26T00:00:00",
                 "is_installed": false
             }
         ]
