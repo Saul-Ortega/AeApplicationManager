@@ -24,6 +24,9 @@ public:
     void setVersionSelectionModel(QItemSelectionModel* versionSelectionModel);
 
 private:
+    void displayApplicationInfo(const QItemSelection& selected);
+
+private:
     Ui::ApplicationManagerWidget *ui;
     ApplicationModel* mApplicationModel;
     VersionModel* mVersionModel;

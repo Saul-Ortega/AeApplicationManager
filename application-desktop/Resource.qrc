@@ -2,5 +2,8 @@
     <qresource prefix="/assets">
         <file>Logo-Aerolaser.png</file>
         <file>lupa.png</file>
+        <file>papelera.png</file>
+        <file>Corazon.png</file>
+        <file>CorazonSeleccionado.png</file>
     </qresource>
 </RCC>
