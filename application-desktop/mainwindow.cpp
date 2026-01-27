@@ -2,13 +2,7 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
-#include <QDialog>
-#include <QLabel>
-#include <QComboBox>
-#include <QToolButton>
-#include <QVBoxLayout>
-#include <QHBoxLayout>
-#include "applicationinfodelegate.h"
+#include "availableapplicationswidget.h"
 
 //CONSTRUCTOR
 MainWindow::MainWindow(QWidget *parent)
@@ -19,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //SE PONE UN TÍTULO A LA APLICACIÓN Y EL LOGO
+    //SE PONE UN TITULO A LA APLICACION Y EL LOGO
     this->setWindowTitle("AeApplicationManager");
     this->setWindowIcon(QIcon(":/assets/Logo-Aerolaser.png"));
 

@@ -18,11 +18,34 @@ ApplicationDao::ApplicationDao()
 //ACTUALIZA UNA APLICACIÓN
 void ApplicationDao::updateApplication(const Application& application) const
 {
-    //COGE LA TURA DESDE RESOURCE.QRC
-    QFile jsonFile("../../application-core/applications.json");
+    //COGE LA RUTA DESDE RESOURCE.QRC
+    QFile jsonFile("../../../../application-core/applications.json");
 
-    //ARRAY PRINCIPAL DONDE SE GUARDARÁN TODAS LAS APLICACIONES
-    QJsonArray jsonArray;
+    // ABRIR JSON SOLO LECTURA
+    if (!jsonFile.open(QIODevice::ReadOnly)) {
+        qDebug() << "No se pudo abrir el archivo para leer: ";
+        return;
+    }
+
+    //CARGA TODOS LOS BYTES DEL ARCHIVO
+    QByteArray ByteArray = jsonFile.readAll();
+    //CERRAMOS EL ARCHIVO DESPUES DE LEERLO
+    jsonFile.close();
+
+    //DECLARA UN ERROR PARSER PARA SABER SI EL JSON ESTÁ BIEN FORMADO
+    QJsonParseError errorParser;
+    //INSTANCIA UN QJSONDOCUMENT DE UN ARCHIVO JSON
+    QJsonDocument jsonDocument = QJsonDocument::fromJson(ByteArray, &errorParser);
+
+    //COMPRUEBA QUE EL DOCUMENTO JSON NO TENGA NINGÚN ERROR DE SINTAXIS
+    if (errorParser.error != 0 || !jsonDocument.isArray()) {
+        qDebug() << "Error al parsear JSON existente";
+        return;
+    }
+
+    //CONVIERTE EL QJSONDOCUMENT EN UN QJSONARRAY PARA LAS APPS
+    QJsonArray jsonArray = jsonDocument.array();
+
 
     //DECLARA UN QJSONOBJECT
     QJsonObject appObj;
@@ -56,8 +79,17 @@ void ApplicationDao::updateApplication(const Application& application) const
     //AÑADIR EL ARRAY DE VERSIONES AL OBJETO DE LA APLICACIÓN
     appObj["versions"] = versionsArray;
 
-    //AÑADIR LA APLICACIÓN AL ARRAY PRINCIPAL
-    jsonArray.append(appObj);
+    //BUSCA QUE APLICACION TIENE EL MISMO ID PARA ACTUALIZAR
+    for (int i = 0; i < jsonArray.size(); ++i) {
+        QJsonObject app = jsonArray[i].toObject();
+
+        //SI EL OBJ TIENE EL MISMO ID QUE EL QUE LE PASARON LO ACTUALIZA
+        if (app["id"].toInt() == application.id()) {
+            jsonArray[i] = appObj;
+            break;
+        }
+    }
+
 
     //CONVERTIR EL ARRAY COMPLETO EN UN QJSONDOCUMENT
     QJsonDocument document(jsonArray);
@@ -83,7 +115,7 @@ void ApplicationDao::updateApplication(const Application& application) const
 std::unique_ptr<std::vector<std::unique_ptr<Application>>> ApplicationDao::applications() const
 {
     //COGE LA RUTA DESDE RESOURCE.QRC
-    QFile jsonPath(":/data/applications.json");
+    QFile jsonPath("../../../../application-core/applications.json");
 
     //COMPRUEBA SI EL ARCHIVO EXISTE
     if ( !jsonPath.exists() ) {

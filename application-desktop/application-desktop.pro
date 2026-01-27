@@ -11,6 +11,8 @@ CONFIG += c++17
 SOURCES += \
     applicationinfodialog.cpp \
     applicationmanagerwidget.cpp \
+    availableapplicationswidget.cpp \
+    availableitemwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     searchwidget.cpp
@@ -18,12 +20,16 @@ SOURCES += \
 HEADERS += \
     applicationinfodialog.h \
     applicationmanagerwidget.h \
+    availableapplicationswidget.h \
+    availableitemwidget.h \
     mainwindow.h \
     searchwidget.h
 
 FORMS += \
     applicationinfodialog.ui \
     applicationmanagerwidget.ui \
+    availableapplicationswidget.ui \
+    availableitemwidget.ui \
     mainwindow.ui \
     searchwidget.ui
 
@@ -40,5 +46,4 @@ INCLUDEPATH += $$PWD/../application-core
 DEPENDPATH += $$PWD/../application-core
 
 RESOURCES += \
-    Resource.qrc \
     Resource.qrc
