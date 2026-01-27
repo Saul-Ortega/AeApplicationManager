@@ -2,7 +2,7 @@
     {
         "description": "Aplicación de mensajería para enviar textos, audios, fotos y hacer llamadas por internet.",
         "executable_file": "WhatsApp.exe",
-        "expiration_date": "2026-05-11T00:00:00",
+        "expiration_date": "2026-05-11",
         "id": 1,
         "image_url": ":/apps/LogoWhatsapp.png",
         "is_downloaded": true,
@@ -10,18 +10,18 @@
         "name": "WhatsApp",
         "versions": [
             {
-                "expiration_date": "2023-07-10T00:00:00",
+                "expiration_date": "2023-07-10",
                 "id": 1,
                 "is_installed": true,
-                "last_modification": "2023-07-13T00:00:00",
+                "last_modification": "2023-07-13",
                 "name": "1.0.0",
                 "size": 0
             },
             {
-                "expiration_date": "2023-07-13T00:00:00",
+                "expiration_date": "2023-07-13",
                 "id": 2,
                 "is_installed": false,
-                "last_modification": "2024-06-15T00:00:00",
+                "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 0
             }

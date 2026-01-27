@@ -1,11 +1,13 @@
 #include "availableitemwidget.h"
 #include "ui_availableitemwidget.h"
+#include "applicationmodel.h"
 #include <QPixmap>
 #include <QDebug>
 
 AvailableItemWidget::AvailableItemWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AvailableItemWidget)
+    , mModel(nullptr)
 {
     ui->setupUi(this);
 
@@ -21,22 +23,28 @@ AvailableItemWidget::AvailableItemWidget(QWidget *parent)
 
 
     // CONFIGURACION PARA QUE LOS BOTONES PUEDAN RECIBIR CLICKS
-    ui->btn_Info->setCursor(Qt::PointingHandCursor);
+    ui->btn_Download->setCursor(Qt::PointingHandCursor);
     ui->btn_Favorite->setCursor(Qt::PointingHandCursor);
     ui->btn_Delete->setCursor(Qt::PointingHandCursor);
 
     //CREAMOS LOS CONECTORES AL CLICAR
-    connect(ui->btn_Info, &QPushButton::clicked, this, &AvailableItemWidget::onInfoButtonClicked);
+    connect(ui->btn_Download, &QPushButton::clicked, this, &AvailableItemWidget::onDownloadButtonClicked);
     connect(ui->btn_Favorite, &QPushButton::clicked, this, &AvailableItemWidget::onFavoriteButtonClicked);
-    connect(ui->btn_Delete, &QPushButton::clicked, this, &AvailableItemWidget::onDeleteButtonClicked);
+    connect(ui->btn_Delete, &QPushButton::clicked, this, &AvailableItemWidget::onInfoClicked);
+}
+
+//ACCESO AL MODELO
+void AvailableItemWidget::setModel(ApplicationModel* model)
+{
+    mModel = model;
 }
 
 
 //PASAMOS EL NOMBRE DE LA APP Y EL ICONO
-void AvailableItemWidget::setData(const QString& name, const QString& imagePath) {
-    ui->labe_Name->setText(name);
+void AvailableItemWidget::setData(QModelIndex index) {
+    ui->labe_Name->setText(mModel->data(index, ApplicationModel::NameRole).toString());
 
-    QPixmap pixmap(imagePath);
+    QPixmap pixmap(mModel->data(index, ApplicationModel::ImageUrlRole).toString());
     if(!pixmap.isNull()){
         ui->label_Icon->setPixmap(pixmap.scaled(64,64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
@@ -48,9 +56,9 @@ void AvailableItemWidget::setRow(int row) {
 }
 
 //EMITE LA FILA AL PULSAR ALGUN BOTON
-void AvailableItemWidget::onInfoButtonClicked()
+void AvailableItemWidget::onDownloadButtonClicked()
 {
-    emit infoClicked(mRow);
+    emit downloadClicked(mRow);
 }
 
 void AvailableItemWidget::onFavoriteButtonClicked()
@@ -58,9 +66,9 @@ void AvailableItemWidget::onFavoriteButtonClicked()
     emit favoriteClicked(mRow);
 }
 
-void AvailableItemWidget::onDeleteButtonClicked()
+void AvailableItemWidget::onInfoClicked()
 {
-    emit deleteClicked(mRow);
+    emit infoClicked(mRow);
 }
 
 AvailableItemWidget::~AvailableItemWidget()

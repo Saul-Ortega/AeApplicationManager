@@ -34,25 +34,23 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     for (int i = 0; i < mModel->rowCount(); i++) {
         QModelIndex index = mModel->index(i, 0);
 
-        // CREAMOS EL WIDGET
-        AvailableItemWidget *widget = new AvailableItemWidget();
+            // CREAMOS EL WIDGET
+            AvailableItemWidget *widget = new AvailableItemWidget();
 
-        // OBTENEMOS EL NOMBRE Y LA IMAGEN
-        widget->setData(
-            mModel->data(index, ApplicationModel::NameRole).toString(),
-            mModel->data(index, ApplicationModel::ImageUrlRole).toString()
-            );
+            // OBTENEMOS EL NOMBRE Y LA IMAGEN
+            widget->setModel(mModel);
+            widget->setData(index);
 
-        // ASIGNAMOS LA FILA AL WIDGET
-        widget->setRow(i);
+            // ASIGNAMOS LA FILA AL WIDGET
+            widget->setRow(i);
 
-        // INSERTAMOS EL WIDGET EN LA VISTA
-        ui->listViewAvailable->setIndexWidget(index, widget);
+            // INSERTAMOS EL WIDGET EN LA VISTA
+            ui->listViewAvailable->setIndexWidget(index, widget);
 
-        // CONNECTS
-        connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::onInfoClicked);
-        connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
-        connect(widget, &AvailableItemWidget::deleteClicked, this, &AvailableApplicationsWidget::onDeleteClicked);
+            // CONNECTS
+            connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadButtonClicked);
+            connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
+            connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::onInfoClicked);
     }
 
     // FONDO EN BLANCO
@@ -60,10 +58,17 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setStyleSheet("background-color: #FFFFFF; border: none;");
 }
 
-void AvailableApplicationsWidget::onInfoClicked(int row)
+void AvailableApplicationsWidget::onDownloadButtonClicked(int row)
 {
+    //RECIBE EL INDEX DE LA FILA Y EL ROL
+    QModelIndex index = mModel->index(row,0);
+
+    //MODIFICAMOS EL ROL "IsDownloadRole" A LO CONTRARIO CUANDO SE PULSA
+    mModel->setData(index, true, ApplicationModel::IsDownloadedRole);
+
+
     QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Info clicado por:" << name << "Row:" << row;
+    qDebug() << "Boton Download clicado por:" << name;
 }
 
 void AvailableApplicationsWidget::onFavoriteClicked(int row)
@@ -80,18 +85,12 @@ void AvailableApplicationsWidget::onFavoriteClicked(int row)
     qDebug() << "Boton Favorite clicado por: " << name;
 }
 
-void AvailableApplicationsWidget::onDeleteClicked(int row)
+void AvailableApplicationsWidget::onInfoClicked(int row)
 {
-    //RECIBE EL INDEX DE LA FILA Y EL ROL
-    QModelIndex index = mModel->index(row,0);
-    bool Delete = mModel->data(index, ApplicationModel::IsDownloadedRole).toBool();
-
-    //MODIFICAMOS EL ROL "IsDownloadRole" A LO CONTRARIO CUANDO SE PULSA
-    mModel->setData(index, !Delete, ApplicationModel::IsDownloadedRole);
 
     //DEBUG
     QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Delete clicado por:" << name;
+    qDebug() << "Boton Info clicado por:" << name;
 }
 
 AvailableApplicationsWidget::~AvailableApplicationsWidget()
