@@ -2,7 +2,7 @@
     {
         "description": "Aplicación de mensajería para enviar textos, audios, fotos y hacer llamadas por internet.",
         "executable_file": "WhatsApp.exe",
-        "expiration_date": "2026-05-11",
+        "expiration_date": "2026-05-11T00:00:00",
         "id": 1,
         "image_url": ":/apps/LogoWhatsapp.png",
         "is_downloaded": false,
@@ -10,18 +10,18 @@
         "name": "WhatsApp",
         "versions": [
             {
-                "expiration_date": "",
+                "expiration_date": "2023-07-10T00:00:00",
                 "id": 1,
                 "is_installed": true,
-                "last_modification": "",
+                "last_modification": "2023-07-13T00:00:00",
                 "name": "1.0.0",
                 "size": 0
             },
             {
-                "expiration_date": "",
+                "expiration_date": "2023-07-13T00:00:00",
                 "id": 2,
                 "is_installed": false,
-                "last_modification": "2024-06-15",
+                "last_modification": "2024-06-15T00:00:00",
                 "name": "1.1.0",
                 "size": 0
             }
@@ -30,7 +30,7 @@
     {
         "description": "Red social para compartir fotos y videos, con historias y mensajes directos.",
         "executable_file": "Instagram.exe",
-        "expiration_date": "2026-05-4",
+        "expiration_date": "2023-07-13T00:00:00",
         "id": 2,
         "image_url": ":/apps/LogoInstagram.png",
         "is_downloaded": false,
@@ -38,26 +38,26 @@
         "name": "Instagram",
         "versions": [
             {
-                "expiration_date": "2026-04-4",
+                "expiration_date": "2026-04-4T00:00:00",
                 "id": 1,
                 "is_installed": false,
-                "last_modification": "2023-07-13",
+                "last_modification": "2023-07-13T00:00:00",
                 "name": "1.0.0",
                 "size": 5.7
             },
             {
-                "expiration_date": "2026-03-20",
+                "expiration_date": "2026-03-20T00:00:00",
                 "id": 2,
                 "is_installed": true,
-                "last_modification": "2023-12-22",
+                "last_modification": "2023-12-22T00:00:00",
                 "name": "1.1.0",
                 "size": 6.1
             },
             {
-                "expiration_date": "2026-02-26",
+                "expiration_date": "2026-02-26T00:00:00",
                 "id": 3,
                 "is_installed": false,
-                "last_modification": "2024-04-30",
+                "last_modification": "2024-04-30T00:00:00",
                 "name": "1.1.1",
                 "size": 6.4
             }
@@ -66,7 +66,7 @@
     {
         "description": "Aplicación de mensajería para enviar textos, audios, fotos y hacer llamadas por internet.",
         "executable_file": "WhatsApp.exe",
-        "expiration_date": "2026-05-11",
+        "expiration_date": "2026-05-11T00:00:00",
         "id": 3,
         "image_url": ":/apps/LogoWhatsapp.png",
         "is_downloaded": true,
@@ -74,18 +74,18 @@
         "name": "WhatsApp_2",
         "versions": [
             {
-                "expiration_date": "2026-02-5",
+                "expiration_date": "2026-02-5T00:00:00",
                 "id": 1,
                 "is_installed": true,
-                "last_modification": "2022-05-3",
+                "last_modification": "2022-05-3T00:00:00",
                 "name": "1.0.0",
                 "size": 3.3
             },
             {
-                "expiration_date": "2026-02-1",
+                "expiration_date": "2026-02-1T00:00:00",
                 "id": 2,
                 "is_installed": false,
-                "last_modification": "2024-06-15",
+                "last_modification": "2024-06-15T00:00:00",
                 "name": "1.1.0",
                 "size": 3.5
             }
@@ -94,7 +94,7 @@
     {
         "description": "Red social para compartir fotos y videos, con historias y mensajes directos.",
         "executable_file": "Instagram.exe",
-        "expiration_date": "2026-05-4",
+        "expiration_date": "2026-05-4T00:00:00",
         "id": 4,
         "image_url": ":/apps/LogoInstagram.png",
         "is_downloaded": false,
@@ -102,26 +102,26 @@
         "name": "Instagram_2",
         "versions": [
             {
-                "expiration_date": "2026-04-4",
+                "expiration_date": "2026-04-4T00:00:00",
                 "id": 1,
                 "is_installed": false,
-                "last_modification": "2023-07-13",
+                "last_modification": "2023-07-13T00:00:00",
                 "name": "1.0.0",
                 "size": 5.7
             },
             {
-                "expiration_date": "2026-03-20",
+                "expiration_date": "2026-03-20T00:00:00",
                 "id": 2,
                 "is_installed": true,
-                "last_modification": "2023-12-22",
+                "last_modification": "2023-12-22T00:00:00",
                 "name": "1.1.0",
                 "size": 6.1
             },
             {
-                "expiration_date": "2026-02-26",
+                "expiration_date": "2026-02-26T00:00:00",
                 "id": 3,
                 "is_installed": false,
-                "last_modification": "2024-04-30",
+                "last_modification": "2024-04-30T00:00:00",
                 "name": "1.1.1",
                 "size": 6.4
             }

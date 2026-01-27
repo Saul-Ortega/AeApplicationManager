@@ -4,9 +4,12 @@
 #include <QDebug>
 #include "availableapplicationswidget.h"
 
+//CONSTRUCTOR
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , mApplicationManagerWidget(new ApplicationManagerWidget)
+    , mStackedWidget(new QStackedWidget)
 {
     ui->setupUi(this);
 
@@ -14,11 +17,29 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowTitle("AeApplicationManager");
     this->setWindowIcon(QIcon(":/assets/Logo-Aerolaser.png"));
 
-    AvailableApplicationsWidget *apps = new AvailableApplicationsWidget(this);
-    setCentralWidget(apps);
+    ApplicationModel* applicationModel = new ApplicationModel(this);
+    QItemSelectionModel* applicationSelectionModel = new QItemSelectionModel(applicationModel, this);
+    mApplicationManagerWidget->setApplicationModel(applicationModel);
+    mApplicationManagerWidget->setApplicationSelectionModel(applicationSelectionModel);
+
+    // VersionModel* versionModel = new VersionModel(this);
+    // QItemSelectionModel* versionSelectionModel = new QItemSelectionModel(versionModel, this);
+    // mApplicationManagerWidget->setVersionModel(versionModel);
+    // mApplicationManagerWidget->setApplicationSelectionModel(versionSelectionModel);
+
+    mStackedWidget->addWidget(mApplicationManagerWidget);
+
+    setCentralWidget(mStackedWidget);
 }
 
+//DESTRUCTOR
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+//SLOTS
+void MainWindow::displayApplicationManager()
+{
+    mStackedWidget->setCurrentWidget(mApplicationManagerWidget);
 }

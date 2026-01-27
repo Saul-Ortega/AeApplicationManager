@@ -2,21 +2,31 @@
 #define APPLICATIONMANAGERWIDGET_H
 
 #include <QWidget>
+#include "QItemSelectionModel"
+#include "applicationmodel.h"
+#include "versionmodel.h"
 
 namespace Ui {
-class ApplicationManager;
+class ApplicationManagerWidget;
 }
 
-class ApplicationManager : public QWidget
+class ApplicationManagerWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit ApplicationManager(QWidget *parent = nullptr);
-    ~ApplicationManager();
+    explicit ApplicationManagerWidget(QWidget *parent = nullptr);
+    ~ApplicationManagerWidget();
+
+    void setApplicationModel(ApplicationModel* applicationModel);
+    void setApplicationSelectionModel(QItemSelectionModel* applicationSelectionModel);
+    void setVersionModel(VersionModel* versionModel);
+    void setVersionSelectionModel(QItemSelectionModel* versionSelectionModel);
 
 private:
-    Ui::ApplicationManager *ui;
+    Ui::ApplicationManagerWidget *ui;
+    ApplicationModel* mApplicationModel;
+    VersionModel* mVersionModel;
 };
 
 #endif // APPLICATIONMANAGERWIDGET_H

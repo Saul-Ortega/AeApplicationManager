@@ -1,6 +1,6 @@
 #include "versionmodel.h"
 
-#include "ApplicationDao.h"
+#include "applicationdao.h"
 
 //=== CONSTRUCTOR ===
 VersionModel::VersionModel(QObject *parent)
