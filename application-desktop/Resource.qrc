@@ -11,5 +11,6 @@
         <file>icons/Icon_Favorite_False.png</file>
         <file>icons/Icon_Favorite_True.png</file>
         <file>icons/Icon_Info.png</file>
+        <file>icons/Icon_Download.png</file>
     </qresource>
 </RCC>

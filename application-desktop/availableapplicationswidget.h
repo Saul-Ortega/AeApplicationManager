@@ -18,9 +18,9 @@ public:
     ~AvailableApplicationsWidget();
 
 private slots:
-    void onInfoClicked(int row);
+    void onDownloadButtonClicked(int row);
     void onFavoriteClicked(int row);
-    void onDeleteClicked(int row);
+    void onInfoClicked(int row);
 
 private:
     Ui::AvailableApplicationsWidget *ui;
