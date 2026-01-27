@@ -19,7 +19,7 @@ ApplicationDao::ApplicationDao()
 void ApplicationDao::updateApplication(const Application& application) const
 {
     //COGE LA RUTA DESDE RESOURCE.QRC
-    QFile jsonFile("../../../../application-core/applications.json");
+    QFile jsonFile("../Resources/applications.json");
 
     // ABRIR JSON SOLO LECTURA
     if (!jsonFile.open(QIODevice::ReadOnly)) {
@@ -115,7 +115,7 @@ void ApplicationDao::updateApplication(const Application& application) const
 std::unique_ptr<std::vector<std::unique_ptr<Application>>> ApplicationDao::applications() const
 {
     //COGE LA RUTA DESDE RESOURCE.QRC
-    QFile jsonPath("../../../../application-core/applications.json");
+    QFile jsonPath("../Resources/applications.json");
 
     //COMPRUEBA SI EL ARCHIVO EXISTE
     if ( !jsonPath.exists() ) {

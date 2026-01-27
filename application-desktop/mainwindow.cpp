@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    //SE PONE UN TITULO A LA APLICACION Y EL LOGO
+    //PONE UN TITULO A LA APLICACION Y EL LOGO
     this->setWindowTitle("AeApplicationManager");
     this->setWindowIcon(QIcon(":/assets/Logo-Aerolaser.png"));
 

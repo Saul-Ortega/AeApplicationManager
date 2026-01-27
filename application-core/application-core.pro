@@ -33,5 +33,4 @@ unix {
 
 DISTFILES +=
 
-RESOURCES += \
-    Resource.qrc
+RESOURCES +=
