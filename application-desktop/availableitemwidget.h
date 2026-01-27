@@ -38,7 +38,6 @@ private:
     Ui::AvailableItemWidget *ui;
     int mRow = -1;
     ApplicationModel *mModel;
-    QItemSelection mSelection;
 };
 
 #endif // AVAILABLEITEMWIDGET_H

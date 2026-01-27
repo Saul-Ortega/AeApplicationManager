@@ -51,7 +51,6 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
             connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadButtonClicked);
             connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
             connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::onInfoClicked);
-
     }
 
     // FONDO EN BLANCO

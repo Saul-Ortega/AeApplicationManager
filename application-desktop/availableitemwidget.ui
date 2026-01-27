@@ -89,7 +89,7 @@
         </property>
         <property name="icon">
          <iconset resource="Resource.qrc">
-          <normaloff>:/icons/icons/Icon_Favorite_False.png</normaloff>:/icons/icons/Icon_Favorite_False.png</iconset>
+          <normaloff>:/assets/Corazon.png</normaloff>:/assets/Corazon.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -206,7 +206,7 @@
         </property>
         <property name="icon">
          <iconset resource="Resource.qrc">
-          <normaloff>:/icons/icons/Icon_Download.png</normaloff>:/icons/icons/Icon_Download.png</iconset>
+          <normaloff>:/assets/Icon_Download.png</normaloff>:/assets/Icon_Download.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -244,7 +244,7 @@
         </property>
         <property name="icon">
          <iconset resource="Resource.qrc">
-          <normaloff>:/icons/icons/Icon_Info.png</normaloff>:/icons/icons/Icon_Info.png</iconset>
+          <normaloff>:/assets/Icon_Info.png</normaloff>:/assets/Icon_Info.png</iconset>
         </property>
         <property name="iconSize">
          <size>

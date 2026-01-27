@@ -4,39 +4,6 @@
 #include <QPixmap>
 #include <QDebug>
 
-// AvailableItemWidget::AvailableItemWidget(const QItemSelection& selection, QWidget *parent)
-//     : QWidget(parent)
-//     , ui(new Ui::AvailableItemWidget)
-//     , mSelection(selection)
-// {
-//     ui->setupUi(this);
-
-//     // BORDE PARA EL LABEL DEL ICONO
-//     ui->label_Icon->setStyleSheet(
-//         "QLabel {"
-//         "   border: 1px solid #CCCCCC;"
-//         "   border-radius: 8px;"
-//         "   padding: 5px;"
-//         "   background-color: #FAFAFA;"
-//         "}"
-//         );
-
-
-//     // CONFIGURACION PARA QUE LOS BOTONES PUEDAN RECIBIR CLICKS
-//     ui->btn_Download->setCursor(Qt::PointingHandCursor);
-//     ui->btn_Favorite->setCursor(Qt::PointingHandCursor);
-//     ui->btn_Delete->setCursor(Qt::PointingHandCursor);
-
-//     // Acceso al modelo
-
-
-
-//     //CREAMOS LOS CONECTORES AL CLICAR
-//     connect(ui->btn_Download, &QPushButton::clicked, this, &AvailableItemWidget::onDownloadButtonClicked);
-//     connect(ui->btn_Favorite, &QPushButton::clicked, this, &AvailableItemWidget::onFavoriteButtonClicked);
-//     connect(ui->btn_Delete, &QPushButton::clicked, this, &AvailableItemWidget::onInfoClicked);
-// }
-
 AvailableItemWidget::AvailableItemWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AvailableItemWidget)
