@@ -21,16 +21,47 @@ AvailableItemWidget::AvailableItemWidget(QWidget *parent)
         "}"
         );
 
+    //BORDE PARA LOS BOTONES
+    ui->btn_Download->setStyleSheet(
+        "QPushButton {"
+        "   border: 1px solid #CCCCCC;"
+        "   border-radius: 6px;"
+        "   padding: 4px 8px;"
+        "}"
+        "QPushButton:hover {"
+        "   border-color: #888888;"
+        "}"
+        );
+    ui->btn_Favorite->setStyleSheet(
+        "QPushButton {"
+        "   border: 1px solid #CCCCCC;"
+        "   border-radius: 6px;"
+        "   padding: 4px 8px;"
+        "}"
+        "QPushButton:hover {"
+        "   border-color: #888888;"
+        "}"
+        );
+    ui->btn_Info->setStyleSheet(
+        "QPushButton {"
+        "   border: 1px solid #CCCCCC;"
+        "   border-radius: 6px;"
+        "   padding: 4px 8px;"
+        "}"
+        "QPushButton:hover {"
+        "   border-color: #888888;"
+        "}"
+        );
 
     // CONFIGURACION PARA QUE LOS BOTONES PUEDAN RECIBIR CLICKS
     ui->btn_Download->setCursor(Qt::PointingHandCursor);
     ui->btn_Favorite->setCursor(Qt::PointingHandCursor);
-    ui->btn_Delete->setCursor(Qt::PointingHandCursor);
+    ui->btn_Info->setCursor(Qt::PointingHandCursor);
 
     //CREAMOS LOS CONECTORES AL CLICAR
     connect(ui->btn_Download, &QPushButton::clicked, this, &AvailableItemWidget::onDownloadButtonClicked);
     connect(ui->btn_Favorite, &QPushButton::clicked, this, &AvailableItemWidget::onFavoriteButtonClicked);
-    connect(ui->btn_Delete, &QPushButton::clicked, this, &AvailableItemWidget::onInfoClicked);
+    connect(ui->btn_Info, &QPushButton::clicked, this, &AvailableItemWidget::onInfoClicked);
 }
 
 //ACCESO AL MODELO
@@ -38,7 +69,6 @@ void AvailableItemWidget::setModel(ApplicationModel* model)
 {
     mModel = model;
 }
-
 
 //PASAMOS EL NOMBRE DE LA APP Y EL ICONO
 void AvailableItemWidget::setData(QModelIndex index) {
@@ -48,7 +78,19 @@ void AvailableItemWidget::setData(QModelIndex index) {
     if(!pixmap.isNull()){
         ui->label_Icon->setPixmap(pixmap.scaled(64,64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
+
+    //SI ESTA EN FAVORITOS PONE UN CORAZON U OTRO
+    bool isLiked = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
+
+    if (isLiked) {
+        ui->btn_Favorite->setIcon(QIcon(":/assets/CorazonSeleccionado.png"));
+    } else {
+        ui->btn_Favorite->setIcon(QIcon(":/assets/Corazon.png"));
+    }
 }
+
+
+
 
 //INDICA LA FILA EN LA QUE ESTA
 void AvailableItemWidget::setRow(int row) {
