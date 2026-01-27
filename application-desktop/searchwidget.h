@@ -15,9 +15,6 @@ public:
     explicit SearchWidget(QWidget *parent = nullptr);
     ~SearchWidget();
 
-signals:
-    void displayApplicationInfo();
-
 private:
     Ui::SearchWidget *ui;
 };

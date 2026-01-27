@@ -24,7 +24,6 @@ public:
 
 public slots:
     void displayApplicationManager();
-    void displayApplicationInfoDelegate();
 
 private:
     Ui::MainWindow *ui;

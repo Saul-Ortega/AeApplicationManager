@@ -1,6 +1,5 @@
 #include "searchwidget.h"
 #include "ui_searchwidget.h"
-#include "applicationinfodelegate.h"
 #include <QDialog>
 
 SearchWidget::SearchWidget(QWidget *parent)
@@ -14,8 +13,6 @@ SearchWidget::SearchWidget(QWidget *parent)
     int height = ui->icon->height();
     ui->icon->setPixmap(icon.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->icon->setAlignment(Qt::AlignCenter);
-
-    connect(ui->pushButton, &QPushButton::clicked, this, &SearchWidget::displayApplicationInfo);
 }
 
 SearchWidget::~SearchWidget()
