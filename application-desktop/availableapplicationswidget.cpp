@@ -68,14 +68,30 @@ void AvailableApplicationsWidget::onInfoClicked(int row)
 
 void AvailableApplicationsWidget::onFavoriteClicked(int row)
 {
-    QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Favorite clicado por:" << name << "Row:" << row;
+    //RECIBE EL INDEX DE LA FILA Y EL ROL
+    QModelIndex index = mModel->index(row, 0);
+    bool favorite = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
+
+    //CAMBIA A EL ROL "IsLikedRole" A LO CONTRARIO CUANDO SE PULSA
+    mModel->setData(index, !favorite, ApplicationModel::IsLikedRole);
+
+    //DEBUG
+    QString name = mModel->data(index, ApplicationModel::NameRole).toString();
+    qDebug() << "Boton Favorite clicado por: " << name;
 }
 
 void AvailableApplicationsWidget::onDeleteClicked(int row)
 {
+    //RECIBE EL INDEX DE LA FILA Y EL ROL
+    QModelIndex index = mModel->index(row,0);
+    bool Delete = mModel->data(index, ApplicationModel::IsDownloadedRole).toBool();
+
+    //MODIFICAMOS EL ROL "IsDownloadRole" A LO CONTRARIO CUANDO SE PULSA
+    mModel->setData(index, !Delete, ApplicationModel::IsDownloadedRole);
+
+    //DEBUG
     QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Delete clicado por:" << name << "Row:" << row;
+    qDebug() << "Boton Delete clicado por:" << name;
 }
 
 AvailableApplicationsWidget::~AvailableApplicationsWidget()

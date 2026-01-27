@@ -20,7 +20,7 @@ AvailableItemWidget::AvailableItemWidget(QWidget *parent)
         );
 
 
-    // Configuración para que los botones puedan recibir clics
+    // CONFIGURACION PARA QUE LOS BOTONES PUEDAN RECIBIR CLICKS
     ui->btn_Info->setCursor(Qt::PointingHandCursor);
     ui->btn_Favorite->setCursor(Qt::PointingHandCursor);
     ui->btn_Delete->setCursor(Qt::PointingHandCursor);
