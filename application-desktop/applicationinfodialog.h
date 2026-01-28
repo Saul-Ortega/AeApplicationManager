@@ -24,10 +24,14 @@ public:
     void setApplicationModel(ApplicationModel* model);
 
     void loadApplication(const QModelIndex& index);
+    void loadVersion(const Version& version);
+    void onDownloadVersionClicked(const QString& versionName);
 
 private:
     Ui::ApplicationInfoDialog *ui;
     ApplicationModel* mApplicationModel;
+    QModelIndex mIndex;
+    Version mVersion;
 };
 
 #endif // APPLICATIONINFODIALOG_H

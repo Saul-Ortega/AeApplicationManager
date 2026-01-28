@@ -84,16 +84,6 @@ void AvailableApplicationsWidget::onFavoriteClicked(int row)
     qDebug() << "Boton Favorite clicado por: " << name;
 }
 
-// void AvailableApplicationsWidget::infoClicked(const QModelIndex& index)
-// {
-//     ApplicationInfoDialog *modal = new ApplicationInfoDialog(this);
-//     modal->setModal(true);
-//     modal->resize(this->width(), this->height());
-//     modal->setApplicationModel(mModel);
-//     modal->loadApplication(index);
-//     modal->show();
-// }
-
 AvailableApplicationsWidget::~AvailableApplicationsWidget()
 {
     delete ui;
