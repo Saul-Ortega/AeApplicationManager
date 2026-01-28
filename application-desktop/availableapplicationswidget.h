@@ -17,10 +17,12 @@ public:
     explicit AvailableApplicationsWidget(QWidget *parent = nullptr);
     ~AvailableApplicationsWidget();
 
+signals:
+    void infoClicked(const QModelIndex& index);
+
 private slots:
     void onDownloadButtonClicked(int row);
     void onFavoriteClicked(int row);
-    void onInfoClicked(int row);
 
 private:
     Ui::AvailableApplicationsWidget *ui;

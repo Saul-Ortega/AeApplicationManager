@@ -6,9 +6,6 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ApplicationInfoDialog)
     , mApplicationModel(nullptr)
-    , mApplicationSelectionModel(nullptr)
-    , mVersionModel(nullptr)
-    , mVersionSelectionModel(nullptr)
 {
     ui->setupUi(this);
 }
@@ -23,80 +20,48 @@ ApplicationInfoDialog::~ApplicationInfoDialog()
 void ApplicationInfoDialog::setApplicationModel(ApplicationModel* model)
 {
     mApplicationModel = model;
-
-    connect(mApplicationModel, &QAbstractItemModel::dataChanged, [this] (const QModelIndex &topLeft, const QModelIndex &bottomRight) {
-        if ( topLeft == mApplicationSelectionModel->currentIndex() ) {
-            loadApplication(mApplicationSelectionModel->selection());
-        }
-    });
 }
 
-void ApplicationInfoDialog::setApplicationSelectionModel(QItemSelectionModel* selectionModel)
+void ApplicationInfoDialog::loadApplication(const QModelIndex& index)
 {
-    mApplicationSelectionModel = selectionModel;
-
-    connect(mApplicationSelectionModel, &QItemSelectionModel::selectionChanged, [this] (const QItemSelection &selected) {
-        if ( selected.isEmpty() )  {
-            return;
-        }
-
-        loadApplication(selected);
-    });
-}
-
-void ApplicationInfoDialog::setVersionModel(VersionModel* model)
-{
-    mVersionModel = model;
-
-    connect(mVersionModel, &QAbstractItemModel::dataChanged, [this] (const QModelIndex &topLeft, const QModelIndex &bottomRight, const QList<int> &roles = QList<int>()) {
-        if ( topLeft == mVersionSelectionModel->currentIndex() ) {
-            loadVersion(mVersionSelectionModel->selection());
-        }
-    });
-}
-
-void ApplicationInfoDialog::setVersionSelectionModel(QItemSelectionModel* selectionModel)
-{
-    mVersionSelectionModel = selectionModel;
-
-    connect(mVersionSelectionModel, &QItemSelectionModel::selectionChanged, [this] (const QItemSelection &selected) {
-        if ( selected.isEmpty() ) {
-            return;
-        }
-        loadVersion(selected);
-    });
-}
-
-void ApplicationInfoDialog::loadVersion(const QItemSelection& selected)
-{
-    if ( selected.isEmpty() ) {
+    if ( !index.isValid() ) {
         return;
     }
 
-    QModelIndex index = selected.indexes().first();
+    this->setWindowTitle(mApplicationModel->data(index, ApplicationModel::NameRole).toString());
+    this->setWindowIcon(QIcon(mApplicationModel->data(index, ApplicationModel::ImageUrlRole).toString()));
 
-    ui->applicationSize->setText(mVersionModel->data(index, VersionModel::SizeRole).toString());
-    ui->lastModificationDate->setText(mVersionModel->data(index, VersionModel::LastModificationRole).value<QDate>().toString("dd/MM/yyyy"));
-}
-
-void ApplicationInfoDialog::loadApplication(const QItemSelection& selected)
-{
-    if ( selected.isEmpty() ) {
-        return;
-    }
-
-    QModelIndex index = selected.indexes().first();
     QList<Version> versions = mApplicationModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
 
     ui->title->setText(mApplicationModel->data(index, ApplicationModel::NameRole).toString());
     ui->description->setText(mApplicationModel->data(index, ApplicationModel::DescriptionRole).toString());
+    ui->description->setWordWrap(true);
+    ui->applicationSize->setText(QString::number(versions.last().size()) + " GB");;
 
-    for ( auto version : versions ) {
-        ui->versionComboBox->addItem(version.name());
+    for ( int i = versions.size() - 1; i >= 0; i-- ) {
+        ui->versionComboBox->addItem(versions[i].name());
     }
 
     ui->applicationLastAvailableUpdate->setText(versions.last().name());
+    ui->applicationLastModificationDate->setText(versions.last().lastModification().toString("dd/MM/yyyy"));
     ui->applicationExecutableFile->setText(mApplicationModel->data(index, ApplicationModel::ExecutableFileRole).toString());
 
-    //TODO: IMPLEMENTAR EL MOSTRAR UN BOTÓN U OTRO
+    versions.last().isInstalled() ? ui->firstToolButton->setIcon(QIcon(":/assets/papelera.png")) : ui->firstToolButton->setIcon(QIcon(":/assets/Icon_Download.png"));
+
+    connect(ui->versionComboBox, &QComboBox::currentIndexChanged, this, [this, versions] (int row) {
+        QString versionName = ui->versionComboBox->itemText(row);
+
+        for ( auto version : versions ) {
+            if ( version.name() == versionName ) {
+                ui->applicationSize->setText(QString::number(version.size()) + " GB");
+                ui->applicationLastModificationDate->setText(version.lastModification().toString("dd/MM/yyyy"));
+                return;
+            }
+
+            version.isInstalled() ? ui->firstToolButton->setIcon(QIcon(":/assets/papelera.png")) : ui->firstToolButton->setIcon(QIcon(":/assets/Icon_Download.png"));
+        }
+
+    });
+
+    mApplicationModel->data(index, ApplicationModel::IsLikedRole).toBool() ? ui->secondToolButton->setIcon(QIcon(":/assets/CorazonSeleccionado.png")) : ui->secondToolButton->setIcon(QIcon(":/assets/Corazon.png"));
 }

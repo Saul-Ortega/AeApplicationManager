@@ -1,6 +1,5 @@
 #include "availableapplicationswidget.h"
 #include "ui_availableapplicationswidget.h"
-
 #include "applicationmodel.h"
 #include "AvailableItemWidget.h"
 
@@ -50,7 +49,7 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
             // CONNECTS
             connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadButtonClicked);
             connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
-            connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::onInfoClicked);
+            connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::infoClicked);
     }
 
     // FONDO EN BLANCO
@@ -85,13 +84,15 @@ void AvailableApplicationsWidget::onFavoriteClicked(int row)
     qDebug() << "Boton Favorite clicado por: " << name;
 }
 
-void AvailableApplicationsWidget::onInfoClicked(int row)
-{
-
-    //DEBUG
-    QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Info clicado por:" << name;
-}
+// void AvailableApplicationsWidget::infoClicked(const QModelIndex& index)
+// {
+//     ApplicationInfoDialog *modal = new ApplicationInfoDialog(this);
+//     modal->setModal(true);
+//     modal->resize(this->width(), this->height());
+//     modal->setApplicationModel(mModel);
+//     modal->loadApplication(index);
+//     modal->show();
+// }
 
 AvailableApplicationsWidget::~AvailableApplicationsWidget()
 {
