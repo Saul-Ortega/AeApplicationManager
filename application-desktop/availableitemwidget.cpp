@@ -85,11 +85,8 @@ void AvailableItemWidget::setData(QModelIndex index) {
     //SI ESTA EN FAVORITOS PONE UN CORAZON U OTRO
     bool isLiked = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
 
-    if (isLiked) {
-        ui->btn_Favorite->setIcon(QIcon(":/assets/CorazonSeleccionado.png"));
-    } else {
-        ui->btn_Favorite->setIcon(QIcon(":/assets/Corazon.png"));
-    }
+    isLiked ? ui->btn_Favorite->setIcon(QIcon(":/assets/CorazonSeleccionado.png")) : ui->btn_Favorite->setIcon(QIcon(":/assets/Corazon.png"));
+
 }
 
 

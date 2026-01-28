@@ -31,13 +31,21 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setSelectionMode(QAbstractItemView::NoSelection);
     ui->listViewAvailable->setFocusPolicy(Qt::NoFocus);
 
+    connect(ui->btn_Disponibles, &QPushButton::clicked, this, &AvailableApplicationsWidget::onDisponiblesClicked);
+    connect(ui->btn_Deseados, &QPushButton::clicked, this, &AvailableApplicationsWidget::onDeseadosClicked);
+
     //RECARGA LAS APPS POR PRIMERA VEZ
     AvailableApplicationsWidget::LoadWidget();
+
+    //BOTON DE YA MARCADO
+    ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
 
     // FONDO EN BLANCO
     ui->frame->setStyleSheet("background-color: #FFFFFF;");
     ui->listViewAvailable->setStyleSheet("background-color: #FFFFFF; border: none;");
 }
+
+// === BUTTONS ===
 
 void AvailableApplicationsWidget::onDownloadClicked(int row)
 {
@@ -45,10 +53,21 @@ void AvailableApplicationsWidget::onDownloadClicked(int row)
     qDebug() << "Boton Download clicado por:" << name;
 
     //RECIBE EL INDEX DE LA FILA Y EL ROL
-    QModelIndex index = mModel->index(row,0);
+    QModelIndex appIndex = mModel->index(row,0);
 
-    //MODIFICAMOS EL ROL "IsDownloadRole" A TRUE CUANDO SE PULSA
-    mModel->setData(index, true, ApplicationModel::IsDownloadedRole);
+    //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
+    mModel->setData(appIndex, true, ApplicationModel::IsDownloadedRole);
+
+    //GUARDAMOS LAS VERSIONES EN QLIST
+    QList<Version> versions = mModel->data(appIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
+
+    //MODIFICAMOS EL ROL DE VERSION "IsInstalledRole" A TRUE LA ULTIMA VERSION
+    if(!versions.empty()){
+        versions.last().setIsInstalled(true);
+    }
+
+    //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
+    mModel->setData(appIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 
     //TEMPORIZADOR DE INSTALACION PARA DESPUES REFRESCAR LOS WIDGETS
     QTimer::singleShot(5000, this, &AvailableApplicationsWidget::LoadWidget);
@@ -81,6 +100,34 @@ void AvailableApplicationsWidget::onInfoClicked(int row)
     qDebug() << "Boton Info clicado por:" << name;
 }
 
+
+void AvailableApplicationsWidget::onDisponiblesClicked()
+{
+    //ALTERNAR LOS COLORES AL PULSAR
+    ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
+    ui->btn_Deseados->setStyleSheet("");
+
+    mMostrarDeseados = false;
+
+    //LLAMAMOS AL METODO PARA GENERAR LOS WIDGETS
+    LoadWidget();
+}
+
+void AvailableApplicationsWidget::onDeseadosClicked(){
+
+    //ALTERNAR LOS COLORES AL PULSAR
+    ui->btn_Deseados->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
+    ui->btn_Disponibles->setStyleSheet("");
+
+    mMostrarDeseados = true;
+
+    //LLAMAMOS AL METODO PARA GENERAR LOS WIDGETS
+    AvailableApplicationsWidget::LoadWidget();
+}
+
+
+// === LOAD WIDGETS ===
+
 void AvailableApplicationsWidget::LoadWidget(){
     // LIMPIAR WIDGETS ANTERIORES SI EXISTEN
     for (int i = 0; i < mModel->rowCount(); i++) {
@@ -105,7 +152,13 @@ void AvailableApplicationsWidget::LoadWidget(){
 
         //FILTRAMOS LAS APPS NO INSTALADAS
         bool isDownload = mModel->data(index, ApplicationModel::IsDownloadedRole).toBool();
-        if (!isDownload) {
+        bool isLiked = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
+
+        bool mostrar;
+
+        mMostrarDeseados ? mostrar = !isDownload&&isLiked : mostrar = !isDownload;
+
+        if (mostrar) {
 
             // CREAR Y MOSTRAR WIDGET PARA APPS NO DESCARGADAS
             AvailableItemWidget *widget = new AvailableItemWidget();

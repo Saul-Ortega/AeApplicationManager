@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "applicationmodel.h"
+#include "versionmodel.h"
 #include <QVector>
 
 namespace Ui {
@@ -24,10 +25,13 @@ private slots:
     void onFavoriteClicked(int row);
     void onInfoClicked(int row);
 
+    void onDisponiblesClicked();
+    void onDeseadosClicked();
+
 private:
     Ui::AvailableApplicationsWidget *ui;
     ApplicationModel *mModel;
-    QVector<int> mVisibleRows;
+    bool mMostrarDeseados = false;
 };
 
 #endif // AVAILABLEAPPLICATIONSWIDGET_H
