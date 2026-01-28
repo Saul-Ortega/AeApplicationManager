@@ -70,7 +70,7 @@
         "id": 3,
         "image_url": ":/apps/LogoWhatsapp.png",
         "is_downloaded": true,
-        "is_liked": false,
+        "is_liked": true,
         "name": "WhatsApp_2",
         "versions": [
             {
@@ -94,34 +94,34 @@
     {
         "description": "Red social para compartir fotos y videos, con historias y mensajes directos.",
         "executable_file": "Instagram.exe",
-        "expiration_date": "2026-05-4T00:00:00",
+        "expiration_date": "",
         "id": 4,
         "image_url": ":/apps/LogoInstagram.png",
-        "is_downloaded": false,
-        "is_liked": false,
+        "is_downloaded": true,
+        "is_liked": true,
         "name": "Instagram_2",
         "versions": [
             {
-                "expiration_date": "2026-04-4T00:00:00",
+                "expiration_date": "",
                 "id": 1,
                 "is_installed": false,
-                "last_modification": "2023-07-13T00:00:00",
+                "last_modification": "2023-07-13",
                 "name": "1.0.0",
                 "size": 5.7
             },
             {
-                "expiration_date": "2026-03-20T00:00:00",
+                "expiration_date": "2026-03-20",
                 "id": 2,
                 "is_installed": true,
-                "last_modification": "2023-12-22T00:00:00",
+                "last_modification": "2023-12-22",
                 "name": "1.1.0",
                 "size": 6.1
             },
             {
-                "expiration_date": "2026-02-26T00:00:00",
+                "expiration_date": "2026-02-26",
                 "id": 3,
                 "is_installed": false,
-                "last_modification": "2024-04-30T00:00:00",
+                "last_modification": "2024-04-30",
                 "name": "1.1.1",
                 "size": 6.4
             }
