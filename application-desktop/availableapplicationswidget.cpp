@@ -3,6 +3,7 @@
 
 #include "applicationmodel.h"
 #include "AvailableItemWidget.h"
+#include <QTimer>
 
 AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     : QWidget(parent)
@@ -30,59 +31,46 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setSelectionMode(QAbstractItemView::NoSelection);
     ui->listViewAvailable->setFocusPolicy(Qt::NoFocus);
 
-    // INSERTAMOS EL WIDGET POR CADA APLICACION
-    for (int i = 0; i < mModel->rowCount(); i++) {
-        QModelIndex index = mModel->index(i, 0);
-
-            // CREAMOS EL WIDGET
-            AvailableItemWidget *widget = new AvailableItemWidget();
-
-            // OBTENEMOS EL NOMBRE Y LA IMAGEN
-            widget->setModel(mModel);
-            widget->setData(index);
-
-            // ASIGNAMOS LA FILA AL WIDGET
-            widget->setRow(i);
-
-            // INSERTAMOS EL WIDGET EN LA VISTA
-            ui->listViewAvailable->setIndexWidget(index, widget);
-
-            // CONNECTS
-            connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadButtonClicked);
-            connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
-            connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::onInfoClicked);
-    }
+    //RECARGA LAS APPS POR PRIMERA VEZ
+    AvailableApplicationsWidget::LoadWidget();
 
     // FONDO EN BLANCO
     ui->frame->setStyleSheet("background-color: #FFFFFF;");
     ui->listViewAvailable->setStyleSheet("background-color: #FFFFFF; border: none;");
 }
 
-void AvailableApplicationsWidget::onDownloadButtonClicked(int row)
+void AvailableApplicationsWidget::onDownloadClicked(int row)
 {
+    QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
+    qDebug() << "Boton Download clicado por:" << name;
+
     //RECIBE EL INDEX DE LA FILA Y EL ROL
     QModelIndex index = mModel->index(row,0);
 
-    //MODIFICAMOS EL ROL "IsDownloadRole" A LO CONTRARIO CUANDO SE PULSA
+    //MODIFICAMOS EL ROL "IsDownloadRole" A TRUE CUANDO SE PULSA
     mModel->setData(index, true, ApplicationModel::IsDownloadedRole);
 
-
-    QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Download clicado por:" << name;
+    //TEMPORIZADOR DE INSTALACION PARA DESPUES REFRESCAR LOS WIDGETS
+    QTimer::singleShot(5000, this, &AvailableApplicationsWidget::LoadWidget);
 }
 
 void AvailableApplicationsWidget::onFavoriteClicked(int row)
 {
-    //RECIBE EL INDEX DE LA FILA Y EL ROL
     QModelIndex index = mModel->index(row, 0);
-    bool favorite = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
-
-    //CAMBIA A EL ROL "IsLikedRole" A LO CONTRARIO CUANDO SE PULSA
-    mModel->setData(index, !favorite, ApplicationModel::IsLikedRole);
-
-    //DEBUG
     QString name = mModel->data(index, ApplicationModel::NameRole).toString();
     qDebug() << "Boton Favorite clicado por: " << name;
+
+    // CAMBIAR EL ESTADO DE FAVORITO DEL MODELO
+    bool currentState = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
+    mModel->setData(index, !currentState, ApplicationModel::IsLikedRole);
+
+    //OBTENEMOS EL ITEMWIDGET QUE EL USUARIO PULSO PARA TENER EN FAVORITOS
+    AvailableItemWidget* widget = (AvailableItemWidget*)ui->listViewAvailable->indexWidget(index);
+
+    //SI EL WIDGET EXISTE ACTUALIZA EL CORAZON
+    if (widget) {
+        widget->setData(index);
+    }
 }
 
 void AvailableApplicationsWidget::onInfoClicked(int row)
@@ -91,6 +79,61 @@ void AvailableApplicationsWidget::onInfoClicked(int row)
     //DEBUG
     QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
     qDebug() << "Boton Info clicado por:" << name;
+}
+
+void AvailableApplicationsWidget::LoadWidget(){
+    // LIMPIAR WIDGETS ANTERIORES SI EXISTEN
+    for (int i = 0; i < mModel->rowCount(); i++) {
+
+        //OBTENEMOS EL INDEX DEL MODEL
+        QModelIndex index = mModel->index(i, 0);
+
+        //COMPROBAMOS EN EL LIST SI EN ESA FILA HAY ALGUN WIDGET ASOCIADO DE ANTES
+        QWidget* oldWidget = ui->listViewAvailable->indexWidget(index);
+
+        //SI EL PUNTERO APUNTA A ALGO LO ELIMINA
+        if (oldWidget) {
+            oldWidget->disconnect(); //PRIMERO LO DESCONECTA
+            ui->listViewAvailable->setIndexWidget(index, nullptr);  //LUEGO LO QUITAMOS DE LA LISTA
+            oldWidget->deleteLater();  //POR ULTIMO LO ELIMINAMOS
+        }
+    }
+
+    // INSERTAMOS EL WIDGET POR CADA APLICACION
+    for (int i = 0; i < mModel->rowCount(); i++) {
+        QModelIndex index = mModel->index(i, 0);
+
+        //FILTRAMOS LAS APPS NO INSTALADAS
+        bool isDownload = mModel->data(index, ApplicationModel::IsDownloadedRole).toBool();
+        if (!isDownload) {
+
+            // CREAR Y MOSTRAR WIDGET PARA APPS NO DESCARGADAS
+            AvailableItemWidget *widget = new AvailableItemWidget();
+
+            // PASAMOS EL MODELO AL WIDGET
+            widget->setModel(mModel);
+
+            // OBTENEMOS EL NOMBRE, LA IMAGEN Y EL ESTADO DE FAVORITO
+            widget->setData(index);
+
+            // ASIGNAMOS LA FILA AL WIDGET
+            widget->setRow(i);
+
+            // INSERTAMOS EL WIDGET EN LA VISTA
+            ui->listViewAvailable->setIndexWidget(index, widget);
+
+            // MOSTRAR LA FILA
+            ui->listViewAvailable->setRowHidden(i, false);
+
+            // CONNECTS
+            connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
+            connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
+            connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::onInfoClicked);
+        } else {
+            // OCULTAR LA FILA DE APPS DESCARGADAS
+            ui->listViewAvailable->setRowHidden(i, true);
+        }
+    }
 }
 
 AvailableApplicationsWidget::~AvailableApplicationsWidget()

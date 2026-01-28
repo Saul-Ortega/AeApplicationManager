@@ -72,8 +72,11 @@ void AvailableItemWidget::setModel(ApplicationModel* model)
 
 //PASAMOS EL NOMBRE DE LA APP Y EL ICONO
 void AvailableItemWidget::setData(QModelIndex index) {
+
+    //INSERTAMOS EL NOMBRE
     ui->labe_Name->setText(mModel->data(index, ApplicationModel::NameRole).toString());
 
+    //INSERTAMOS LA IMAGEN
     QPixmap pixmap(mModel->data(index, ApplicationModel::ImageUrlRole).toString());
     if(!pixmap.isNull()){
         ui->label_Icon->setPixmap(pixmap.scaled(64,64, Qt::KeepAspectRatio, Qt::SmoothTransformation));
@@ -88,8 +91,6 @@ void AvailableItemWidget::setData(QModelIndex index) {
         ui->btn_Favorite->setIcon(QIcon(":/assets/Corazon.png"));
     }
 }
-
-
 
 
 //INDICA LA FILA EN LA QUE ESTA

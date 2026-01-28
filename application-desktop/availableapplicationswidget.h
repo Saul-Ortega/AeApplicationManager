@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "applicationmodel.h"
-#include "ApplicationDelegate.h"
+#include <QVector>
 
 namespace Ui {
 class AvailableApplicationsWidget;
@@ -17,14 +17,17 @@ public:
     explicit AvailableApplicationsWidget(QWidget *parent = nullptr);
     ~AvailableApplicationsWidget();
 
+    void LoadWidget();
+
 private slots:
-    void onDownloadButtonClicked(int row);
+    void onDownloadClicked(int row);
     void onFavoriteClicked(int row);
     void onInfoClicked(int row);
 
 private:
     Ui::AvailableApplicationsWidget *ui;
     ApplicationModel *mModel;
+    QVector<int> mVisibleRows;
 };
 
 #endif // AVAILABLEAPPLICATIONSWIDGET_H
