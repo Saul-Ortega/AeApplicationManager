@@ -98,7 +98,7 @@
         "id": 4,
         "image_url": ":/apps/LogoInstagram.png",
         "is_downloaded": true,
-        "is_liked": true,
+        "is_liked": false,
         "name": "Instagram_2",
         "versions": [
             {
@@ -120,7 +120,7 @@
             {
                 "expiration_date": "2026-02-26",
                 "id": 3,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2024-04-30",
                 "name": "1.1.1",
                 "size": 6.4
