@@ -23,6 +23,9 @@ public:
     void setVersionModel(VersionModel* versionModel);
     void setVersionSelectionModel(QItemSelectionModel* versionSelectionModel);
 
+private slots:
+    void onInfoClicked(const QModelIndex& index);
+
 private:
     Ui::ApplicationManagerWidget *ui;
     ApplicationModel* mApplicationModel;

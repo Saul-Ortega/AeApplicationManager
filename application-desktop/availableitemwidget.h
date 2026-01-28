@@ -27,17 +27,17 @@ public:
 signals:
     void downloadClicked(int row);
     void favoriteClicked(int row);
-    void infoClicked(int row);
+    void infoClicked(QModelIndex& index);
 
 private slots:
     void onDownloadButtonClicked();
     void onFavoriteButtonClicked();
-    void onInfoClicked();
 
 private:
     Ui::AvailableItemWidget *ui;
     int mRow = -1;
     ApplicationModel *mModel;
+    QModelIndex mIndex;
 };
 
 #endif // AVAILABLEITEMWIDGET_H

@@ -53,3 +53,7 @@ compile_commands.json
 *creator.user*
 
 *_qmlcache.qrc
+*.qtcreator*
+*.qtc_clangd*
+*/debug/*
+*/release/*
