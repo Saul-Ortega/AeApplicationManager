@@ -33,7 +33,7 @@
         "expiration_date": "2023-07-13",
         "id": 2,
         "image_url": ":/apps/LogoInstagram.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": true,
         "name": "Instagram",
         "versions": [
@@ -69,14 +69,14 @@
         "expiration_date": "2026-05-11",
         "id": 3,
         "image_url": ":/apps/LogoWhatsapp.png",
-        "is_downloaded": true,
-        "is_liked": false,
+        "is_downloaded": false,
+        "is_liked": true,
         "name": "WhatsApp_2",
         "versions": [
             {
                 "expiration_date": "",
                 "id": 1,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "",
                 "name": "1.0.0",
                 "size": 0
@@ -98,7 +98,7 @@
         "id": 4,
         "image_url": ":/apps/LogoInstagram.png",
         "is_downloaded": false,
-        "is_liked": true,
+        "is_liked": false,
         "name": "Instagram_2",
         "versions": [
             {
@@ -112,7 +112,7 @@
             {
                 "expiration_date": "2026-03-20",
                 "id": 2,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2023-12-22",
                 "name": "1.1.0",
                 "size": 0
