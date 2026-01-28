@@ -34,7 +34,7 @@
         "id": 2,
         "image_url": ":/apps/LogoInstagram.png",
         "is_downloaded": true,
-        "is_liked": false,
+        "is_liked": true,
         "name": "Instagram",
         "versions": [
             {
