@@ -5,7 +5,7 @@
         "expiration_date": "2026-05-11",
         "id": 1,
         "image_url": ":/apps/LogoWhatsapp.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": false,
         "name": "WhatsApp",
         "versions": [
@@ -20,7 +20,7 @@
             {
                 "expiration_date": "2023-07-13",
                 "id": 2,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 0

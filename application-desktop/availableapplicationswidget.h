@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include "applicationmodel.h"
-#include "versionmodel.h"
 #include <QVector>
 
 namespace Ui {
@@ -20,10 +19,13 @@ public:
 
     void LoadWidget();
 
+signals:
+    void infoClicked(const QModelIndex& index);
+
+
 private slots:
     void onDownloadClicked(int row);
     void onFavoriteClicked(int row);
-    void onInfoClicked(int row);
 
     void onDisponiblesClicked();
     void onDeseadosClicked();

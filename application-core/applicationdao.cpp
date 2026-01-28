@@ -193,6 +193,7 @@ std::unique_ptr<std::vector<std::unique_ptr<Application>>> ApplicationDao::appli
                 //SETEA LOS DATOS DE TIPO VERSION
                 version.setId(versionMap["id"].toInt());
                 version.setName(versionMap["name"].toString());
+                version.setSize(versionMap["size"].toDouble());
                 version.setLastModification(versionMap["last_modification"].toDate());
                 version.setExpirationDate(versionMap["expiration_date"].toDate());
                 version.setIsInstalled(versionMap["is_installed"].toBool());

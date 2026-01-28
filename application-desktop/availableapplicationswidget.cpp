@@ -1,6 +1,5 @@
 #include "availableapplicationswidget.h"
 #include "ui_availableapplicationswidget.h"
-
 #include "applicationmodel.h"
 #include "AvailableItemWidget.h"
 #include <QTimer>
@@ -92,14 +91,6 @@ void AvailableApplicationsWidget::onFavoriteClicked(int row)
     }
 }
 
-void AvailableApplicationsWidget::onInfoClicked(int row)
-{
-
-    //DEBUG
-    QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Info clicado por:" << name;
-}
-
 
 void AvailableApplicationsWidget::onDisponiblesClicked()
 {
@@ -181,7 +172,6 @@ void AvailableApplicationsWidget::LoadWidget(){
             // CONNECTS
             connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
             connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
-            connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::onInfoClicked);
         } else {
             // OCULTAR LA FILA DE APPS DESCARGADAS
             ui->listViewAvailable->setRowHidden(i, true);

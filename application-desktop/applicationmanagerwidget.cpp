@@ -8,6 +8,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include "applicationmodel.h"
+#include "applicationinfodialog.h"
 
 //CONSTRUCTOR
 ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
@@ -15,6 +16,8 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
     , ui(new Ui::ApplicationManagerWidget)
 {
     ui->setupUi(this);
+
+    connect(ui->availableApplicationWidget, &AvailableApplicationsWidget::infoClicked, this, &ApplicationManagerWidget::onInfoClicked);
 }
 
 //DESTRUCTOR
@@ -44,4 +47,14 @@ void ApplicationManagerWidget::setVersionModel(VersionModel* versionModel)
 void ApplicationManagerWidget::setVersionSelectionModel(QItemSelectionModel* versionSelectionModel)
 {
     //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+}
+
+void ApplicationManagerWidget::onInfoClicked(const QModelIndex& index)
+{
+    ApplicationInfoDialog *modal = new ApplicationInfoDialog(this);
+    modal->setModal(true);
+    modal->resize(this->width() - 100, this->height() - 100);
+    modal->setApplicationModel(mApplicationModel);
+    modal->loadApplication(index);
+    modal->show();
 }

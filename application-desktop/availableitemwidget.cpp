@@ -8,6 +8,7 @@ AvailableItemWidget::AvailableItemWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AvailableItemWidget)
     , mModel(nullptr)
+    , mIndex()
 {
     ui->setupUi(this);
 
@@ -61,7 +62,9 @@ AvailableItemWidget::AvailableItemWidget(QWidget *parent)
     //CREAMOS LOS CONECTORES AL CLICAR
     connect(ui->btn_Download, &QPushButton::clicked, this, &AvailableItemWidget::onDownloadButtonClicked);
     connect(ui->btn_Favorite, &QPushButton::clicked, this, &AvailableItemWidget::onFavoriteButtonClicked);
-    connect(ui->btn_Info, &QPushButton::clicked, this, &AvailableItemWidget::onInfoClicked);
+    connect(ui->btn_Info, &QPushButton::clicked, this, [this] () {
+        emit infoClicked(mIndex);
+    });
 }
 
 //ACCESO AL MODELO
@@ -72,6 +75,8 @@ void AvailableItemWidget::setModel(ApplicationModel* model)
 
 //PASAMOS EL NOMBRE DE LA APP Y EL ICONO
 void AvailableItemWidget::setData(QModelIndex index) {
+
+    mIndex = index;
 
     //INSERTAMOS EL NOMBRE
     ui->labe_Name->setText(mModel->data(index, ApplicationModel::NameRole).toString());
@@ -104,11 +109,6 @@ void AvailableItemWidget::onDownloadButtonClicked()
 void AvailableItemWidget::onFavoriteButtonClicked()
 {
     emit favoriteClicked(mRow);
-}
-
-void AvailableItemWidget::onInfoClicked()
-{
-    emit infoClicked(mRow);
 }
 
 AvailableItemWidget::~AvailableItemWidget()
