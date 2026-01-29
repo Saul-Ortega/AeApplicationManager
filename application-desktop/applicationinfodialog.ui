@@ -291,7 +291,7 @@ margin-top: 10px;</string>
       <number>200</number>
      </property>
      <item>
-      <widget class="QToolButton" name="firstToolButton">
+      <widget class="QToolButton" name="isInstalledBtn">
        <property name="minimumSize">
         <size>
          <width>120</width>
@@ -319,7 +319,7 @@ QToolButton:hover {
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="secondToolButton">
+      <widget class="QToolButton" name="isLikedBtn">
        <property name="minimumSize">
         <size>
          <width>120</width>
