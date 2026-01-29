@@ -13,6 +13,8 @@ SOURCES += \
     applicationmanagerwidget.cpp \
     availableapplicationswidget.cpp \
     availableitemwidget.cpp \
+    installedapplicationswidget.cpp \
+    installeditemwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     searchwidget.cpp
@@ -22,6 +24,8 @@ HEADERS += \
     applicationmanagerwidget.h \
     availableapplicationswidget.h \
     availableitemwidget.h \
+    installedapplicationswidget.h \
+    installeditemwidget.h \
     mainwindow.h \
     searchwidget.h
 
@@ -30,6 +34,8 @@ FORMS += \
     applicationmanagerwidget.ui \
     availableapplicationswidget.ui \
     availableitemwidget.ui \
+    installedapplicationswidget.ui \
+    installeditemwidget.ui \
     mainwindow.ui \
     searchwidget.ui
 

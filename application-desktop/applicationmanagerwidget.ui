@@ -39,7 +39,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QWidget" name="widget_2" native="true">
+      <widget class="InstalledApplicationsWidget" name="installedApplicationWidget" native="true">
        <property name="minimumSize">
         <size>
          <width>800</width>
@@ -73,6 +73,12 @@
    <class>AvailableApplicationsWidget</class>
    <extends>QWidget</extends>
    <header>availableapplicationswidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>InstalledApplicationsWidget</class>
+   <extends>QWidget</extends>
+   <header>installedapplicationswidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

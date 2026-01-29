@@ -35,7 +35,7 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     connect(ui->btn_Deseados, &QPushButton::clicked, this, &AvailableApplicationsWidget::onDeseadosClicked);
 
     //RECARGA LAS APPS POR PRIMERA VEZ
-    AvailableApplicationsWidget::LoadWidget();
+
 
     //BOTON DE YA MARCADO
     ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
@@ -50,7 +50,8 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
 void AvailableApplicationsWidget::setApplicationModel(ApplicationModel* model)
 {
     mModel = model;
-    // ui->listViewAvailable->setModel(mModel);
+    ui->listViewAvailable->setModel(mModel);
+    AvailableApplicationsWidget::LoadWidget();
 }
 
 void AvailableApplicationsWidget::onDownloadClicked(int row)

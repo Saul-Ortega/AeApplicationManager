@@ -20,6 +20,7 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
     ui->setupUi(this);
 
     connect(ui->availableApplicationWidget, &AvailableApplicationsWidget::infoClicked, this, &ApplicationManagerWidget::onInfoClicked);
+    connect(ui->installedApplicationWidget, &InstalledApplicationsWidget::infoClicked, this, &ApplicationManagerWidget::onInfoClicked);
 }
 
 //DESTRUCTOR
@@ -33,6 +34,7 @@ void ApplicationManagerWidget::setApplicationModel(ApplicationModel* application
 {
     mApplicationModel = applicationModel;
     ui->availableApplicationWidget->setApplicationModel(mApplicationModel);
+    ui->installedApplicationWidget->setApplicationModel(mApplicationModel);
     //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
