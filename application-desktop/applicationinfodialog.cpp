@@ -25,26 +25,34 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
     });
 
     //CAMBIA SI LA VERSIÓN ESTÁ INSTALADA O NO
-    connect(ui->firstToolButton, &QToolButton::clicked, this, [this] () {
+    connect(ui->isInstalledBtn, &QToolButton::clicked, this, [this] () {
         QList<Version> versions = mApplicationModel->data(mIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
         QString versionName = ui->versionComboBox->currentText();
 
+        bool isApplicationDownloaded = false;
+
         for ( int i = versions.size() - 1; i >= 0; i-- ) {
             if ( versions[i].name() == versionName ) {
-                versions[i].setIsInstalled(!versions[i].isInstalled());
+                bool isInstalled = versions[i].isInstalled();
+                versions[i].setIsInstalled(!isInstalled);
                 mApplicationModel->setData(mIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
-                loadVersion(versions[i]);
-                return;
+                !isInstalled ? ui->isInstalledBtn->setIcon(QIcon(":/assets/papelera.png")) : ui->isInstalledBtn->setIcon(QIcon(":/assets/Icon_Download.png"));
+            }
+
+            if ( versions[i].isInstalled() ) {
+                isApplicationDownloaded = true;
             }
         }
+
+        mApplicationModel->setData(mIndex, isApplicationDownloaded, ApplicationModel::IsDownloadedRole);
     });
 
 
     //CAMBIA SI LA VERSIÓN ESTÁ EN FAVORITOS O NO
-    connect(ui->secondToolButton, &QToolButton::clicked, this, [this] () {
+    connect(ui->isLikedBtn, &QToolButton::clicked, this, [this] () {
         bool favorite = mApplicationModel->data(mIndex, ApplicationModel::IsLikedRole).toBool();
         mApplicationModel->setData(mIndex, !favorite, ApplicationModel::IsLikedRole);
-        loadApplication(mIndex);
+        !favorite ? ui->isLikedBtn->setIcon(QIcon(":/assets/CorazonSeleccionado.png")) : ui->isLikedBtn->setIcon(QIcon(":/assets/Corazon.png"));
     });
 }
 
@@ -86,12 +94,12 @@ void ApplicationInfoDialog::loadApplication(const QModelIndex& index)
     ui->applicationLastAvailableUpdate->setText(versions.last().name());
     ui->applicationExecutableFile->setText(mApplicationModel->data(index, ApplicationModel::ExecutableFileRole).toString());
 
-    mApplicationModel->data(index, ApplicationModel::IsLikedRole).toBool() ? ui->secondToolButton->setIcon(QIcon(":/assets/CorazonSeleccionado.png")) : ui->secondToolButton->setIcon(QIcon(":/assets/Corazon.png"));
+    mApplicationModel->data(index, ApplicationModel::IsLikedRole).toBool() ? ui->isLikedBtn->setIcon(QIcon(":/assets/CorazonSeleccionado.png")) : ui->isLikedBtn->setIcon(QIcon(":/assets/Corazon.png"));
 }
 
 void ApplicationInfoDialog::loadVersion(const Version& version)
 {
     ui->applicationSize->setText(QString::number(version.size()) + " GB");
     ui->applicationLastModificationDate->setText(version.lastModification().toString("dd/MM/yyyy"));
-    version.isInstalled() ? ui->firstToolButton->setIcon(QIcon(":/assets/papelera.png")) : ui->firstToolButton->setIcon(QIcon(":/assets/Icon_Download.png"));
+    version.isInstalled() ? ui->isInstalledBtn->setIcon(QIcon(":/assets/papelera.png")) : ui->isInstalledBtn->setIcon(QIcon(":/assets/Icon_Download.png"));
 }
