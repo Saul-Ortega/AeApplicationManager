@@ -3,6 +3,7 @@
 #include "applicationmodel.h"
 #include <QPixmap>
 #include <QDebug>
+#include <QTimer>
 
 AvailableItemWidget::AvailableItemWidget(QWidget *parent)
     : QWidget(parent)
@@ -65,6 +66,16 @@ AvailableItemWidget::AvailableItemWidget(QWidget *parent)
     connect(ui->btn_Info, &QPushButton::clicked, this, [this] () {
         emit infoClicked(mIndex);
     });
+
+    //CREAMOS UN QTIMER PARA LA PROGRESSBAR
+    mProgressTimer = new QTimer(this);
+
+    //CUANDO EL TIMER HAGA TIMEOUT SE EJECUTARA EL METODO UPDATEPROGRESS
+    connect(mProgressTimer, &QTimer::timeout, this, &AvailableItemWidget::updateProgress);
+
+    //LA PROGRESSBAR NO SE VE Y EMPIEZA EN CERO
+    ui->progressBar->setVisible(false);
+    ui->progressBar->setValue(0);
 }
 
 //ACCESO AL MODELO
@@ -94,22 +105,70 @@ void AvailableItemWidget::setData(QModelIndex index) {
 
 }
 
-
 //INDICA LA FILA EN LA QUE ESTA
 void AvailableItemWidget::setRow(int row) {
     mRow = row;
 }
 
-//EMITE LA FILA AL PULSAR ALGUN BOTON
+
+//=== BUTTONS ===
+
 void AvailableItemWidget::onDownloadButtonClicked()
 {
     emit downloadClicked(mRow);
+    startProgress();
 }
 
 void AvailableItemWidget::onFavoriteButtonClicked()
 {
     emit favoriteClicked(mRow);
 }
+
+
+//=== PROGRESSBAR ===
+
+void AvailableItemWidget::startProgress()
+{
+    //HACEMOS VISIBLE LA PROGRESSBRA, PONEMOS Y MOSTRAMOS EL VALOR EN CERO
+    mProgressValue = 0;
+    ui->progressBar->setVisible(true);
+    ui->progressBar->setValue(0);
+
+    // SI EL PROGRESSTIMER ESTABA ACTIVO DE ANTES LO PARAMOS
+    if (mProgressTimer->isActive()){
+        mProgressTimer->stop();
+    }
+
+    // CADA 5ms HACE TIMEOUT Y LLAMARA A UPDATEPROGRESS CON CONNECT
+    mProgressTimer->start(40);
+}
+
+void AvailableItemWidget::updateProgress()
+{
+    //EL VALOR VA INCREMENTANDO Y LO APLICA A LA VISTA
+    mProgressValue++;
+    ui->progressBar->setValue(mProgressValue);
+
+    //SI EL VALOR LLEGA A 100 SE PARA Y DESAPARECE
+    if (mProgressValue >= 100) {
+
+        //DETIENE EL TIMMER
+        mProgressTimer->stop();
+
+        //CUANDO PASEN 300ms LLAMARA AL METODO onDownloadComplete
+        QTimer::singleShot(300, this, &AvailableItemWidget::onDownloadComplete);
+    }
+}
+
+// DESACTIVARA LA VISTA DE LA PROGRESSBAR Y MANDARA UNA SEÑAL
+void AvailableItemWidget::onDownloadComplete()
+{
+    ui->progressBar->setVisible(false);
+
+    // EMITE LA SEÑAL DE QUE LA DESCARGA TERMINO
+    emit downloadFinished(mRow);
+}
+
 
 AvailableItemWidget::~AvailableItemWidget()
 {

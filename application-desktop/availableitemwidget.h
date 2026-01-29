@@ -28,16 +28,26 @@ signals:
     void downloadClicked(int row);
     void favoriteClicked(int row);
     void infoClicked(QModelIndex& index);
+    //PROGRESSBAR
+    void downloadFinished(int row);
+
 
 private slots:
     void onDownloadButtonClicked();
     void onFavoriteButtonClicked();
+    //PROGRESSBAR
+    void startProgress();
+    void updateProgress();
+    void onDownloadComplete();
 
 private:
     Ui::AvailableItemWidget *ui;
     int mRow = -1;
     ApplicationModel *mModel;
     QModelIndex mIndex;
+    //PROGRESSBAR
+    QTimer* mProgressTimer;
+    int mProgressValue = 0;
 };
 
 #endif // AVAILABLEITEMWIDGET_H

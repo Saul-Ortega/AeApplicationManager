@@ -30,6 +30,8 @@ private slots:
     void onDisponiblesClicked();
     void onDeseadosClicked();
 
+    void onDownloadFinished(int row);
+
 private:
     Ui::AvailableApplicationsWidget *ui;
     ApplicationModel *mModel;

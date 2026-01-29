@@ -46,6 +46,7 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
 
 // === BUTTONS ===
 
+//MODIFICAMOS EL ROL DE DESCARGA DE LA APP
 void AvailableApplicationsWidget::onDownloadClicked(int row)
 {
     QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
@@ -67,11 +68,10 @@ void AvailableApplicationsWidget::onDownloadClicked(int row)
 
     //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
     mModel->setData(appIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
-
-    //TEMPORIZADOR DE INSTALACION PARA DESPUES REFRESCAR LOS WIDGETS
-    QTimer::singleShot(5000, this, &AvailableApplicationsWidget::LoadWidget);
 }
 
+
+// CAMBIAMOS EL ROL DE FAVORITOS Y ACTUALIZAMOS EL CORAZON
 void AvailableApplicationsWidget::onFavoriteClicked(int row)
 {
     QModelIndex index = mModel->index(row, 0);
@@ -89,9 +89,15 @@ void AvailableApplicationsWidget::onFavoriteClicked(int row)
     if (widget) {
         widget->setData(index);
     }
+
+    // SI ESTA EN EL FILTRO DE DESEADOS ACTUALIZA LA LISTA PARA QUE DESAPAREZCA EL WIDGET
+    if (mMostrarDeseados) {
+        LoadWidget();
+    }
 }
 
 
+//ACTIVAMOS EL FILTRO DE TODOS LOS DISPONIBLES
 void AvailableApplicationsWidget::onDisponiblesClicked()
 {
     //ALTERNAR LOS COLORES AL PULSAR
@@ -104,6 +110,7 @@ void AvailableApplicationsWidget::onDisponiblesClicked()
     LoadWidget();
 }
 
+// ACTIVAMOS EL FILTRO DE SOLO LOS DESEADOS
 void AvailableApplicationsWidget::onDeseadosClicked(){
 
     //ALTERNAR LOS COLORES AL PULSAR
@@ -172,12 +179,40 @@ void AvailableApplicationsWidget::LoadWidget(){
             // CONNECTS
             connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
             connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
+            connect(widget, &AvailableItemWidget::downloadFinished, this, &AvailableApplicationsWidget::onDownloadFinished);
+
         } else {
             // OCULTAR LA FILA DE APPS DESCARGADAS
             ui->listViewAvailable->setRowHidden(i, true);
         }
     }
 }
+
+// CUANDO LA DESCARGA FINALIZA ELIMINAMOS EL WIDGET
+void AvailableApplicationsWidget::onDownloadFinished(int row)
+{
+    QModelIndex index = mModel->index(row, 0);
+    QString name = mModel->data(index, ApplicationModel::NameRole).toString();
+    qDebug() << "Descarga finalizada:" << name;
+
+    // RECIBIMOS EL WIDGET QUE TERMINO LA DESCARGA
+    QWidget* widget = ui->listViewAvailable->indexWidget(index);
+
+    if (widget) {
+        // SI EXISTE EL WIDGET LO DESCONECTAMOS
+        widget->disconnect();
+
+        // QUITAMOS EL WIDGET DE LA LISTA
+        ui->listViewAvailable->setIndexWidget(index, nullptr);
+
+        // OCULTAMOS LA FILA PARA QUE OTRO WIDGET OCUPE SU LUGAR
+        ui->listViewAvailable->setRowHidden(row, true);
+
+        // ELIMINAMOS EL WIDGET
+        widget->deleteLater();
+    }
+}
+
 
 AvailableApplicationsWidget::~AvailableApplicationsWidget()
 {
