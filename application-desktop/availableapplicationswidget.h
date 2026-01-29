@@ -18,24 +18,25 @@ public:
     ~AvailableApplicationsWidget();
 
     void LoadWidget();
+    void setApplicationModel(ApplicationModel* model);
 
 signals:
     void infoClicked(const QModelIndex& index);
 
 
 private slots:
-    void onDownloadClicked(int row);
     void onFavoriteClicked(int row);
 
     void onDisponiblesClicked();
     void onDeseadosClicked();
 
+    void onDownloadClicked(int row);
     void onDownloadFinished(int row);
-
 private:
     Ui::AvailableApplicationsWidget *ui;
     ApplicationModel *mModel;
     bool mMostrarDeseados = false;
+    QMetaObject::Connection modelDataChangedConnect;
 };
 
 #endif // AVAILABLEAPPLICATIONSWIDGET_H

@@ -14,6 +14,8 @@
 ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ApplicationManagerWidget)
+    , mApplicationModel(nullptr)
+    , mVersionModel(nullptr)
 {
     ui->setupUi(this);
 
@@ -30,6 +32,7 @@ ApplicationManagerWidget::~ApplicationManagerWidget()
 void ApplicationManagerWidget::setApplicationModel(ApplicationModel* applicationModel)
 {
     mApplicationModel = applicationModel;
+    ui->availableApplicationWidget->setApplicationModel(mApplicationModel);
     //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 

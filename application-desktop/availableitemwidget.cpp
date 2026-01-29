@@ -63,9 +63,7 @@ AvailableItemWidget::AvailableItemWidget(QWidget *parent)
     //CREAMOS LOS CONECTORES AL CLICAR
     connect(ui->btn_Download, &QPushButton::clicked, this, &AvailableItemWidget::onDownloadButtonClicked);
     connect(ui->btn_Favorite, &QPushButton::clicked, this, &AvailableItemWidget::onFavoriteButtonClicked);
-    connect(ui->btn_Info, &QPushButton::clicked, this, [this] () {
-        emit infoClicked(mIndex);
-    });
+    connect(ui->btn_Info, &QPushButton::clicked, this, &AvailableItemWidget::onInfoButtonClicked);
 
     //CREAMOS UN QTIMER PARA LA PROGRESSBAR
     mProgressTimer = new QTimer(this);
@@ -102,7 +100,6 @@ void AvailableItemWidget::setData(QModelIndex index) {
     bool isLiked = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
 
     isLiked ? ui->btn_Favorite->setIcon(QIcon(":/assets/CorazonSeleccionado.png")) : ui->btn_Favorite->setIcon(QIcon(":/assets/Corazon.png"));
-
 }
 
 //INDICA LA FILA EN LA QUE ESTA
@@ -115,13 +112,17 @@ void AvailableItemWidget::setRow(int row) {
 
 void AvailableItemWidget::onDownloadButtonClicked()
 {
-    emit downloadClicked(mRow);
     startProgress();
 }
 
 void AvailableItemWidget::onFavoriteButtonClicked()
 {
     emit favoriteClicked(mRow);
+}
+
+void AvailableItemWidget::onInfoButtonClicked()
+{
+    emit infoClicked(mIndex);
 }
 
 
@@ -154,6 +155,8 @@ void AvailableItemWidget::updateProgress()
 
         //DETIENE EL TIMMER
         mProgressTimer->stop();
+
+        emit downloadClicked(mRow);
 
         //CUANDO PASEN 300ms LLAMARA AL METODO onDownloadComplete
         QTimer::singleShot(300, this, &AvailableItemWidget::onDownloadComplete);

@@ -3,18 +3,14 @@
 #include "applicationmodel.h"
 #include "AvailableItemWidget.h"
 #include <QTimer>
+#include "applicationinfodialog.h"
 
 AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AvailableApplicationsWidget)
+    , mModel(nullptr)
 {
     ui->setupUi(this);
-
-    // CREAR MODELO
-    mModel = new ApplicationModel(this);
-
-    // ASIGNAR MODELO A LA VISTA
-    ui->listViewAvailable->setModel(mModel);
 
     // CONFIGURACION DEL LISTVIEW
     ui->listViewAvailable->setViewMode(QListView::ListMode);
@@ -33,9 +29,6 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     connect(ui->btn_Disponibles, &QPushButton::clicked, this, &AvailableApplicationsWidget::onDisponiblesClicked);
     connect(ui->btn_Deseados, &QPushButton::clicked, this, &AvailableApplicationsWidget::onDeseadosClicked);
 
-    //RECARGA LAS APPS POR PRIMERA VEZ
-    AvailableApplicationsWidget::LoadWidget();
-
     //BOTON DE YA MARCADO
     ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
 
@@ -44,9 +37,26 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setStyleSheet("background-color: #FFFFFF; border: none;");
 }
 
+
+void AvailableApplicationsWidget::setApplicationModel(ApplicationModel* model)
+{
+    mModel = model;
+    if (modelDataChangedConnect) disconnect(modelDataChangedConnect);
+    modelDataChangedConnect = connect(mModel, &ApplicationModel::dataChanged, this, [this] () {
+        qDebug() << "DataChanged funcionó";
+        LoadWidget();
+    });
+
+    ui->listViewAvailable->setModel(mModel);
+
+    //RECARGA LAS APPS POR PRIMERA VEZ
+    AvailableApplicationsWidget::LoadWidget();
+}
+
+
 // === BUTTONS ===
 
-//MODIFICAMOS EL ROL DE DESCARGA DE LA APP
+// MODIFICAMOS EL ROL DE LA DESCARGA DE LA APP
 void AvailableApplicationsWidget::onDownloadClicked(int row)
 {
     QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
@@ -55,19 +65,23 @@ void AvailableApplicationsWidget::onDownloadClicked(int row)
     //RECIBE EL INDEX DE LA FILA Y EL ROL
     QModelIndex appIndex = mModel->index(row,0);
 
-    //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
-    mModel->setData(appIndex, true, ApplicationModel::IsDownloadedRole);
+    QTimer::singleShot(4900, this, [this, appIndex]() {
 
-    //GUARDAMOS LAS VERSIONES EN QLIST
-    QList<Version> versions = mModel->data(appIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
+        //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
+        mModel->setData(appIndex, true, ApplicationModel::IsDownloadedRole);
 
-    //MODIFICAMOS EL ROL DE VERSION "IsInstalledRole" A TRUE LA ULTIMA VERSION
-    if(!versions.empty()){
-        versions.last().setIsInstalled(true);
-    }
+        //GUARDAMOS LAS VERSIONES EN QLIST
+        QList<Version> versions = mModel->data(appIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
 
-    //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
-    mModel->setData(appIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+        //MODIFICAMOS EL ROL DE VERSION "IsInstalledRole" A TRUE LA ULTIMA VERSION
+        if(!versions.empty()){
+            versions.last().setIsInstalled(true);
+        }
+
+        //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
+        mModel->setData(appIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+    });
+
 }
 
 
@@ -95,7 +109,6 @@ void AvailableApplicationsWidget::onFavoriteClicked(int row)
         LoadWidget();
     }
 }
-
 
 //ACTIVAMOS EL FILTRO DE TODOS LOS DISPONIBLES
 void AvailableApplicationsWidget::onDisponiblesClicked()
@@ -179,8 +192,9 @@ void AvailableApplicationsWidget::LoadWidget(){
             // CONNECTS
             connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
             connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
-            connect(widget, &AvailableItemWidget::downloadFinished, this, &AvailableApplicationsWidget::onDownloadFinished);
+            connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::infoClicked);
 
+            connect(widget, &AvailableItemWidget::downloadFinished, this, &AvailableApplicationsWidget::onDownloadFinished);
         } else {
             // OCULTAR LA FILA DE APPS DESCARGADAS
             ui->listViewAvailable->setRowHidden(i, true);

@@ -70,7 +70,7 @@
         "id": 3,
         "image_url": ":/apps/LogoWhatsapp.png",
         "is_downloaded": false,
-        "is_liked": true,
+        "is_liked": false,
         "name": "WhatsApp_2",
         "versions": [
             {
@@ -98,7 +98,7 @@
         "id": 4,
         "image_url": ":/apps/LogoInstagram.png",
         "is_downloaded": false,
-        "is_liked": true,
+        "is_liked": false,
         "name": "Instagram_2",
         "versions": [
             {

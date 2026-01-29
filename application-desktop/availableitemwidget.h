@@ -35,6 +35,7 @@ signals:
 private slots:
     void onDownloadButtonClicked();
     void onFavoriteButtonClicked();
+    void onInfoButtonClicked();
     //PROGRESSBAR
     void startProgress();
     void updateProgress();
