@@ -7,6 +7,7 @@
 AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AvailableApplicationsWidget)
+    , mModel(nullptr)
 {
     ui->setupUi(this);
 
@@ -46,6 +47,12 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
 
 // === BUTTONS ===
 
+void AvailableApplicationsWidget::setApplicationModel(ApplicationModel* model)
+{
+    mModel = model;
+    // ui->listViewAvailable->setModel(mModel);
+}
+
 void AvailableApplicationsWidget::onDownloadClicked(int row)
 {
     QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
@@ -82,9 +89,12 @@ void AvailableApplicationsWidget::onFavoriteClicked(int row)
     bool currentState = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
     mModel->setData(index, !currentState, ApplicationModel::IsLikedRole);
 
+    qDebug() << row;
+
     //OBTENEMOS EL ITEMWIDGET QUE EL USUARIO PULSO PARA TENER EN FAVORITOS
     AvailableItemWidget* widget = (AvailableItemWidget*)ui->listViewAvailable->indexWidget(index);
 
+    LoadWidget();
     //SI EL WIDGET EXISTE ACTUALIZA EL CORAZON
     if (widget) {
         widget->setData(index);
@@ -172,6 +182,7 @@ void AvailableApplicationsWidget::LoadWidget(){
             // CONNECTS
             connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
             connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
+            connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::infoClicked);
         } else {
             // OCULTAR LA FILA DE APPS DESCARGADAS
             ui->listViewAvailable->setRowHidden(i, true);

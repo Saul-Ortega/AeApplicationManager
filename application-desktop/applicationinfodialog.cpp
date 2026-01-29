@@ -37,8 +37,8 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
                 return;
             }
         }
-
     });
+
 
     //CAMBIA SI LA VERSIÓN ESTÁ EN FAVORITOS O NO
     connect(ui->secondToolButton, &QToolButton::clicked, this, [this] () {

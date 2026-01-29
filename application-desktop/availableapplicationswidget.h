@@ -18,6 +18,7 @@ public:
     ~AvailableApplicationsWidget();
 
     void LoadWidget();
+    void setApplicationModel(ApplicationModel* model);
 
 signals:
     void infoClicked(const QModelIndex& index);
