@@ -15,6 +15,9 @@ public:
     explicit SearchWidget(QWidget *parent = nullptr);
     ~SearchWidget();
 
+signals:
+    void searchText(const QString& text);
+
 private:
     Ui::SearchWidget *ui;
 };

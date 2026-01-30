@@ -13,6 +13,7 @@ SOURCES += \
     applicationmanagerwidget.cpp \
     availableapplicationswidget.cpp \
     availableitemwidget.cpp \
+    filterproxymodel.cpp \
     main.cpp \
     mainwindow.cpp \
     searchwidget.cpp
@@ -22,6 +23,7 @@ HEADERS += \
     applicationmanagerwidget.h \
     availableapplicationswidget.h \
     availableitemwidget.h \
+    filterproxymodel.h \
     mainwindow.h \
     searchwidget.h
 

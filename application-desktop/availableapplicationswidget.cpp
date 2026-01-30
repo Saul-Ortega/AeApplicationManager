@@ -2,8 +2,9 @@
 #include "ui_availableapplicationswidget.h"
 #include "applicationmodel.h"
 #include "AvailableItemWidget.h"
-#include <QTimer>
 #include "applicationinfodialog.h"
+#include "filterproxymodel.h"
+#include <QTimer>
 
 AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     : QWidget(parent)
@@ -41,48 +42,31 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
 void AvailableApplicationsWidget::setApplicationModel(ApplicationModel* model)
 {
     mModel = model;
+
     if (modelDataChangedConnect) disconnect(modelDataChangedConnect);
+
     modelDataChangedConnect = connect(mModel, &ApplicationModel::dataChanged, this, [this] () {
         qDebug() << "DataChanged funcionó";
         LoadWidget();
     });
 
-    ui->listViewAvailable->setModel(mModel);
+    //CREAMOS EL PROXYMODEL
+    mProxyModel = new FilterProxyModel(this);
 
-    //RECARGA LAS APPS POR PRIMERA VEZ
-    AvailableApplicationsWidget::LoadWidget();
+    //CONECTAMOS EL PROXY AL MODELO
+    mProxyModel->setSourceModel(mModel);
+
+    //POR DEFAULT MUESTRA TODAS LAS APPS NO INSTALADAS
+    mProxyModel->setShowInstalled(false);
+
+    //CONECTAMOS EL PROXY A LA VISTA
+    ui->listViewAvailable->setModel(mProxyModel);
+
+// AQUI IRÁ EL DELEGATE CREO Y QUITAR EL LOADWIDGET DEL DATACHANGED
 }
 
 
 // === BUTTONS ===
-
-// MODIFICAMOS EL ROL DE LA DESCARGA DE LA APP
-void AvailableApplicationsWidget::onDownloadClicked(int row)
-{
-    QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Download clicado por:" << name;
-
-    //RECIBE EL INDEX DE LA FILA Y EL ROL
-    QModelIndex appIndex = mModel->index(row,0);
-
-    QTimer::singleShot(4900, this, [this, appIndex]() {
-
-        //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
-        mModel->setData(appIndex, true, ApplicationModel::IsDownloadedRole);
-
-        //GUARDAMOS LAS VERSIONES EN QLIST
-        QList<Version> versions = mModel->data(appIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
-
-        //MODIFICAMOS EL ROL DE VERSION "IsInstalledRole" A TRUE LA ULTIMA VERSION
-        if(!versions.empty()){
-            versions.last().setIsInstalled(true);
-        }
-
-        //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
-        mModel->setData(appIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
-    });
-
-}
 
 
 // CAMBIAMOS EL ROL DE FAVORITOS Y ACTUALIZAMOS EL CORAZON
@@ -117,8 +101,10 @@ void AvailableApplicationsWidget::onDisponiblesClicked()
     ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
     ui->btn_Deseados->setStyleSheet("");
 
-    mMostrarDeseados = false;
-
+    //SI PULSA EL BOTON NO SOLO MOSTRARA LOS FAVORITOS
+    if(mProxyModel){
+        mProxyModel->setShowOnlyFavorites(false);
+    }
     //LLAMAMOS AL METODO PARA GENERAR LOS WIDGETS
     LoadWidget();
 }
@@ -130,10 +116,72 @@ void AvailableApplicationsWidget::onDeseadosClicked(){
     ui->btn_Deseados->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
     ui->btn_Disponibles->setStyleSheet("");
 
-    mMostrarDeseados = true;
+    //SI PULSA EL BOTON SOLO MOSTRARA LOS FAVORITOS
+    if(mProxyModel){
+        mProxyModel->setShowOnlyFavorites(true);
+    }
 
     //LLAMAMOS AL METODO PARA GENERAR LOS WIDGETS
     AvailableApplicationsWidget::LoadWidget();
+}
+
+
+// MODIFICAMOS EL ROL DE LA DESCARGA DE LA APP
+void AvailableApplicationsWidget::onDownloadClicked(int row)
+{
+    QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
+    qDebug() << "Boton Download clicado por:" << name;
+
+    //RECIBE EL INDEX DE LA FILA Y EL ROL
+    QModelIndex appIndex = mModel->index(row,0);
+
+
+    //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
+    mModel->setData(appIndex, true, ApplicationModel::IsDownloadedRole);
+
+    //GUARDAMOS LAS VERSIONES EN QLIST
+    QList<Version> versions = mModel->data(appIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
+
+    //MODIFICAMOS EL ROL DE VERSION "IsInstalledRole" A TRUE LA ULTIMA VERSION
+    if(!versions.empty()){
+        versions.last().setIsInstalled(true);
+    }
+
+    //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
+    mModel->setData(appIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+
+}
+
+// CUANDO LA DESCARGA FINALIZA ELIMINAMOS EL WIDGET
+void AvailableApplicationsWidget::onDownloadFinished(int row)
+{
+    QModelIndex index = mModel->index(row, 0);
+    QString name = mModel->data(index, ApplicationModel::NameRole).toString();
+    qDebug() << "Descarga finalizada:" << name;
+
+    // RECIBIMOS EL WIDGET QUE TERMINO LA DESCARGA
+    QWidget* widget = ui->listViewAvailable->indexWidget(index);
+
+    if (widget) {
+        // SI EXISTE EL WIDGET LO DESCONECTAMOS
+        widget->disconnect();
+
+        // QUITAMOS EL WIDGET DE LA LISTA
+        ui->listViewAvailable->setIndexWidget(index, nullptr);
+
+        // OCULTAMOS LA FILA PARA QUE OTRO WIDGET OCUPE SU LUGAR
+        ui->listViewAvailable->setRowHidden(row, true);
+
+        // ELIMINAMOS EL WIDGET
+        widget->deleteLater();
+    }
+}
+
+void AvailableApplicationsWidget::onSearchText(const QString& text) {
+
+    if(mProxyModel){
+        mProxyModel->setFilterText(text);
+    }
 }
 
 
@@ -202,30 +250,6 @@ void AvailableApplicationsWidget::LoadWidget(){
     }
 }
 
-// CUANDO LA DESCARGA FINALIZA ELIMINAMOS EL WIDGET
-void AvailableApplicationsWidget::onDownloadFinished(int row)
-{
-    QModelIndex index = mModel->index(row, 0);
-    QString name = mModel->data(index, ApplicationModel::NameRole).toString();
-    qDebug() << "Descarga finalizada:" << name;
-
-    // RECIBIMOS EL WIDGET QUE TERMINO LA DESCARGA
-    QWidget* widget = ui->listViewAvailable->indexWidget(index);
-
-    if (widget) {
-        // SI EXISTE EL WIDGET LO DESCONECTAMOS
-        widget->disconnect();
-
-        // QUITAMOS EL WIDGET DE LA LISTA
-        ui->listViewAvailable->setIndexWidget(index, nullptr);
-
-        // OCULTAMOS LA FILA PARA QUE OTRO WIDGET OCUPE SU LUGAR
-        ui->listViewAvailable->setRowHidden(row, true);
-
-        // ELIMINAMOS EL WIDGET
-        widget->deleteLater();
-    }
-}
 
 
 AvailableApplicationsWidget::~AvailableApplicationsWidget()

@@ -158,8 +158,9 @@ void AvailableItemWidget::updateProgress()
 
         emit downloadClicked(mRow);
 
-        //CUANDO PASEN 300ms LLAMARA AL METODO onDownloadComplete
-        QTimer::singleShot(300, this, &AvailableItemWidget::onDownloadComplete);
+        onDownloadComplete();
+
+
     }
 }
 
