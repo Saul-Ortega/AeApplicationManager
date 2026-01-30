@@ -250,8 +250,6 @@ void AvailableApplicationsWidget::LoadWidget(){
     }
 }
 
-
-
 AvailableApplicationsWidget::~AvailableApplicationsWidget()
 {
     delete ui;

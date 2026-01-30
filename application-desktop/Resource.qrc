@@ -9,7 +9,11 @@
         <file>Icon_Info.png</file>
     </qresource>
     <qresource prefix="/">
-        <file>apps/LogoInstagram.png</file>
-        <file>apps/LogoWhatsapp.png</file>
+        <file>apps/aeCloud.png</file>
+        <file>apps/aeMaps.png</file>
+        <file>apps/aeScann.png</file>
+        <file>apps/aeSync.png</file>
+        <file>apps/aeTools.png</file>
+        <file>apps/aeViewer.png</file>
     </qresource>
 </RCC>
