@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
-#include "availableapplicationswidget.h"
 
 //CONSTRUCTOR
 MainWindow::MainWindow(QWidget *parent)

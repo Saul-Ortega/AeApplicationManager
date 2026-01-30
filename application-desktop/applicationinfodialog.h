@@ -27,6 +27,9 @@ public:
     void loadVersion(const Version& version);
     void onDownloadVersionClicked(const QString& versionName);
 
+signals:
+    void buttonClicked();
+
 private:
     Ui::ApplicationInfoDialog *ui;
     ApplicationModel* mApplicationModel;

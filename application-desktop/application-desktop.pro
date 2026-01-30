@@ -16,6 +16,7 @@ SOURCES += \
     availableitemwidget.cpp \
     installedapplicationswidget.cpp \
     installeditemwidget.cpp \
+    filterproxymodel.cpp \
     main.cpp \
     mainwindow.cpp \
     searchwidget.cpp
@@ -28,6 +29,7 @@ HEADERS += \
     availableitemwidget.h \
     installedapplicationswidget.h \
     installeditemwidget.h \
+    filterproxymodel.h \
     mainwindow.h \
     searchwidget.h
 

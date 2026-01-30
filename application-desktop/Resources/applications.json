@@ -1,129 +1,209 @@
 [
     {
-        "description": "Aplicación de mensajería para enviar textos, audios, fotos y hacer llamadas por internet.",
-        "executable_file": "WhatsApp.exe",
-        "expiration_date": "2026-05-11",
+        "description": "aeCloud es una aplicación para guardar, sincronizar y acceder a proyectos de Aerolaser desde la nube.",
+        "executable_file": "aeCloud.exe",
+        "expiration_date": "2026-11-11",
         "id": 1,
-        "image_url": ":/apps/LogoWhatsapp.png",
+        "image_url": ":/apps/aeCloud.png",
         "is_downloaded": false,
         "is_liked": true,
-        "name": "WhatsApp",
+        "name": "aeCloud",
         "versions": [
             {
                 "expiration_date": "2023-07-10",
                 "id": 1,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2023-07-13",
                 "name": "1.0.0",
-                "size": 0
+                "size": 1.2
             },
             {
-                "expiration_date": "2023-07-13",
+                "expiration_date": "2023-07-23",
                 "id": 2,
                 "is_installed": false,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
-                "size": 0
+                "size": 1.1
             }
         ]
     },
     {
-        "description": "Red social para compartir fotos y videos, con historias y mensajes directos.",
-        "executable_file": "Instagram.exe",
-        "expiration_date": "2023-07-13",
+        "description": "Aplicación para visualizar mapas, modelos 3D y datos topográficos de Aerolaser en alta resolución.",
+        "executable_file": "aeMaps.exe",
+        "expiration_date": "2026-12-13",
         "id": 2,
-        "image_url": ":/apps/LogoInstagram.png",
+        "image_url": ":/apps/aeMaps.png",
         "is_downloaded": false,
-        "is_liked": true,
-        "name": "Instagram",
+        "is_liked": false,
+        "name": "aeMaps",
         "versions": [
             {
-                "expiration_date": "",
+                "expiration_date": "2026-01-30",
                 "id": 1,
                 "is_installed": false,
                 "last_modification": "2023-07-13",
                 "name": "1.0.0",
-                "size": 0
+                "size": 3.4
             },
             {
-                "expiration_date": "2026-03-20",
+                "expiration_date": "2026-02-20",
                 "id": 2,
                 "is_installed": false,
                 "last_modification": "2023-12-22",
                 "name": "1.1.0",
-                "size": 0
+                "size": 3.6
             },
             {
-                "expiration_date": "2026-02-26",
+                "expiration_date": "2026-03-26",
                 "id": 3,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2024-04-30",
                 "name": "1.1.1",
-                "size": 0
+                "size": 4
             }
         ]
     },
     {
-        "description": "Aplicación de mensajería para enviar textos, audios, fotos y hacer llamadas por internet.",
-        "executable_file": "WhatsApp.exe",
-        "expiration_date": "2026-05-11",
+        "description": "AeScan es una aplicación para capturar, procesar y revisar escaneos láser y datos de campo de Aerolaser.",
+        "executable_file": "aeScan.exe",
+        "expiration_date": "2026-12-01",
+        "id": 2,
+        "image_url": ":/apps/aeScan.png",
+        "is_downloaded": false,
+        "is_liked": false,
+        "name": "aeScan",
+        "versions": [
+            {
+                "expiration_date": "2026-08-10",
+                "id": 1,
+                "is_installed": false,
+                "last_modification": "2023-08-15",
+                "name": "1.0.0",
+                "size": 2.5
+            },
+            {
+                "expiration_date": "2026-03-22",
+                "id": 2,
+                "is_installed": false,
+                "last_modification": "2024-04-01",
+                "name": "1.1.0",
+                "size": 3.1
+            },
+            {
+                "expiration_date": "2026-01-30",
+                "id": 3,
+                "is_installed": false,
+                "last_modification": "2025-02-12",
+                "name": "1.2.0",
+                "size": 3.4
+            }
+        ]
+    },
+    {
+        "description": "AeSync es una aplicación para sincronizar configuraciones, datos y ajustes entre dispositivos Aerolaser de forma rápida y segura.",
+        "executable_file": "aeSync.exe",
+        "expiration_date": "2027-03-18",
         "id": 3,
-        "image_url": ":/apps/LogoWhatsapp.png",
+        "image_url": ":/apps/aeSync.png",
         "is_downloaded": false,
         "is_liked": false,
-        "name": "WhatsApp_2",
+        "name": "aeSync",
         "versions": [
             {
-                "expiration_date": "",
+                "expiration_date": "2026-09-05",
                 "id": 1,
-                "is_installed": true,
-                "last_modification": "",
+                "is_installed": false,
+                "last_modification": "2023-09-20",
                 "name": "1.0.0",
-                "size": 0
+                "size": 1.8
             },
             {
-                "expiration_date": "",
+                "expiration_date": "2026-04-12",
                 "id": 2,
                 "is_installed": false,
-                "last_modification": "2024-06-15",
+                "last_modification": "2024-05-03",
                 "name": "1.1.0",
-                "size": 0
+                "size": 2.1
+            },
+            {
+                "expiration_date": "2026-02-28",
+                "id": 3,
+                "is_installed": false,
+                "last_modification": "2025-03-10",
+                "name": "1.2.0",
+                "size": 2.4
+          }
+        ]
+    },
+    {
+        "description": "AeTools es una aplicación que reúne utilidades técnicas para gestionar, convertir y analizar archivos de proyectos Aerolaser.",
+        "executable_file": "aeTools.exe",
+        "expiration_date": "2027-05-09",
+        "id": 4,
+        "image_url": ":/apps/aeTools.png",
+        "is_downloaded": false,
+        "is_liked": false,
+        "name": "aeTools",
+        "versions": [
+            {
+                "expiration_date": "2026-10-18",
+                "id": 1,
+                "is_installed": false,
+                "last_modification": "2023-10-29",
+                "name": "1.0.0",
+                "size": 1.3
+            },
+            {
+                "expiration_date": "2026-06-02",
+                "id": 2,
+                "is_installed": false,
+                "last_modification": "2024-06-20",
+                "name": "1.1.0",
+                "size": 1.7
+            },
+            {
+                "expiration_date": "2026-03-14",
+                "id": 3,
+                "is_installed": false,
+                "last_modification": "2025-03-28",
+                "name": "1.2.0",
+                "size": 2.0
             }
         ]
     },
     {
-        "description": "Red social para compartir fotos y videos, con historias y mensajes directos.",
-        "executable_file": "Instagram.exe",
-        "expiration_date": "",
-        "id": 4,
-        "image_url": ":/apps/LogoInstagram.png",
-        "is_downloaded": true,
+        "description": "AeViewer es una aplicación para visualizar modelos 3D, nubes de puntos y ortomosaicos generados por Aerolaser.",
+        "executable_file": "aeViewer.exe",
+        "expiration_date": "2027-08-21",
+        "id": 5,
+        "image_url": ":/apps/aeViewer.png",
+        "is_downloaded": false,
         "is_liked": false,
-        "name": "Instagram_2",
+        "name": "aeViewer",
         "versions": [
             {
-                "expiration_date": "",
+                "expiration_date": "2026-11-12",
                 "id": 1,
                 "is_installed": false,
-                "last_modification": "2023-07-13",
+                "last_modification": "2023-11-25",
                 "name": "1.0.0",
-                "size": 0
+                "size": 2.2
             },
             {
-                "expiration_date": "2026-03-20",
+                "expiration_date": "2026-07-04",
                 "id": 2,
-                "is_installed": true,
-                "last_modification": "2023-12-22",
+                "is_installed": false,
+                "last_modification": "2024-07-19",
                 "name": "1.1.0",
-                "size": 0
+                "size": 2.9
             },
             {
-                "expiration_date": "2026-02-26",
+                "expiration_date": "2026-04-18",
                 "id": 3,
-                "is_installed": true,
-                "last_modification": "2024-04-30",
-                "name": "1.1.1",
-                "size": 0
+                "is_installed": false,
+                "last_modification": "2025-05-02",
+                "name": "1.2.0",
+                "size": 3.3
             }
         ]
     }

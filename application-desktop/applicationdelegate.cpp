@@ -16,7 +16,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     painter->save();
 
     //ANTIALIASING ES UNA TÉCNICA PARA PRODUCIR BORDES MÁS SUAVES Y QUE NO SALGAN PIXELADOS
-    painter->setRenderHints(/*QPainter::SmoothPixmapTransform |*/ QPainter::Antialiasing);
+    painter->setRenderHints(QPainter::Antialiasing);
 
     //DATOS EXTRAÍDOS DEL MODELO
     QString imageUrl = index.model()->data(index, ApplicationModel::ImageUrlRole).toString();

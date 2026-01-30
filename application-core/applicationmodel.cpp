@@ -42,7 +42,7 @@ QVariant ApplicationModel::data(const QModelIndex& index, int role) const
         return QVariant::fromValue(application.versions());
 
     case Qt::SizeHintRole:
-        return QSize(180, 160);
+        return QSize(180, 170);
     default :
         return QVariant();
     }
@@ -88,6 +88,11 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
 
     //GUARDAMOS LOS CAMBIOS EN DAO
     mApplicationDao.updateApplication(application);
+
+    beginResetModel();
+
+
+    endResetModel();
 
     //ACTUALIZAR LA VISTA DEL QLISTVIEW
     emit dataChanged(index, index, {role});

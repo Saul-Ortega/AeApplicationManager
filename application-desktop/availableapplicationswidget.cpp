@@ -2,6 +2,8 @@
 #include "ui_availableapplicationswidget.h"
 #include "applicationmodel.h"
 #include "AvailableItemWidget.h"
+#include "applicationinfodialog.h"
+#include "filterproxymodel.h"
 #include <QTimer>
 
 AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
@@ -10,12 +12,6 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     , mModel(nullptr)
 {
     ui->setupUi(this);
-
-    // CREAR MODELO
-    mModel = new ApplicationModel(this);
-
-    // ASIGNAR MODELO A LA VISTA
-    ui->listViewAvailable->setModel(mModel);
 
     // CONFIGURACION DEL LISTVIEW
     ui->listViewAvailable->setViewMode(QListView::ListMode);
@@ -34,9 +30,6 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     connect(ui->btn_Disponibles, &QPushButton::clicked, this, &AvailableApplicationsWidget::onDisponiblesClicked);
     connect(ui->btn_Deseados, &QPushButton::clicked, this, &AvailableApplicationsWidget::onDeseadosClicked);
 
-    //RECARGA LAS APPS POR PRIMERA VEZ
-
-
     //BOTON DE YA MARCADO
     ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
 
@@ -45,15 +38,95 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setStyleSheet("background-color: #FFFFFF; border: none;");
 }
 
-// === BUTTONS ===
 
 void AvailableApplicationsWidget::setApplicationModel(ApplicationModel* model)
 {
     mModel = model;
-    ui->listViewAvailable->setModel(mModel);
+
+    if (modelDataChangedConnect) disconnect(modelDataChangedConnect);
+
+    modelDataChangedConnect = connect(mModel, &ApplicationModel::dataChanged, this, [this] () {
+        qDebug() << "DataChanged funcionó";
+        LoadWidget();
+    });
+
+    //CREAMOS EL PROXYMODEL
+    mProxyModel = new FilterProxyModel(this);
+
+    //CONECTAMOS EL PROXY AL MODELO
+    mProxyModel->setSourceModel(mModel);
+
+    //POR DEFAULT MUESTRA TODAS LAS APPS NO INSTALADAS
+    mProxyModel->setShowInstalled(false);
+
+    //CONECTAMOS EL PROXY A LA VISTA
+    ui->listViewAvailable->setModel(mProxyModel);
+
+// AQUI IRÁ EL DELEGATE CREO Y QUITAR EL LOADWIDGET DEL DATACHANGED
+}
+
+
+// === BUTTONS ===
+
+
+// CAMBIAMOS EL ROL DE FAVORITOS Y ACTUALIZAMOS EL CORAZON
+void AvailableApplicationsWidget::onFavoriteClicked(int row)
+{
+    QModelIndex index = mModel->index(row, 0);
+    QString name = mModel->data(index, ApplicationModel::NameRole).toString();
+    qDebug() << "Boton Favorite clicado por: " << name;
+
+    // CAMBIAR EL ESTADO DE FAVORITO DEL MODELO
+    bool currentState = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
+    mModel->setData(index, !currentState, ApplicationModel::IsLikedRole);
+
+    //OBTENEMOS EL ITEMWIDGET QUE EL USUARIO PULSO PARA TENER EN FAVORITOS
+    AvailableItemWidget* widget = (AvailableItemWidget*)ui->listViewAvailable->indexWidget(index);
+
+    //SI EL WIDGET EXISTE ACTUALIZA EL CORAZON
+    if (widget) {
+        widget->setData(index);
+    }
+
+    // SI ESTA EN EL FILTRO DE DESEADOS ACTUALIZA LA LISTA PARA QUE DESAPAREZCA EL WIDGET
+    if (mMostrarDeseados) {
+        LoadWidget();
+    }
+}
+
+//ACTIVAMOS EL FILTRO DE TODOS LOS DISPONIBLES
+void AvailableApplicationsWidget::onDisponiblesClicked()
+{
+    //ALTERNAR LOS COLORES AL PULSAR
+    ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
+    ui->btn_Deseados->setStyleSheet("");
+
+    //SI PULSA EL BOTON NO SOLO MOSTRARA LOS FAVORITOS
+    if(mProxyModel){
+        mProxyModel->setShowOnlyFavorites(false);
+    }
+    //LLAMAMOS AL METODO PARA GENERAR LOS WIDGETS
+    LoadWidget();
+}
+
+// ACTIVAMOS EL FILTRO DE SOLO LOS DESEADOS
+void AvailableApplicationsWidget::onDeseadosClicked(){
+
+    //ALTERNAR LOS COLORES AL PULSAR
+    ui->btn_Deseados->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
+    ui->btn_Disponibles->setStyleSheet("");
+
+    //SI PULSA EL BOTON SOLO MOSTRARA LOS FAVORITOS
+    if(mProxyModel){
+        mProxyModel->setShowOnlyFavorites(true);
+    }
+
+    //LLAMAMOS AL METODO PARA GENERAR LOS WIDGETS
     AvailableApplicationsWidget::LoadWidget();
 }
 
+
+// MODIFICAMOS EL ROL DE LA DESCARGA DE LA APP
 void AvailableApplicationsWidget::onDownloadClicked(int row)
 {
     QString name = mModel->data(mModel->index(row, 0), ApplicationModel::NameRole).toString();
@@ -61,6 +134,7 @@ void AvailableApplicationsWidget::onDownloadClicked(int row)
 
     //RECIBE EL INDEX DE LA FILA Y EL ROL
     QModelIndex appIndex = mModel->index(row,0);
+
 
     //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
     mModel->setData(appIndex, true, ApplicationModel::IsDownloadedRole);
@@ -76,55 +150,38 @@ void AvailableApplicationsWidget::onDownloadClicked(int row)
     //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
     mModel->setData(appIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 
-    //TEMPORIZADOR DE INSTALACION PARA DESPUES REFRESCAR LOS WIDGETS
-    QTimer::singleShot(5000, this, &AvailableApplicationsWidget::LoadWidget);
 }
 
-void AvailableApplicationsWidget::onFavoriteClicked(int row)
+// CUANDO LA DESCARGA FINALIZA ELIMINAMOS EL WIDGET
+void AvailableApplicationsWidget::onDownloadFinished(int row)
 {
     QModelIndex index = mModel->index(row, 0);
     QString name = mModel->data(index, ApplicationModel::NameRole).toString();
-    qDebug() << "Boton Favorite clicado por: " << name;
+    qDebug() << "Descarga finalizada:" << name;
 
-    // CAMBIAR EL ESTADO DE FAVORITO DEL MODELO
-    bool currentState = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
-    mModel->setData(index, !currentState, ApplicationModel::IsLikedRole);
+    // RECIBIMOS EL WIDGET QUE TERMINO LA DESCARGA
+    QWidget* widget = ui->listViewAvailable->indexWidget(index);
 
-    qDebug() << row;
-
-    //OBTENEMOS EL ITEMWIDGET QUE EL USUARIO PULSO PARA TENER EN FAVORITOS
-    AvailableItemWidget* widget = (AvailableItemWidget*)ui->listViewAvailable->indexWidget(index);
-
-    LoadWidget();
-    //SI EL WIDGET EXISTE ACTUALIZA EL CORAZON
     if (widget) {
-        widget->setData(index);
+        // SI EXISTE EL WIDGET LO DESCONECTAMOS
+        widget->disconnect();
+
+        // QUITAMOS EL WIDGET DE LA LISTA
+        ui->listViewAvailable->setIndexWidget(index, nullptr);
+
+        // OCULTAMOS LA FILA PARA QUE OTRO WIDGET OCUPE SU LUGAR
+        ui->listViewAvailable->setRowHidden(row, true);
+
+        // ELIMINAMOS EL WIDGET
+        widget->deleteLater();
     }
 }
 
+void AvailableApplicationsWidget::onSearchText(const QString& text) {
 
-void AvailableApplicationsWidget::onDisponiblesClicked()
-{
-    //ALTERNAR LOS COLORES AL PULSAR
-    ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->btn_Deseados->setStyleSheet("");
-
-    mMostrarDeseados = false;
-
-    //LLAMAMOS AL METODO PARA GENERAR LOS WIDGETS
-    LoadWidget();
-}
-
-void AvailableApplicationsWidget::onDeseadosClicked(){
-
-    //ALTERNAR LOS COLORES AL PULSAR
-    ui->btn_Deseados->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->btn_Disponibles->setStyleSheet("");
-
-    mMostrarDeseados = true;
-
-    //LLAMAMOS AL METODO PARA GENERAR LOS WIDGETS
-    AvailableApplicationsWidget::LoadWidget();
+    if(mProxyModel){
+        mProxyModel->setFilterText(text);
+    }
 }
 
 
@@ -184,6 +241,8 @@ void AvailableApplicationsWidget::LoadWidget(){
             connect(widget, &AvailableItemWidget::favoriteClicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
             connect(widget, &AvailableItemWidget::downloadClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
             connect(widget, &AvailableItemWidget::infoClicked, this, &AvailableApplicationsWidget::infoClicked);
+
+            connect(widget, &AvailableItemWidget::downloadFinished, this, &AvailableApplicationsWidget::onDownloadFinished);
         } else {
             // OCULTAR LA FILA DE APPS DESCARGADAS
             ui->listViewAvailable->setRowHidden(i, true);

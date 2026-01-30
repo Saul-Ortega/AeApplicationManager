@@ -21,6 +21,10 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
 
     connect(ui->availableApplicationWidget, &AvailableApplicationsWidget::infoClicked, this, &ApplicationManagerWidget::onInfoClicked);
     connect(ui->installedApplicationWidget, &InstalledApplicationsWidget::infoClicked, this, &ApplicationManagerWidget::onInfoClicked);
+
+    //RECIBE LA SEÑAL DEL SEARCH Y SE LA MANDA AL METODO DE AVAILABLE APPLICATION
+    connect(ui->searchWidget, &SearchWidget::searchText,
+            ui->availableApplicationWidget, &AvailableApplicationsWidget::onSearchText);
 }
 
 //DESTRUCTOR

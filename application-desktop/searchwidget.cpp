@@ -13,6 +13,9 @@ SearchWidget::SearchWidget(QWidget *parent)
     int height = ui->icon->height();
     ui->icon->setPixmap(icon.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     ui->icon->setAlignment(Qt::AlignCenter);
+
+    //CUANDO CAMBIA ALGO DEL INPUT MANDA UNA SEÑAL CON EL TEXTO
+    connect(ui->input, &QLineEdit::textChanged, this, &SearchWidget::searchText);
 }
 
 SearchWidget::~SearchWidget()
