@@ -2,22 +2,23 @@
 #define APPLICATIONDELEGATE_H
 
 #include <QStyledItemDelegate>
+#include <QPainter>
+#include "applicationmodel.h"
 
 class ApplicationDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
-
 public:
-    explicit ApplicationDelegate(QObject *parent = nullptr);
+    ApplicationDelegate(QObject* parent = 0);
 
-    // DIBUJA CADA ITEM
-    void paint(QPainter *painter,
-               const QStyleOptionViewItem& option,
-               const QModelIndex& index) const override;
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+    bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
-    // TAMAÑO DEL CUADRADO DE LA APP
-    QSize sizeHint(const QStyleOptionViewItem& option,
-                   const QModelIndex& index) const override;
+signals:
+    void isLikedButtonClicked(const QModelIndex& index);
+    void infoButtonClicked(const QModelIndex& index);
+    void isDownloadedButtonClicked(const QModelIndex& index);
 };
 
 #endif // APPLICATIONDELEGATE_H
