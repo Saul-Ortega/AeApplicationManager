@@ -7,6 +7,7 @@
         "image_url": ":/apps/aeCloud.png",
         "is_downloaded": false,
         "is_liked": true,
+        "update" : true,
         "name": "aeCloud",
         "versions": [
             {
@@ -28,14 +29,20 @@
         ]
     },
     {
-        "description": "AeMaps es una aplicación para visualizar, gestionar y consultar mapas y datos geoespaciales de Aerolaser.",
-        "executable_file": "aeMaps.exe",
+        "description": "AeScan es una aplicación para capturar, procesar y revisar escaneos láser y datos de campo de Aerolaser.",
+        "executable_file": "aeScan.exe",
         "expiration_date": "2026-12-01",
         "id": 2,
-        "image_url": ":/apps/aeMaps.png",
+        "image_url": ":/apps/aeScan.png",
         "is_downloaded": false,
+<<<<<<< HEAD
         "is_liked": false,
+        "update" : false,
         "name": "aeMaps",
+=======
+        "is_liked": true,
+        "name": "aeScan",
+>>>>>>> e18f30be14c4e9bd7a4850de6ff9e53ff3ed872d
         "versions": [
             {
                 "expiration_date": "2026-08-10",
@@ -64,15 +71,15 @@
         ]
     },
     {
-        "description": "AeScann es una aplicación para capturar, procesar y revisar escaneos láser y datos de campo de Aerolaser.",
-        "executable_file": "aeScann.exe",
+        "description": "AeScan es una aplicación para capturar, procesar y revisar escaneos láser y datos de campo de Aerolaser.",
+        "executable_file": "aeScan.exe",
         "expiration_date": "2026-12-01",
         "id": 2,
-        "image_url": ":/apps/aeScann.png",
+        "image_url": ":/apps/aeScan.png",
         "is_downloaded": false,
         "is_liked": false,
-        "name": "aeScann",
-        "update": false,
+        "update" : false,
+        "name": "aeScan",
         "versions": [
             {
                 "expiration_date": "2026-08-10",
@@ -107,7 +114,12 @@
         "id": 3,
         "image_url": ":/apps/aeSync.png",
         "is_downloaded": false,
+<<<<<<< HEAD
+        "is_liked": false,
+        "update" : true,
+=======
         "is_liked": true,
+>>>>>>> e18f30be14c4e9bd7a4850de6ff9e53ff3ed872d
         "name": "aeSync",
         "versions": [
             {
@@ -144,8 +156,8 @@
         "image_url": ":/apps/aeTools.png",
         "is_downloaded": false,
         "is_liked": false,
+        "update" : false,
         "name": "aeTools",
-        "update": false,
         "versions": [
             {
                 "expiration_date": "2026-10-18",
@@ -180,7 +192,8 @@
         "id": 5,
         "image_url": ":/apps/aeViewer.png",
         "is_downloaded": false,
-        "is_liked": true,
+        "is_liked": false,
+        "update" : false,
         "name": "aeViewer",
         "versions": [
             {
