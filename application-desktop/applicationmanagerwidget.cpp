@@ -24,6 +24,7 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
 
     //RECIBE LA SEÑAL DEL SEARCH Y SE LA MANDA AL METODO DE AVAILABLE APPLICATION
     connect(ui->searchWidget, &SearchWidget::searchText, ui->availableApplicationWidget, &AvailableApplicationsWidget::onSearchText);
+    connect(ui->searchWidget, &SearchWidget::searchText, ui->installedApplicationWidget, &InstalledApplicationsWidget::onSearchText);
 }
 
 //DESTRUCTOR
@@ -33,11 +34,11 @@ ApplicationManagerWidget::~ApplicationManagerWidget()
 }
 
 //MÉTODOS
-void ApplicationManagerWidget::setApplicationModel(FilterProxyModel* model)
+void ApplicationManagerWidget::setApplicationModel(ApplicationModel* model)
 {
     mModel = model;
     ui->availableApplicationWidget->setApplicationModel(mModel);
-    // ui->installedApplicationWidget->setApplicationModel(mModel);
+    ui->installedApplicationWidget->setApplicationModel(mModel);
     //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 

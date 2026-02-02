@@ -94,10 +94,6 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
     //GUARDAMOS LOS CAMBIOS EN DAO
     mApplicationDao.updateApplication(application);
 
-    beginResetModel();
-
-    endResetModel();
-
     //ACTUALIZAR LA VISTA DEL QLISTVIEW
     emit dataChanged(index, index, {role});
     return true;

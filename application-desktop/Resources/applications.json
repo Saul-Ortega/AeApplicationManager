@@ -5,7 +5,7 @@
         "expiration_date": "2026-11-11",
         "id": 1,
         "image_url": ":/apps/aeCloud.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": false,
         "name": "aeCloud",
         "versions": [
@@ -20,7 +20,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -56,8 +56,8 @@
             {
                 "expiration_date": "2027-02-12",
                 "id": 3,
-                "is_installed": false,
-                "last_modification": "2025-11-03",
+                "is_installed": true,
+                "last_modification": "2025-02-12",
                 "name": "1.2.0",
                 "size": 3.4
             }
@@ -69,10 +69,9 @@
         "expiration_date": "2026-12-01",
         "id": 3,
         "image_url": ":/apps/aeScann.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": false,
         "name": "aeScann",
-        "update": false,
         "versions": [
             {
                 "expiration_date": "2026-08-10",
@@ -93,7 +92,7 @@
             {
                 "expiration_date": "2026-01-30",
                 "id": 3,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2025-02-12",
                 "name": "1.2.0",
                 "size": 3.4
@@ -104,7 +103,7 @@
         "description": "AeSync es una aplicación para sincronizar configuraciones, datos y ajustes entre dispositivos Aerolaser de forma rápida y segura.",
         "executable_file": "aeSync.exe",
         "expiration_date": "2027-03-18",
-        "id": 3,
+        "id": 4,
         "image_url": ":/apps/aeSync.png",
         "is_downloaded": false,
         "is_liked": false,
@@ -129,7 +128,7 @@
             {
                 "expiration_date": "2026-02-28",
                 "id": 3,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2025-03-10",
                 "name": "1.2.0",
                 "size": 2.4
@@ -140,7 +139,7 @@
         "description": "AeTools es una aplicación que reúne utilidades técnicas para gestionar, convertir y analizar archivos de proyectos Aerolaser.",
         "executable_file": "aeTools.exe",
         "expiration_date": "2027-05-09",
-        "id": 4,
+        "id": 5,
         "image_url": ":/apps/aeTools.png",
         "is_downloaded": false,
         "is_liked": false,
@@ -177,7 +176,7 @@
         "description": "AeViewer es una aplicación para visualizar modelos 3D, nubes de puntos y ortomosaicos generados por Aerolaser.",
         "executable_file": "aeViewer.exe",
         "expiration_date": "2027-08-21",
-        "id": 5,
+        "id": 6,
         "image_url": ":/apps/aeViewer.png",
         "is_downloaded": false,
         "is_liked": false,

@@ -22,7 +22,7 @@ class ApplicationInfoDialog : public QDialog
 public:
     explicit ApplicationInfoDialog(QWidget *parent = nullptr);
     ~ApplicationInfoDialog();
-    void setApplicationModel(FilterProxyModel* model);
+    void setApplicationModel(ApplicationModel* model);
 
     void loadApplication(const QModelIndex& index);
     void loadVersion(const Version& version);
@@ -33,7 +33,7 @@ signals:
 
 private:
     Ui::ApplicationInfoDialog *ui;
-    FilterProxyModel* mModel;
+    ApplicationModel* mModel;
     QModelIndex mIndex;
     Version mVersion;
 };
