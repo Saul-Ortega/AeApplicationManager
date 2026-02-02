@@ -36,6 +36,8 @@ QVariant ApplicationModel::data(const QModelIndex& index, int role) const
         return application.expirationDate();
     case ApplicationRoles::IsLikedRole :
         return application.isLiked();
+    case ApplicationRoles::UpdateRole :
+        return application.update();
     case ApplicationRoles::IsDownloadedRole :
         return application.isDownloaded();
     case ApplicationRoles::VersionsRole :
@@ -76,6 +78,9 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
     case IsLikedRole:
         application.setIsLiked(value.toBool());
         break;
+    case UpdateRole:
+        application.setUpdate(value.toBool());
+        break;
     case IsDownloadedRole:
         application.setIsDownloaded(value.toBool());
         break;
@@ -111,6 +116,7 @@ QHash<int, QByteArray> ApplicationModel::roleNames() const
     roles[ApplicationRoles::ExecutableFileRole] = "executableFile";
     roles[ApplicationRoles::ExpirationDateRole] = "expirationDate";
     roles[ApplicationRoles::IsLikedRole] = "isLiked";
+    roles[ApplicationRoles::UpdateRole] = "update";
     roles[ApplicationRoles::IsDownloadedRole] = "isDownloaded";
     roles[ApplicationRoles::VersionsRole] = "versions";
     return roles;

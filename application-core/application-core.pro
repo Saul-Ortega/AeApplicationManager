@@ -11,9 +11,6 @@ SOURCES += \
     applicationdao.cpp \
     applicationmodel.cpp \
     version.cpp \
-    application.cpp \
-    applicationcore.cpp \
-    applicationdao.cpp \
     versionmodel.cpp
 
 HEADERS += \

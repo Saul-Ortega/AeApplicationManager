@@ -29,6 +29,46 @@
         ]
     },
     {
+<<<<<<< HEAD
+=======
+        "description": "Aplicación para visualizar mapas, modelos 3D y datos topográficos de Aerolaser en alta resolución.",
+        "executable_file": "aeMaps.exe",
+        "expiration_date": "2026-12-13",
+        "id": 2,
+        "image_url": ":/apps/aeMaps.png",
+        "is_downloaded": false,
+        "is_liked": false,
+        "update" : false,
+        "name": "aeMaps",
+        "versions": [
+            {
+                "expiration_date": "2026-01-30",
+                "id": 1,
+                "is_installed": false,
+                "last_modification": "2023-07-13",
+                "name": "1.0.0",
+                "size": 3.4
+            },
+            {
+                "expiration_date": "2026-02-20",
+                "id": 2,
+                "is_installed": false,
+                "last_modification": "2023-12-22",
+                "name": "1.1.0",
+                "size": 3.6
+            },
+            {
+                "expiration_date": "2026-03-26",
+                "id": 3,
+                "is_installed": false,
+                "last_modification": "2024-04-30",
+                "name": "1.1.1",
+                "size": 4
+            }
+        ]
+    },
+    {
+>>>>>>> acda77f4196360515ff6ded3a9b0295414c8bd13
         "description": "AeScan es una aplicación para capturar, procesar y revisar escaneos láser y datos de campo de Aerolaser.",
         "executable_file": "aeScan.exe",
         "expiration_date": "2026-12-01",
@@ -36,7 +76,7 @@
         "image_url": ":/apps/aeScann.png",
         "is_downloaded": true,
         "is_liked": false,
-        "update" : false,
+        "name": "aeScan",
         "versions": [
             {
                 "expiration_date": "2026-08-10",
@@ -145,8 +185,12 @@
         "id": 4,
         "image_url": ":/apps/aeTools.png",
         "is_downloaded": false,
+<<<<<<< HEAD
         "is_liked": true,
+=======
+        "is_liked": false,
         "update" : false,
+>>>>>>> acda77f4196360515ff6ded3a9b0295414c8bd13
         "name": "aeTools",
         "versions": [
             {

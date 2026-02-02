@@ -32,7 +32,7 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     connect(delegate, &ApplicationDelegate::infoButtonClicked, this, &AvailableApplicationsWidget::infoClicked);
     connect(delegate, &ApplicationDelegate::isDownloadedButtonClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
 
-    //BOTON DE YA MARCADO
+    //BOTON YA MARCADO
     ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
 
     // FONDO EN BLANCO
