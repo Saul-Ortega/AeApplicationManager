@@ -35,6 +35,8 @@ QVariant FilterProxyModel::data(const QModelIndex& index, int role) const
         return sourceModel()->data(sourceIndex, ApplicationModel::ExpirationDateRole);
     case ApplicationModel::IsLikedRole :
         return sourceModel()->data(sourceIndex, ApplicationModel::IsLikedRole);
+    case ApplicationModel::UpdateRole :
+        return sourceModel()->data(sourceIndex, ApplicationModel::UpdateRole);
     case ApplicationModel::IsDownloadedRole :
         return sourceModel()->data(sourceIndex, ApplicationModel::IsDownloadedRole);
     case ApplicationModel::VersionsRole :

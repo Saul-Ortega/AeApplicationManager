@@ -57,6 +57,7 @@ void ApplicationDao::updateApplication(const Application& application) const
     appObj["expiration_date"] = application.expirationDate().toString("yyyy-MM-dd");
     appObj["is_liked"] = application.isLiked();
     appObj["is_downloaded"] = application.isDownloaded();
+    appObj["update"] = application.update();
 
     //DECLARA UN QJSONARRAY PARA LAS GUARDAR LAS VERSIONES DE LA APLICACIÓN
     QJsonArray versionsArray;
@@ -173,6 +174,7 @@ std::unique_ptr<std::vector<std::unique_ptr<Application>>> ApplicationDao::appli
             application->setExpirationDate(jsonMap["expiration_date"].toDate());
             application->setIsLiked(jsonMap["is_liked"].toBool());
             application->setIsDownloaded(jsonMap["is_downloaded"].toBool());
+            application->setUpdate(jsonMap["update"].toBool());
 
             //DECLARA UNA LISTA DE TIPO VERSION
             QList<Version> versions;
