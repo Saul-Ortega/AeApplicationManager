@@ -34,36 +34,63 @@ InstalledApplicationsWidget::~InstalledApplicationsWidget()
 void InstalledApplicationsWidget::setApplicationModel(ApplicationModel* model)
 {
     mModel = model;
-    ui->listViewInstalled->setModel(mModel);
+    FilterProxyModel* proxyModel = new FilterProxyModel(this);
+    proxyModel->setSourceModel(mModel);
+    mProxyModel = proxyModel;
+    mProxyModel->setShowInstalled(true);
+    ui->listViewInstalled->setModel(mProxyModel);
 }
 
 void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
 {
     //ELIMINA LA APLICACIÓN
-    mModel->setData(index, false, ApplicationModel::IsDownloadedRole);
+    mProxyModel->setData(index, false, ApplicationModel::IsDownloadedRole);
 
     //ELIMINA TODAS LAS VERSIONES DE DICHA APLICACIÓN
-    QList<Version> versions = mModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
+    QList<Version> versions = mProxyModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
 
     for ( int i = 0; i < versions.size(); i++ ) {
         versions[i].setIsInstalled(false);
     }
 
-    mModel->setData(index, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+    mProxyModel->setData(index, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 }
 
 void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
 {
-    bool isLiked = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
-    mModel->setData(index, !isLiked, ApplicationModel::IsLikedRole);
+    bool isLiked = mProxyModel->data(index, ApplicationModel::IsLikedRole).toBool();
+    mProxyModel->setData(index, !isLiked, ApplicationModel::IsLikedRole);
 }
 
 void InstalledApplicationsWidget::onInstalledClicked()
 {
-    mShowFavorite = false;
+    //ALTERNAR LOS COLORES AL PULSAR
+    ui->installedBtn->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
+    ui->favoriteBtn->setStyleSheet("");
+
+    //SI PULSA EL BOTON NO SOLO MOSTRARA LOS FAVORITOS
+    if(mProxyModel){
+        mProxyModel->setShowInstalled(true);
+        mProxyModel->setShowOnlyFavorites(false);
+    }
 }
 
 void InstalledApplicationsWidget::onFavoriteClicked()
 {
-    mShowFavorite = true;
+    //ALTERNAR LOS COLORES AL PULSAR
+    ui->favoriteBtn->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
+    ui->installedBtn->setStyleSheet("");
+
+    //SI PULSA EL BOTON SOLO MOSTRARA LOS FAVORITOS
+    if(mProxyModel){
+        mProxyModel->setShowInstalled(true);
+        mProxyModel->setShowOnlyFavorites(true);
+    }
+}
+
+void InstalledApplicationsWidget::onSearchText(const QString& text)
+{
+    if(mProxyModel){
+        mProxyModel->setFilterText(text);
+    }
 }

@@ -63,7 +63,7 @@ ApplicationInfoDialog::~ApplicationInfoDialog()
 }
 
 //MÉTODOS
-void ApplicationInfoDialog::setApplicationModel(FilterProxyModel* model)
+void ApplicationInfoDialog::setApplicationModel(ApplicationModel* model)
 {
     mModel = model;
 }

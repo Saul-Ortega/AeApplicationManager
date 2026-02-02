@@ -19,8 +19,7 @@ public:
     explicit AvailableApplicationsWidget(QWidget *parent = nullptr);
     ~AvailableApplicationsWidget();
 
-    // void LoadWidget();
-    void setApplicationModel(FilterProxyModel* model);
+    void setApplicationModel(ApplicationModel* model);
 
 signals:
     void infoClicked(const QModelIndex& index);
@@ -36,15 +35,13 @@ private slots:
     void onFavoriteClicked();
 
     void onDownloadClicked(const QModelIndex& index);
-    void onDownloadFinished(int row);
+    // void onDownloadFinished(int row);
 
 private:
     Ui::AvailableApplicationsWidget *ui;
-    FilterProxyModel *mModel;
+    ApplicationModel *mModel;
+    FilterProxyModel *mProxyModel;
     bool mMostrarDeseados = false;
-    // QMetaObject::Connection modelDataChangedConnect;
-
-    // FilterProxyModel* mProxyModel;
 };
 
 #endif // AVAILABLEAPPLICATIONSWIDGET_H

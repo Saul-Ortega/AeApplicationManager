@@ -5,6 +5,7 @@
 #include "applicationmodel.h"
 #include "installeditemwidget.h"
 #include "applicationdelegate.h"
+#include "filterproxymodel.h"
 
 namespace Ui {
 class InstalledApplicationsWidget;
@@ -23,6 +24,9 @@ public:
 signals:
     void infoClicked(const QModelIndex& index);
 
+public slots:
+    void onSearchText(const QString& text);
+
 private slots:
     void onLikedClicked(const QModelIndex& index);
     void onDeleteClicked(const QModelIndex& index);
@@ -33,8 +37,8 @@ private slots:
 private:
     Ui::InstalledApplicationsWidget *ui;
     ApplicationModel *mModel;
+    FilterProxyModel *mProxyModel;
     bool mShowFavorite = false;
-    QMetaObject::Connection mDataChangedConnection;
 };
 
 #endif // INSTALLEDAPPLICATIONSWIDGET_H

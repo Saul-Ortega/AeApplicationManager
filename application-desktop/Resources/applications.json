@@ -5,7 +5,7 @@
         "expiration_date": "2026-11-11",
         "id": 1,
         "image_url": ":/apps/aeCloud.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": true,
         "name": "aeCloud",
         "versions": [
@@ -20,7 +20,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -32,9 +32,9 @@
         "executable_file": "aeScan.exe",
         "expiration_date": "2026-12-01",
         "id": 2,
-        "image_url": ":/apps/aeScan.png",
-        "is_downloaded": false,
-        "is_liked": true,
+        "image_url": ":/apps/aeScann.png",
+        "is_downloaded": true,
+        "is_liked": false,
         "name": "aeScan",
         "versions": [
             {
@@ -56,7 +56,7 @@
             {
                 "expiration_date": "2026-01-30",
                 "id": 3,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2025-02-12",
                 "name": "1.2.0",
                 "size": 3.4
@@ -68,7 +68,7 @@
         "executable_file": "aeScan.exe",
         "expiration_date": "2026-12-01",
         "id": 2,
-        "image_url": ":/apps/aeScan.png",
+        "image_url": ":/apps/aeScann.png",
         "is_downloaded": false,
         "is_liked": false,
         "name": "aeScan",
@@ -106,7 +106,7 @@
         "id": 3,
         "image_url": ":/apps/aeSync.png",
         "is_downloaded": false,
-        "is_liked": true,
+        "is_liked": false,
         "name": "aeSync",
         "versions": [
             {
@@ -142,7 +142,7 @@
         "id": 4,
         "image_url": ":/apps/aeTools.png",
         "is_downloaded": false,
-        "is_liked": false,
+        "is_liked": true,
         "name": "aeTools",
         "versions": [
             {

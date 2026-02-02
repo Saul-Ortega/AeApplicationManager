@@ -19,7 +19,7 @@ public:
     explicit ApplicationManagerWidget(QWidget *parent = nullptr);
     ~ApplicationManagerWidget();
 
-    void setApplicationModel(FilterProxyModel* model);
+    void setApplicationModel(ApplicationModel* model);
     void setApplicationSelectionModel(QItemSelectionModel* applicationSelectionModel);
     void setVersionModel(VersionModel* versionModel);
     void setVersionSelectionModel(QItemSelectionModel* versionSelectionModel);
@@ -29,7 +29,7 @@ private slots:
 
 private:
     Ui::ApplicationManagerWidget *ui;
-    FilterProxyModel* mModel;
+    ApplicationModel* mModel;
     VersionModel* mVersionModel;
 };
 
