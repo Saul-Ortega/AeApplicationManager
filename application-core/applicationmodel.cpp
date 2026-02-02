@@ -96,7 +96,6 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
 
     beginResetModel();
 
-
     endResetModel();
 
     //ACTUALIZAR LA VISTA DEL QLISTVIEW

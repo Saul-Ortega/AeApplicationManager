@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QItemSelection>
 #include "applicationmodel.h"
+#include "applicationdelegate.h"
 
 namespace Ui {
 class AvailableItemWidget;

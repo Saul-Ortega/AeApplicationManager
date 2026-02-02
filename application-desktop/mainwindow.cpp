@@ -17,8 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowIcon(QIcon(":/assets/Logo-Aerolaser.png"));
 
     ApplicationModel* applicationModel = new ApplicationModel(this);
+    FilterProxyModel* filterProxyModel = new FilterProxyModel(this);
+    filterProxyModel->setSourceModel(applicationModel);
     QItemSelectionModel* applicationSelectionModel = new QItemSelectionModel(applicationModel, this);
-    mApplicationManagerWidget->setApplicationModel(applicationModel);
+    mApplicationManagerWidget->setApplicationModel(filterProxyModel);
     mApplicationManagerWidget->setApplicationSelectionModel(applicationSelectionModel);
 
     // VersionModel* versionModel = new VersionModel(this);

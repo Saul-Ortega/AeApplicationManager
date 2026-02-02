@@ -9,20 +9,26 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    applicationdelegate.cpp \
     applicationinfodialog.cpp \
     applicationmanagerwidget.cpp \
     availableapplicationswidget.cpp \
     availableitemwidget.cpp \
+    installedapplicationswidget.cpp \
+    installeditemwidget.cpp \
     filterproxymodel.cpp \
     main.cpp \
     mainwindow.cpp \
     searchwidget.cpp
 
 HEADERS += \
+    applicationdelegate.h \
     applicationinfodialog.h \
     applicationmanagerwidget.h \
     availableapplicationswidget.h \
     availableitemwidget.h \
+    installedapplicationswidget.h \
+    installeditemwidget.h \
     filterproxymodel.h \
     mainwindow.h \
     searchwidget.h
@@ -32,6 +38,8 @@ FORMS += \
     applicationmanagerwidget.ui \
     availableapplicationswidget.ui \
     availableitemwidget.ui \
+    installedapplicationswidget.ui \
+    installeditemwidget.ui \
     mainwindow.ui \
     searchwidget.ui
 
