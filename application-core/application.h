@@ -10,7 +10,7 @@
 class APPLICATION_CORE_EXPORT Application
 {
 public:
-    explicit Application(const QString& name = "", const QString& description = "", const QString& imageUrl = "", const QString& executableFile = "", const QDate& expirationDate = QDate(), const bool& isLiked = false, const bool& isDownloaded = false, const QList<Version>& versions = QList<Version>());
+    explicit Application(const QString& name = "", const QString& description = "", const QString& imageUrl = "", const QString& executableFile = "", const QDate& expirationDate = QDate(), const bool& isLiked = false, const bool& update = false, const bool& isDownloaded = false, const QList<Version>& versions = QList<Version>());
 
     int id() const;
     QString name() const;
@@ -19,6 +19,7 @@ public:
     QString executableFile() const;
     QDate expirationDate() const;
     bool isLiked() const;
+    bool update() const;
     bool isDownloaded() const;
     QList<Version> versions() const;
 
@@ -29,6 +30,7 @@ public:
     void setExecutableFile(const QString& executableFile);
     void setExpirationDate(const QDate& expirationDate);
     void setIsLiked(const bool& isLiked);
+    void setUpdate(const bool& update);
     void setIsDownloaded(const bool& isDownloaded);
     void setVersions(const QList<Version>& versions);
 
@@ -40,6 +42,7 @@ private:
     QString mExecutableFile;
     QDate mExpirationDate;
     bool mIsLiked;
+    bool mUpdate;
     bool mIsDownloaded;
     QList<Version> mVersions;
 };

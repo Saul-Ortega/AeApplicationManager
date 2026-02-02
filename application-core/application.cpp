@@ -1,7 +1,7 @@
 #include "application.h"
 
 //CONSTRUCTOR
-Application::Application(const QString& name, const QString& description, const QString& imageUrl, const QString& executableFile, const QDate& expirationDate, const bool& isLiked, const bool& isDownloaded, const QList<Version>& versions)
+Application::Application(const QString& name, const QString& description, const QString& imageUrl, const QString& executableFile, const QDate& expirationDate, const bool& isLiked, const bool& update, const bool& isDownloaded, const QList<Version>& versions)
     : mId(-1)
     , mName(name)
     , mDescription(description)
@@ -9,8 +9,9 @@ Application::Application(const QString& name, const QString& description, const 
     , mExecutableFile(executableFile)
     , mExpirationDate(expirationDate)
     , mIsLiked(isLiked)
+    , mUpdate (update)
     , mIsDownloaded(isDownloaded)
-    , mVersions()
+    , mVersions(versions)
 {
 }
 
@@ -48,6 +49,11 @@ QDate Application::expirationDate() const
 bool Application::isLiked() const
 {
     return mIsLiked;
+}
+
+bool Application::update() const
+{
+    return mUpdate;
 }
 
 bool Application::isDownloaded() const
@@ -89,6 +95,11 @@ void Application::setExecutableFile(const QString& executableFile)
 void Application::setIsLiked(const bool& isLiked)
 {
     mIsLiked = isLiked;
+}
+
+void Application::setUpdate(const bool& update)
+{
+    mUpdate = update;
 }
 
 void Application::setExpirationDate(const QDate& expirationDate)

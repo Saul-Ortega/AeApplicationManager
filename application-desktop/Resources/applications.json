@@ -7,6 +7,7 @@
         "image_url": ":/apps/aeCloud.png",
         "is_downloaded": false,
         "is_liked": true,
+        "update" : true,
         "name": "aeCloud",
         "versions": [
             {
@@ -35,6 +36,7 @@
         "image_url": ":/apps/aeMaps.png",
         "is_downloaded": false,
         "is_liked": false,
+        "update" : false,
         "name": "aeMaps",
         "versions": [
             {
@@ -71,6 +73,7 @@
         "image_url": ":/apps/aeScan.png",
         "is_downloaded": false,
         "is_liked": false,
+        "update" : false,
         "name": "aeScan",
         "versions": [
             {
@@ -107,6 +110,7 @@
         "image_url": ":/apps/aeSync.png",
         "is_downloaded": false,
         "is_liked": false,
+        "update" : true,
         "name": "aeSync",
         "versions": [
             {
@@ -143,6 +147,7 @@
         "image_url": ":/apps/aeTools.png",
         "is_downloaded": false,
         "is_liked": false,
+        "update" : false,
         "name": "aeTools",
         "versions": [
             {
@@ -179,6 +184,7 @@
         "image_url": ":/apps/aeViewer.png",
         "is_downloaded": false,
         "is_liked": false,
+        "update" : false,
         "name": "aeViewer",
         "versions": [
             {

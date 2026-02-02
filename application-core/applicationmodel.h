@@ -22,6 +22,7 @@ public:
         ExecutableFileRole,
         ExpirationDateRole,
         IsLikedRole,
+        UpdateRole,
         IsDownloadedRole,
         VersionsRole,
         SizeHintRole
