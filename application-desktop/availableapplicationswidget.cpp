@@ -22,14 +22,11 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewAvailable->setItemDelegate(delegate);
 
-    //ACTIVAR EL FUNCIONAMIENTO DE LOS BOTONES EN LA LISTA
-    // ui->listViewAvailable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    // ui->listViewAvailable->setSelectionMode(QAbstractItemView::NoSelection);
-    // ui->listViewAvailable->setFocusPolicy(Qt::NoFocus);
-
-
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &AvailableApplicationsWidget::onLikedClicked);
-    connect(delegate, &ApplicationDelegate::infoButtonClicked, this, &AvailableApplicationsWidget::infoClicked);
+    connect(delegate, &ApplicationDelegate::infoButtonClicked, this, [this] (const QModelIndex& index) {
+        QModelIndex sourceIndex = mProxyModel->mapToSource(index);
+        emit infoClicked(sourceIndex);
+    });
     connect(delegate, &ApplicationDelegate::isDownloadedButtonClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
 
     //BOTON YA MARCADO

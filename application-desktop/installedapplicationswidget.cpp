@@ -18,7 +18,10 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
 
 
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &InstalledApplicationsWidget::onLikedClicked);
-    connect(delegate, &ApplicationDelegate::infoButtonClicked, this, &InstalledApplicationsWidget::infoClicked);
+    connect(delegate, &ApplicationDelegate::infoButtonClicked, this, [this] (const QModelIndex &index) {
+        QModelIndex sourceIndex = mProxyModel->mapToSource(index);
+        emit infoClicked(sourceIndex);
+    });
     connect(delegate, &ApplicationDelegate::isDownloadedButtonClicked, this, &InstalledApplicationsWidget::onDeleteClicked);
 
 
