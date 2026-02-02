@@ -8,12 +8,6 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // // CREAR MODELO
-    // mModel = new ApplicationModel(this);
-
-    // // ASIGNAR MODELO A LA VISTA
-    // ui->listViewInstalled->setModel(mModel);
-
     // CONFIGURACION DEL LISTVIEW
     ui->listViewInstalled->setSpacing(10);
     ui->listViewInstalled->setResizeMode(QListView::Adjust);
@@ -60,8 +54,8 @@ void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
 
 void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
 {
-    bool isInstalled = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
-    mModel->setData(index, !isInstalled, ApplicationModel::IsLikedRole);
+    bool isLiked = mModel->data(index, ApplicationModel::IsLikedRole).toBool();
+    mModel->setData(index, !isLiked, ApplicationModel::IsLikedRole);
 }
 
 void InstalledApplicationsWidget::onInstalledClicked()

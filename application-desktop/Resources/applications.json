@@ -28,38 +28,38 @@
         ]
     },
     {
-        "description": "Aplicación para visualizar mapas, modelos 3D y datos topográficos de Aerolaser en alta resolución.",
-        "executable_file": "aeMaps.exe",
-        "expiration_date": "2026-12-13",
+        "description": "AeScan es una aplicación para capturar, procesar y revisar escaneos láser y datos de campo de Aerolaser.",
+        "executable_file": "aeScan.exe",
+        "expiration_date": "2026-12-01",
         "id": 2,
-        "image_url": ":/apps/aeMaps.png",
+        "image_url": ":/apps/aeScan.png",
         "is_downloaded": false,
-        "is_liked": false,
-        "name": "aeMaps",
+        "is_liked": true,
+        "name": "aeScan",
         "versions": [
             {
-                "expiration_date": "2026-01-30",
+                "expiration_date": "2026-08-10",
                 "id": 1,
                 "is_installed": false,
-                "last_modification": "2023-07-13",
+                "last_modification": "2023-08-15",
                 "name": "1.0.0",
-                "size": 3.4
+                "size": 2.5
             },
             {
-                "expiration_date": "2026-02-20",
+                "expiration_date": "2026-03-22",
                 "id": 2,
                 "is_installed": false,
-                "last_modification": "2023-12-22",
+                "last_modification": "2024-04-01",
                 "name": "1.1.0",
-                "size": 3.6
+                "size": 3.1
             },
             {
-                "expiration_date": "2026-03-26",
+                "expiration_date": "2026-01-30",
                 "id": 3,
                 "is_installed": false,
-                "last_modification": "2024-04-30",
-                "name": "1.1.1",
-                "size": 4
+                "last_modification": "2025-02-12",
+                "name": "1.2.0",
+                "size": 3.4
             }
         ]
     },
@@ -106,7 +106,7 @@
         "id": 3,
         "image_url": ":/apps/aeSync.png",
         "is_downloaded": false,
-        "is_liked": false,
+        "is_liked": true,
         "name": "aeSync",
         "versions": [
             {
@@ -132,7 +132,7 @@
                 "last_modification": "2025-03-10",
                 "name": "1.2.0",
                 "size": 2.4
-          }
+            }
         ]
     },
     {
@@ -167,7 +167,7 @@
                 "is_installed": false,
                 "last_modification": "2025-03-28",
                 "name": "1.2.0",
-                "size": 2.0
+                "size": 2
             }
         ]
     },

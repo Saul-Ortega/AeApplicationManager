@@ -3,7 +3,95 @@
 
 FilterProxyModel::FilterProxyModel(QObject* parent)
     : QSortFilterProxyModel(parent)
+    , mOnlyFavorites()
+    , mShowInstalled()
+    , mFilterText()
 {
+}
+
+QVariant FilterProxyModel::data(const QModelIndex& index, int role) const
+{
+    if ( !index.isValid() ) {
+        return QVariant();
+    }
+
+    //DEVOLVEMOS EL VALOR SEGUN EL ROL SOLICITADO
+    switch ( role ) {
+    case ApplicationModel::IdRole :
+        return sourceModel()->data(index, ApplicationModel::IdRole);
+    case ApplicationModel::NameRole :
+    case Qt::DisplayRole :
+        return sourceModel()->data(index, ApplicationModel::NameRole);
+    case ApplicationModel::DescriptionRole :
+        return sourceModel()->data(index, ApplicationModel::DescriptionRole);
+    case ApplicationModel::ImageUrlRole :
+        return sourceModel()->data(index, ApplicationModel::ImageUrlRole);
+    case ApplicationModel::ExecutableFileRole :
+        return sourceModel()->data(index, ApplicationModel::ExecutableFileRole);
+    case ApplicationModel::ExpirationDateRole :
+        return sourceModel()->data(index, ApplicationModel::ExpirationDateRole);
+    case ApplicationModel::IsLikedRole :
+        return sourceModel()->data(index, ApplicationModel::IsLikedRole);
+    case ApplicationModel::IsDownloadedRole :
+        return sourceModel()->data(index, ApplicationModel::IsDownloadedRole);
+    case ApplicationModel::VersionsRole :
+        return sourceModel()->data(index, ApplicationModel::VersionsRole);
+    default :
+        return QVariant();
+    }
+}
+
+// bool FilterProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
+// {
+//     if (!index.isValid()) {
+//         return false;
+//     }
+
+//     //ACTUALIZAMOS EL CAMPO SEGUN EL ROL
+//     switch (role) {
+//     case ApplicationModel::NameRole:
+//         sourceModel()->setData(index, value, ApplicationModel::NameRole);
+//         break;
+//     case ApplicationModel::DescriptionRole:
+//         sourceModel()->setData(index, value, ApplicationModel::DescriptionRole);
+//         break;
+//     case ApplicationModel::ImageUrlRole:
+//         sourceModel()->setData(index, value, ApplicationModel::ImageUrlRole);
+//         break;
+//     case ApplicationModel::ExecutableFileRole:
+//         sourceModel()->setData(index, value, ApplicationModel::ExecutableFileRole);
+//         break;
+//     case ApplicationModel::ExpirationDateRole:
+//         sourceModel()->setData(index, value, ApplicationModel::ExpirationDateRole);
+//         break;
+//     case ApplicationModel::IsLikedRole:
+//         sourceModel()->setData(index, value, ApplicationModel::IsLikedRole);
+//         break;
+//     case ApplicationModel::IsDownloadedRole:
+//         sourceModel()->setData(index, value, ApplicationModel::IsDownloadedRole);
+//         break;
+//     case ApplicationModel::VersionsRole:
+//         sourceModel()->setData(index, value, ApplicationModel::VersionsRole);
+//         break;
+//     default:
+//         return false;
+//     }
+
+//     emit dataChanged(index, index, {role});
+//     return true;
+// }
+
+void FilterProxyModel::setSourceModel(QAbstractItemModel* sourceModel)
+{
+    QSortFilterProxyModel::setSourceModel(sourceModel);
+
+    if ( !sourceModel ) {
+        return;
+    }
+}
+
+ApplicationModel* FilterProxyModel::applicationModel() const {
+    return static_cast<ApplicationModel*>(sourceModel());
 }
 
 //
@@ -36,6 +124,7 @@ void FilterProxyModel::setShowInstalled(bool show)
 
 bool FilterProxyModel::filterAcceptsRow(int row, const QModelIndex& parent) const
 {
+    // QModelIndex index = this->index(row, 0 , parent);
     QModelIndex index = sourceModel()->index(row, 0, parent);
 
     bool isDownloaded = sourceModel()->data(index, ApplicationModel::IsDownloadedRole).toBool();

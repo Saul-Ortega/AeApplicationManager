@@ -5,6 +5,7 @@
 #include <QItemSelection>
 #include "applicationmodel.h"
 #include "versionmodel.h"
+#include "filterproxymodel.h"
 
 namespace Ui {
 class ApplicationInfoDialog;
@@ -21,7 +22,7 @@ class ApplicationInfoDialog : public QDialog
 public:
     explicit ApplicationInfoDialog(QWidget *parent = nullptr);
     ~ApplicationInfoDialog();
-    void setApplicationModel(ApplicationModel* model);
+    void setApplicationModel(FilterProxyModel* model);
 
     void loadApplication(const QModelIndex& index);
     void loadVersion(const Version& version);
@@ -32,7 +33,7 @@ signals:
 
 private:
     Ui::ApplicationInfoDialog *ui;
-    ApplicationModel* mApplicationModel;
+    FilterProxyModel* mModel;
     QModelIndex mIndex;
     Version mVersion;
 };

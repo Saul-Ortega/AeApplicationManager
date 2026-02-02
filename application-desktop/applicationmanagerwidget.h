@@ -5,6 +5,7 @@
 #include "QItemSelectionModel"
 #include "applicationmodel.h"
 #include "versionmodel.h"
+#include "filterproxymodel.h"
 
 namespace Ui {
 class ApplicationManagerWidget;
@@ -18,7 +19,7 @@ public:
     explicit ApplicationManagerWidget(QWidget *parent = nullptr);
     ~ApplicationManagerWidget();
 
-    void setApplicationModel(ApplicationModel* applicationModel);
+    void setApplicationModel(FilterProxyModel* model);
     void setApplicationSelectionModel(QItemSelectionModel* applicationSelectionModel);
     void setVersionModel(VersionModel* versionModel);
     void setVersionSelectionModel(QItemSelectionModel* versionSelectionModel);
@@ -28,7 +29,7 @@ private slots:
 
 private:
     Ui::ApplicationManagerWidget *ui;
-    ApplicationModel* mApplicationModel;
+    FilterProxyModel* mModel;
     VersionModel* mVersionModel;
 };
 
