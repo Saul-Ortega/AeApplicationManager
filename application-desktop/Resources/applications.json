@@ -6,7 +6,7 @@
         "id": 1,
         "image_url": ":/apps/aeCloud.png",
         "is_downloaded": false,
-        "is_liked": true,
+        "is_liked": false,
         "name": "aeCloud",
         "versions": [
             {
@@ -30,7 +30,7 @@
     {
         "description": "AeMaps es una aplicación para visualizar, gestionar y consultar mapas y datos geoespaciales de Aerolaser.",
         "executable_file": "aeMaps.exe",
-        "expiration_date": "2026-12-01",
+        "expiration_date": "2027-12-15",
         "id": 2,
         "image_url": ":/apps/aeMaps.png",
         "is_downloaded": false,
@@ -38,26 +38,26 @@
         "name": "aeMaps",
         "versions": [
             {
-                "expiration_date": "2026-08-10",
+                "expiration_date": "2027-06-20",
                 "id": 1,
                 "is_installed": false,
-                "last_modification": "2023-08-15",
+                "last_modification": "2024-03-10",
                 "name": "1.0.0",
                 "size": 2.5
             },
             {
-                "expiration_date": "2026-03-22",
+                "expiration_date": "2027-04-05",
                 "id": 2,
                 "is_installed": false,
-                "last_modification": "2024-04-01",
+                "last_modification": "2025-01-18",
                 "name": "1.1.0",
                 "size": 3.1
             },
             {
-                "expiration_date": "2026-01-30",
+                "expiration_date": "2027-02-12",
                 "id": 3,
                 "is_installed": false,
-                "last_modification": "2025-02-12",
+                "last_modification": "2025-11-03",
                 "name": "1.2.0",
                 "size": 3.4
             }
@@ -67,7 +67,7 @@
         "description": "AeScann es una aplicación para capturar, procesar y revisar escaneos láser y datos de campo de Aerolaser.",
         "executable_file": "aeScann.exe",
         "expiration_date": "2026-12-01",
-        "id": 2,
+        "id": 3,
         "image_url": ":/apps/aeScann.png",
         "is_downloaded": false,
         "is_liked": false,
@@ -107,7 +107,7 @@
         "id": 3,
         "image_url": ":/apps/aeSync.png",
         "is_downloaded": false,
-        "is_liked": true,
+        "is_liked": false,
         "name": "aeSync",
         "versions": [
             {
@@ -180,7 +180,7 @@
         "id": 5,
         "image_url": ":/apps/aeViewer.png",
         "is_downloaded": false,
-        "is_liked": true,
+        "is_liked": false,
         "name": "aeViewer",
         "versions": [
             {
