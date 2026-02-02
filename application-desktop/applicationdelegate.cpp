@@ -6,6 +6,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QApplication>
+#include <QToolTip>
 
 ApplicationDelegate::ApplicationDelegate(QObject* parent) : QStyledItemDelegate(parent)
 {
@@ -23,6 +24,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     QString name = index.model()->data(index, ApplicationModel::NameRole).toString();
     bool isDownloaded = index.model()->data(index, ApplicationModel::IsDownloadedRole).toBool();
     bool isLiked = index.model()->data(index, ApplicationModel::IsLikedRole).toBool();
+    bool isUpdated = index.model()->data(index, ApplicationModel::UpdateRole).toBool();
 
     //VARIABLES COMUNES
     qreal borderRadius = 5;
@@ -31,6 +33,29 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
     QRect mainRectangle(option.rect.topLeft(), QSize(180, 190));
     painter->drawRoundedRect(mainRectangle, borderRadius, borderRadius);
+
+    if ( !isUpdated ) {
+        //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
+        int margin = 5;
+        QSize notificationButtonRectangleSize = QSize(20, 20);
+        QPoint notificationButtonRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - notificationButtonRectangleSize.width()) - margin, mainRectangle.top() + margin);
+        QRect notificationButtonRectangle(notificationButtonRectanglePoint, notificationButtonRectangleSize);
+        painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+
+        //BOTÓN DE NOTIFICACIÓN
+        // QPixmap bellPixmap = QPixmap(":/assets/campana.png");
+        // bellPixmap = bellPixmap.scaled(QSize(15, 15), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        // QPoint bellPixmapPoint = QPoint(notificationRectangle.left() + (notificationRectangle.width() - bellPixmap.width()) / 2, notificationRectangle.top() + (notificationRectangle.height() - bellPixmap.height()) / 2);
+        // painter->drawPixmap(bellPixmapPoint, bellPixmap);
+
+        QStyleOptionButton notificationButton;
+        notificationButton.rect = notificationButtonRectangle;
+        notificationButton.icon = QIcon(":/assets/campana.png");
+        notificationButton.iconSize = QSize(15, 15);
+        notificationButton.state = QStyle::State_Enabled;
+
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &notificationButton, painter);
+    }
 
     //CONTENEDOR QUE TENDRÁ LA IMÁGEN
     QSize imageRectangleSize = QSize(140, 70);
@@ -119,14 +144,23 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
         int x = rect.left() + 20;
         int y = rect.top() + 154;
 
+        int notificationButtonWidth = 20;
         int likedButtonWidth = 30;
         int infoButtonWidth = 70;
         int installedButtonWidth = 30;
         int buttonsHeight = 40;
 
+        QRect notificationButtonRectangle = QRect(QPoint(rect.right() - 5 - notificationButtonWidth, rect.top() + 5), QSize(notificationButtonWidth, notificationButtonWidth));
         QRect likedButtonRectangle = QRect(QPoint(x, y), QSize(likedButtonWidth, buttonsHeight));
         QRect infoButtonRectangle = QRect(QPoint(likedButtonRectangle.x() + likedButtonWidth + 5, y), QSize(infoButtonWidth, buttonsHeight));
         QRect installedButtonRectangle = QRect(QPoint(infoButtonRectangle.x() + infoButtonWidth + 5, y), QSize(installedButtonWidth, buttonsHeight));
+
+        if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
+            bool isUpdated = model->data(index, ApplicationModel::UpdateRole).toBool();
+            if ( !isUpdated ) {
+                QToolTip::showText(QPoint(QCursor::pos().x() - 100, QCursor::pos().y()), "Tienes actualizaciones pendientes");
+            }
+        }
 
         if ( likedButtonRectangle.contains(mouseEvent->pos()) ) {
             emit isLikedButtonClicked(index);

@@ -7,6 +7,7 @@
         <file>CorazonSeleccionado.png</file>
         <file>Icon_Download.png</file>
         <file>Icon_Info.png</file>
+        <file>campana.png</file>
     </qresource>
     <qresource prefix="/">
         <file>apps/aeCloud.png</file>
