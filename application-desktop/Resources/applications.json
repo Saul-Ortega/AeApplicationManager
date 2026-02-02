@@ -144,7 +144,6 @@
         "is_downloaded": false,
         "is_liked": false,
         "name": "aeTools",
-        "update": false,
         "versions": [
             {
                 "expiration_date": "2026-10-18",

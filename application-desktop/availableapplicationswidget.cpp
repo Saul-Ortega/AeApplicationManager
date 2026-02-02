@@ -34,10 +34,7 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
 
     //BOTON YA MARCADO
     ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-
-    // FONDO EN BLANCO
-    ui->frame->setStyleSheet("background-color: #FFFFFF;");
-    ui->listViewAvailable->setStyleSheet("background-color: #FFFFFF; border: none;");
+    ui->btn_Deseados->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
 
     connect(ui->btn_Disponibles, &QPushButton::clicked, this, &AvailableApplicationsWidget::onAvailableClicked);
     connect(ui->btn_Deseados, &QPushButton::clicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
@@ -70,7 +67,7 @@ void AvailableApplicationsWidget::onAvailableClicked()
 {
     //ALTERNAR LOS COLORES AL PULSAR
     ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->btn_Deseados->setStyleSheet("");
+    ui->btn_Deseados->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
 
     //SI PULSA EL BOTON NO SOLO MOSTRARA LOS FAVORITOS
     if(mProxyModel){
@@ -83,7 +80,7 @@ void AvailableApplicationsWidget::onFavoriteClicked(){
 
     //ALTERNAR LOS COLORES AL PULSAR
     ui->btn_Deseados->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->btn_Disponibles->setStyleSheet("");
+    ui->btn_Disponibles->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
 
     //SI PULSA EL BOTON SOLO MOSTRARA LOS FAVORITOS
     if(mProxyModel){
