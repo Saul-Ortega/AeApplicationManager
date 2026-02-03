@@ -225,6 +225,18 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
 QSize ApplicationDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
+    QSize size;
+    if ( mIsMenuStyle ) {
+        qDebug() << "W Wd: " << option.widget->width();
+        // size = QSize(option.rect.width() - 5, 60);
+        size = QSize(option.widget->width() - 5, 60);
+    } else {
+        size = QSize(180, 190);
+    }
+
+    qDebug() << "Width: " <<size.width();
+    qDebug() << "Height: " << size.height();
+
     return mIsMenuStyle ? QSize(option.rect.width() - 5, 60) : QSize(180, 190);
 }
 
