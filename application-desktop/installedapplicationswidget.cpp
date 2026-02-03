@@ -18,17 +18,9 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     ui->listViewInstalled->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     //ENVÍA LA SEÑAL DE SI EL USUARIO QUIERE LA VISTA DE TIPO GRID O MENU
-    connect(this, &InstalledApplicationsWidget::changeToMenuStyle, delegate, &ApplicationDelegate::onMenuStyleClicked);
-    // connect(this, &InstalledApplicationsWidget::changeToMenuStyle, [this] (const bool& isMenuStyle) {
-    //     ui->listViewInstalled->viewport()->update();
-    //     emit changeToMenuStyle(isMenuStyle);
-    // });
-    connect(this, &InstalledApplicationsWidget::changeToMenuStyle, this, [this](){
-        // ui->listViewInstalled->setItemDelegate(nullptr);
-        // ui->listViewInstalled->setItemDelegate(delegate);
-
-        ui->listViewInstalled->viewport()->update();
-
+    connect(this, &InstalledApplicationsWidget::changeToMenuStyle, delegate, [this, delegate] (const bool& isMenuStyle) {
+        ui->listViewInstalled->reset();
+        emit delegate->onMenuStyleClicked(isMenuStyle);
     });
 
 
