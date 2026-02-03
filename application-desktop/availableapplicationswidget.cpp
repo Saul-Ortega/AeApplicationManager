@@ -24,6 +24,12 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->listViewAvailable->verticalScrollBar()->setSingleStep(10);
 
+    //ENVÍA LA SEÑAL DE SI EL USUARIO QUIERE LA VISTA DE TIPO GRID O MENU
+    connect(this, &AvailableApplicationsWidget::changeToMenuStyle, delegate, [this, delegate] (const bool& isMenuStyle) {
+        ui->listViewAvailable->reset();
+        emit delegate->onMenuStyleClicked(isMenuStyle);
+    });
+
     connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
         ui->listViewAvailable->viewport()->update();
     });
