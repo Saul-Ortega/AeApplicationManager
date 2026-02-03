@@ -55,7 +55,7 @@
      </property>
      <property name="styleSheet">
       <string notr="true">QFrame {
-	background-color: white;
+	background-color: &quot;#d1d1d1&quot;;
 	border-radius: 5px;
 	border: 2px solid &quot;#4fa0d8&quot;;
 }</string>
@@ -119,7 +119,8 @@
         <property name="styleSheet">
          <string notr="true">QLineEdit {
 	border: none;
-	background-color: white;
+	background-color: &quot;#d1d1d1&quot;;
+	placeholder-text-color: black;
 }</string>
         </property>
         <property name="text">
@@ -146,7 +147,7 @@
      </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
-	background-color: white;
+	background-color: &quot;#d1d1d1&quot;;
 	border-radius: 5px;
 	border: 2px solid &quot;#4fa0d8&quot;;
 }</string>

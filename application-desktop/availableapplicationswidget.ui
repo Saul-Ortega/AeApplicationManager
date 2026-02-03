@@ -62,13 +62,32 @@
      </property>
      <item>
       <widget class="QPushButton" name="btn_Disponibles">
+       <property name="minimumSize">
+        <size>
+         <width>110</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>14</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color: #91c3e8;
+	border: 2px solid #4fa0d8;
+	border-radius: 5px;
+	font-weight: bold;
+}
+
+QPushButton:hover {
+	background-color: #4fa0d8;
+}</string>
        </property>
        <property name="text">
         <string>Disponibles</string>
@@ -77,6 +96,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="btn_Deseados">
+       <property name="minimumSize">
+        <size>
+         <width>110</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -86,10 +111,23 @@
        <property name="font">
         <font>
          <pointsize>14</pointsize>
+         <bold>true</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color: #91c3e8;
+	border: 2px solid #4fa0d8;
+	border-radius: 5px;
+	font-weight: bold;
+}
+
+QPushButton:hover {
+	background-color: #4fa0d8;
+}</string>
        </property>
        <property name="text">
         <string>Deseados</string>

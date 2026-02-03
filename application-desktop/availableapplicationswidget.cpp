@@ -34,10 +34,6 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     });
     connect(delegate, &ApplicationDelegate::isDownloadedButtonClicked, this, &AvailableApplicationsWidget::onDownloadClicked);
 
-    //BOTON YA MARCADO
-    ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->btn_Deseados->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
-
     connect(ui->btn_Disponibles, &QPushButton::clicked, this, &AvailableApplicationsWidget::onAvailableClicked);
     connect(ui->btn_Deseados, &QPushButton::clicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
 }
@@ -68,8 +64,30 @@ void AvailableApplicationsWidget::onLikedClicked(const QModelIndex& index)
 void AvailableApplicationsWidget::onAvailableClicked()
 {
     //ALTERNAR LOS COLORES AL PULSAR
-    ui->btn_Disponibles->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->btn_Deseados->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
+    ui->btn_Disponibles->setStyleSheet(R"(
+    QPushButton {
+        background-color: #4fa0d8;
+        border: 2px solid #4fa0d8;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #4fa0d8;
+    }
+    )");
+    ui->btn_Deseados->setStyleSheet(R"(
+    QPushButton {
+        background-color: #91c3e8;
+        border: 2px solid #4fa0d8;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #4fa0d8;
+    }
+    )");
 
     //SI PULSA EL BOTON NO SOLO MOSTRARA LOS FAVORITOS
     if(mProxyModel){
@@ -81,8 +99,30 @@ void AvailableApplicationsWidget::onAvailableClicked()
 void AvailableApplicationsWidget::onFavoriteClicked(){
 
     //ALTERNAR LOS COLORES AL PULSAR
-    ui->btn_Deseados->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->btn_Disponibles->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
+    ui->btn_Disponibles->setStyleSheet(R"(
+    QPushButton {
+        background-color: #91c3e8;
+        border: 2px solid #4fa0d8;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #4fa0d8;
+    }
+    )");
+    ui->btn_Deseados->setStyleSheet(R"(
+    QPushButton {
+        background-color: #4fa0d8;
+        border: 2px solid #4fa0d8;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #4fa0d8;
+    }
+    )");
 
     //SI PULSA EL BOTON SOLO MOSTRARA LOS FAVORITOS
     if(mProxyModel){

@@ -39,6 +39,12 @@
     <layout class="QHBoxLayout" name="frame">
      <item>
       <widget class="QPushButton" name="installedBtn">
+       <property name="minimumSize">
+        <size>
+         <width>110</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -49,7 +55,16 @@
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: #E0E0E0; font-weight: bold;</string>
+        <string notr="true">QPushButton {
+	background-color: #91c3e8;
+	border: 2px solid #4fa0d8;
+	border-radius: 5px;
+	font-weight: bold;
+}
+
+QPushButton:hover {
+	background-color: #4fa0d8;
+}</string>
        </property>
        <property name="text">
         <string>Instalados</string>
@@ -58,6 +73,12 @@
      </item>
      <item>
       <widget class="QPushButton" name="favoriteBtn">
+       <property name="minimumSize">
+        <size>
+         <width>110</width>
+         <height>0</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -68,7 +89,16 @@
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">background-color: #E0E0E0; font-weight: bold;</string>
+        <string notr="true">QPushButton {
+	background-color: #91c3e8;
+	border: 2px solid #4fa0d8;
+	border-radius: 5px;
+	font-weight: bold;
+}
+
+QPushButton:hover {
+	background-color: #4fa0d8;
+}</string>
        </property>
        <property name="text">
         <string>Favoritos</string>

@@ -22,16 +22,12 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
         ui->listViewInstalled->viewport()->update();
     });
 
-
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &InstalledApplicationsWidget::onLikedClicked);
     connect(delegate, &ApplicationDelegate::infoButtonClicked, this, [this] (const QModelIndex &index) {
         QModelIndex sourceIndex = mProxyModel->mapToSource(index);
         emit infoClicked(sourceIndex);
     });
     connect(delegate, &ApplicationDelegate::isDownloadedButtonClicked, this, &InstalledApplicationsWidget::onDeleteClicked);
-
-    ui->installedBtn->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->favoriteBtn->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
 
     connect(ui->installedBtn, &QPushButton::clicked, this, &InstalledApplicationsWidget::onInstalledClicked);
     connect(ui->favoriteBtn, &QPushButton::clicked, this, &InstalledApplicationsWidget::onFavoriteClicked);
@@ -76,8 +72,30 @@ void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
 void InstalledApplicationsWidget::onInstalledClicked()
 {
     //ALTERNAR LOS COLORES AL PULSAR
-    ui->installedBtn->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->favoriteBtn->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
+    ui->installedBtn->setStyleSheet(R"(
+    QPushButton {
+        background-color: #4fa0d8;
+        border: 2px solid #4fa0d8;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #4fa0d8;
+    }
+    )");
+    ui->favoriteBtn->setStyleSheet(R"(
+    QPushButton {
+        background-color: #91c3e8;
+        border: 2px solid #4fa0d8;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #4fa0d8;
+    }
+    )");
 
     //SI PULSA EL BOTON NO SOLO MOSTRARA LOS FAVORITOS
     if(mProxyModel){
@@ -89,11 +107,33 @@ void InstalledApplicationsWidget::onInstalledClicked()
 void InstalledApplicationsWidget::onFavoriteClicked()
 {
     //ALTERNAR LOS COLORES AL PULSAR
-    ui->favoriteBtn->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->installedBtn->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
+    ui->installedBtn->setStyleSheet(R"(
+    QPushButton {
+        background-color: #91c3e8;
+        border: 2px solid #4fa0d8;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #4fa0d8;
+    }
+    )");
+    ui->favoriteBtn->setStyleSheet(R"(
+    QPushButton {
+        background-color: #4fa0d8;
+        border: 2px solid #4fa0d8;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    QPushButton:hover {
+        background-color: #4fa0d8;
+    }
+    )");
 
     //SI PULSA EL BOTON SOLO MOSTRARA LOS FAVORITOS
-    if(mProxyModel){
+    if ( mProxyModel ) {
         mProxyModel->setShowInstalled(true);
         mProxyModel->setShowOnlyFavorites(true);
     }
@@ -101,7 +141,7 @@ void InstalledApplicationsWidget::onFavoriteClicked()
 
 void InstalledApplicationsWidget::onSearchText(const QString& text)
 {
-    if(mProxyModel){
+    if ( mProxyModel ) {
         mProxyModel->setFilterText(text);
     }
 }
