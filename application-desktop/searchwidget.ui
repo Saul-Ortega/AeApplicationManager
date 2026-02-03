@@ -156,7 +156,7 @@
      </property>
      <property name="icon">
       <iconset resource="Resource.qrc">
-       <normaloff>:/assets/grid.png</normaloff>:/assets/grid.png</iconset>
+       <normaloff>:/assets/menu.png</normaloff>:/assets/menu.png</iconset>
      </property>
      <property name="iconSize">
       <size>

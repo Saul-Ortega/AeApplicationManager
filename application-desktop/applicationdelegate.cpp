@@ -249,7 +249,7 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
         //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
         if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
             if ( !isUpdated ) {
-                QToolTip::showText(QPoint(QCursor::pos().x() - 100, QCursor::pos().y()), "Tienes actualizaciones pendientes");
+                QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), "Tienes actualizaciones pendientes");
             }
         }
 
