@@ -24,6 +24,8 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     });
     connect(delegate, &ApplicationDelegate::isDownloadedButtonClicked, this, &InstalledApplicationsWidget::onDeleteClicked);
 
+    ui->installedBtn->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
+    ui->favoriteBtn->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
 
     connect(ui->installedBtn, &QPushButton::clicked, this, &InstalledApplicationsWidget::onInstalledClicked);
     connect(ui->favoriteBtn, &QPushButton::clicked, this, &InstalledApplicationsWidget::onFavoriteClicked);
@@ -69,7 +71,7 @@ void InstalledApplicationsWidget::onInstalledClicked()
 {
     //ALTERNAR LOS COLORES AL PULSAR
     ui->installedBtn->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->favoriteBtn->setStyleSheet("");
+    ui->favoriteBtn->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
 
     //SI PULSA EL BOTON NO SOLO MOSTRARA LOS FAVORITOS
     if(mProxyModel){
@@ -82,7 +84,7 @@ void InstalledApplicationsWidget::onFavoriteClicked()
 {
     //ALTERNAR LOS COLORES AL PULSAR
     ui->favoriteBtn->setStyleSheet("background-color: #E0E0E0; font-weight: bold;");
-    ui->installedBtn->setStyleSheet("");
+    ui->installedBtn->setStyleSheet("background-color: #FFFFFF; font-weight: normal;");
 
     //SI PULSA EL BOTON SOLO MOSTRARA LOS FAVORITOS
     if(mProxyModel){

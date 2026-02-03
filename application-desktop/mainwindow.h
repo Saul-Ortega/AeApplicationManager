@@ -7,6 +7,7 @@
 #include <applicationmodel.h>
 #include <versionmodel.h>
 #include "QItemSelectionModel"
+#include <QSystemTrayIcon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,6 +25,11 @@ public:
 
 public slots:
     void displayApplicationManager();
+
+    void onTrayIconActivated(QSystemTrayIcon::ActivationReason reason);
+
+protected:
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     Ui::MainWindow *ui;
