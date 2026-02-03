@@ -8,6 +8,8 @@
         <file>Icon_Download.png</file>
         <file>Icon_Info.png</file>
         <file>campana.png</file>
+        <file>grid.png</file>
+        <file>menu.png</file>
     </qresource>
     <qresource prefix="/">
         <file>apps/aeCloud.png</file>

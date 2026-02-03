@@ -19,6 +19,12 @@ signals:
     void isLikedButtonClicked(const QModelIndex& index);
     void infoButtonClicked(const QModelIndex& index);
     void isDownloadedButtonClicked(const QModelIndex& index);
+
+public slots:
+    void onMenuStyleClicked(const bool& isMenuStyle);
+
+private:
+    bool mIsMenuStyle;
 };
 
 #endif // APPLICATIONDELEGATE_H

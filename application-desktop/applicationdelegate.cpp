@@ -8,7 +8,9 @@
 #include <QApplication>
 #include <QToolTip>
 
-ApplicationDelegate::ApplicationDelegate(QObject* parent) : QStyledItemDelegate(parent)
+ApplicationDelegate::ApplicationDelegate(QObject* parent)
+    : QStyledItemDelegate(parent)
+    , mIsMenuStyle(false)
 {
 }
 
@@ -30,108 +32,173 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     qreal borderRadius = 5;
     qreal borderRadiusCircle = 100;
 
-    //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
-    QRect mainRectangle(option.rect.topLeft(), QSize(180, 190));
-    painter->drawRoundedRect(mainRectangle, borderRadius, borderRadius);
+    //SI EL USUARIO QUIERE EL TIPO DE LISTA EN GRID
+    if ( !mIsMenuStyle ) {
+        //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
+        QRect mainRectangle(option.rect.topLeft(), QSize(180, 190));
+        painter->drawRoundedRect(mainRectangle, borderRadius, borderRadius);
 
-    if ( !isUpdated ) {
-        //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
-        int margin = 5;
-        QSize notificationButtonRectangleSize = QSize(20, 20);
-        QPoint notificationButtonRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - notificationButtonRectangleSize.width()) - margin, mainRectangle.top() + margin);
-        QRect notificationButtonRectangle(notificationButtonRectanglePoint, notificationButtonRectangleSize);
-        painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+        if ( !isUpdated ) {
+            //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
+            int margin = 5;
+            QSize notificationButtonRectangleSize = QSize(20, 20);
+            QPoint notificationButtonRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - notificationButtonRectangleSize.width()) - margin, mainRectangle.top() + margin);
+            QRect notificationButtonRectangle(notificationButtonRectanglePoint, notificationButtonRectangleSize);
+            painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
 
-        //BOTÓN DE NOTIFICACIÓN
-        // QPixmap bellPixmap = QPixmap(":/assets/campana.png");
-        // bellPixmap = bellPixmap.scaled(QSize(15, 15), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-        // QPoint bellPixmapPoint = QPoint(notificationRectangle.left() + (notificationRectangle.width() - bellPixmap.width()) / 2, notificationRectangle.top() + (notificationRectangle.height() - bellPixmap.height()) / 2);
-        // painter->drawPixmap(bellPixmapPoint, bellPixmap);
+            QPixmap notificationButtonPixmap(":/assets/campana.png");
+            notificationButtonPixmap = notificationButtonPixmap.scaled(QSize(15, 15), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            QPoint notificationButtonPixmapPoint = QPoint(notificationButtonRectangle.left() + (notificationButtonRectangle.width() - notificationButtonPixmap.width()) / 2, notificationButtonRectangle.top() + (notificationButtonRectangle.height() - notificationButtonPixmap.height()) / 2);
+            painter->drawPixmap(notificationButtonPixmapPoint, notificationButtonPixmap);
+        }
 
-        QStyleOptionButton notificationButton;
-        notificationButton.rect = notificationButtonRectangle;
-        notificationButton.icon = QIcon(":/assets/campana.png");
-        notificationButton.iconSize = QSize(15, 15);
-        notificationButton.state = QStyle::State_Enabled;
+        //CONTENEDOR QUE TENDRÁ LA IMÁGEN
+        QSize imageRectangleSize = QSize(140, 70);
+        QPoint imageRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - imageRectangleSize.width()) / 2, mainRectangle.top() + 25);
+        QRect imageRectangle(imageRectanglePoint, imageRectangleSize);
+        painter->drawRoundedRect(imageRectangle, borderRadius, borderRadius);
 
-        QApplication::style()->drawControl(QStyle::CE_PushButton, &notificationButton, painter);
+        //IMÁGEN DE LA APLICACIÓN
+        QPixmap pixmap = QPixmap(imageUrl);
+        pixmap = pixmap.scaled(QSize(60, 60), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPoint pixmapPoint = QPoint(imageRectangle.left() + (imageRectangle.width() - pixmap.width()) / 2, imageRectangle.top() + (imageRectangle.height() - pixmap.height()) / 2);
+        painter->drawPixmap(pixmapPoint, pixmap);
+
+        //NOMBRE DE APLICACIÓN
+        QPoint nameRectanglePoint = QPoint(mainRectangle.left(), imageRectangle.bottom());
+        QRect nameRectangle(nameRectanglePoint, QSize(mainRectangle.width(), 40));
+        painter->drawText(nameRectangle, Qt::AlignCenter, name);
+
+        //CONTENEDOR DE BOTONES
+        QSize buttonsRectangleSize = QSize(140, 40);
+        QPoint buttonsRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - buttonsRectangleSize.width()) / 2, nameRectangle.top() + 50);
+        QRect buttonsRectangle(buttonsRectanglePoint, buttonsRectangleSize);
+
+        //CONTENEDOR DE BOTÓN DE FAVORITOS
+        QSize likedButtonRectangleSize = QSize(30, 30);
+        QPoint likedButtonRectanglePoint = QPoint(buttonsRectangle.left(), buttonsRectangle.top());
+        QRect likedButtonRectangle = QRect(likedButtonRectanglePoint, likedButtonRectangleSize);
+        painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+
+        //BOTÓN DE FAVORITOS
+        QPixmap likedButtonPixmap(isLiked ? ":/assets/CorazonSeleccionado.png" : ":/assets/Corazon.png");
+        likedButtonPixmap = likedButtonPixmap.scaled(QSize(25, 25), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPoint likedButtonPixmapPoint = QPoint(likedButtonRectangle.left() + (likedButtonRectangle.width() - likedButtonPixmap.width()) / 2, likedButtonRectangle.top() + (likedButtonRectangle.height() - likedButtonPixmap.height()) / 2);
+        painter->drawPixmap(likedButtonPixmapPoint, likedButtonPixmap);
+
+        //CONTENEDOR DE BOTÓN DE DETALLE O INFORMACIÓN
+        int totalMargin = 10;
+        qreal borderRadiusInfoButtonRectangle = 18;
+        QSize infoButtonRectangleSize = QSize(buttonsRectangle.width() - (likedButtonRectangle.width() * 2) - totalMargin, 30);
+        QPoint infoButtonRectanglePoint = QPoint(likedButtonRectangle.right() + (totalMargin / 2), buttonsRectangle.top());
+        QRect infoButtonRectangle = QRect(infoButtonRectanglePoint, infoButtonRectangleSize);
+        painter->drawRoundedRect(infoButtonRectangle, borderRadiusInfoButtonRectangle, borderRadiusInfoButtonRectangle);
+
+        //BOTÓN DE DETALLE O INFORMACIÓN
+        QPixmap infoButtonPixmap(":/assets/Icon_Info.png");
+        infoButtonPixmap = infoButtonPixmap.scaled(QSize(25, 25), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPoint infoButtonPixmapPoint = QPoint(infoButtonRectangle.left() + (infoButtonRectangle.width() - infoButtonPixmap.width()) / 2, infoButtonRectangle.top() + (infoButtonRectangle.height() - infoButtonPixmap.height()) / 2);
+        painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
+
+        //CONTENEDOR DE BOTÓN DE INSTALADO
+        QSize installedButtonRectangleSize = QSize(30, 30);
+        QPoint installedButtonRectanglePoint = QPoint(buttonsRectangle.right() - installedButtonRectangleSize.width(), buttonsRectangle.top());
+        QRect installedButtonRectangle = QRect(installedButtonRectanglePoint, installedButtonRectangleSize);
+        painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+
+        //BOTÓN DE INSTALADO
+        QPixmap installedButtonPixmap(isDownloaded ? ":/assets/papelera.png" : ":/assets/Icon_Download.png");
+        installedButtonPixmap = installedButtonPixmap.scaled(QSize(25, 25), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPoint installedButtonPixmapPoint = QPoint(installedButtonRectangle.left() + (installedButtonRectangle.width() - installedButtonPixmap.height()) / 2, installedButtonRectangle.top() + (installedButtonRectangle.height() - installedButtonPixmap.height()) / 2);
+        painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
+    } else {
+        //SI EL USUARIO QUIERE EL TIPO DE LISTA EN MENU
+        //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
+        QRect mainRectangle(option.rect.topLeft(), QSize(option.rect.width() - 5, 60));
+        painter->drawRoundedRect(mainRectangle, borderRadius, borderRadius);
+
+        if ( !isUpdated ) {
+            //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
+            int margin = 5;
+            QSize notificationButtonRectangleSize = QSize(20, 20);
+            QPoint notificationButtonRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - notificationButtonRectangleSize.width()) - margin, mainRectangle.top() + margin);
+            QRect notificationButtonRectangle(notificationButtonRectanglePoint, notificationButtonRectangleSize);
+            painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+
+            QPixmap notificationButtonPixmap(":/assets/campana.png");
+            notificationButtonPixmap = notificationButtonPixmap.scaled(QSize(15, 15), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+            QPoint notificationButtonPixmapPoint = QPoint(notificationButtonRectangle.left() + (notificationButtonRectangle.width() - notificationButtonPixmap.width()) / 2, notificationButtonRectangle.top() + (notificationButtonRectangle.height() - notificationButtonPixmap.height()) / 2);
+            painter->drawPixmap(notificationButtonPixmapPoint, notificationButtonPixmap);
+        }
+
+        //CONTENEDOR QUE TENDRÁ LA IMÁGEN
+        QSize imageRectangleSize = QSize(180, 50);
+        QPoint imageRectanglePoint = QPoint(mainRectangle.left() + 30, mainRectangle.top() + (mainRectangle.height() - imageRectangleSize.height()) / 2);
+        QRect imageRectangle(imageRectanglePoint, imageRectangleSize);
+        painter->drawRoundedRect(imageRectangle, borderRadius, borderRadius);
+
+        //IMÁGEN DE LA APLICACIÓN
+        QPixmap pixmap = QPixmap(imageUrl);
+        pixmap = pixmap.scaled(QSize(imageRectangle.width() - 10, imageRectangle.height() - 10), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPoint pixmapPoint = QPoint(imageRectangle.left() + (imageRectangle.width() - pixmap.width()) / 2, imageRectangle.top() + (imageRectangle.height() - pixmap.height()) / 2);
+        painter->drawPixmap(pixmapPoint, pixmap);
+
+        //NOMBRE DE LA APLICACIÓN
+        QSize nameRectangleSize = QSize(150, 50);
+        QPoint nameRectanglePoint = QPoint(imageRectangle.right() + 30, mainRectangle.top() + (mainRectangle.height() - nameRectangleSize.height()) / 2);
+        QRect nameRectangle(nameRectanglePoint, nameRectangleSize);
+        painter->drawText(nameRectangle, Qt::AlignCenter, name);
+
+        //CONTENEDOR DE BOTONES
+        QSize buttonsRectangleSize = QSize(300, mainRectangle.height());
+        QPoint buttonsRectanglePoint = QPoint(mainRectangle.right() - 30 - buttonsRectangleSize.width(), mainRectangle.top() + (mainRectangle.height() - buttonsRectangleSize.height()) / 2);
+        QRect buttonsRectangle(buttonsRectanglePoint, buttonsRectangleSize);
+
+        //CONTENEDOR DE BOTÓN DE FAVORITOS
+        QSize likedButtonRectangleSize = QSize(50, 50);
+        QPoint likedButtonRectanglePoint = QPoint(buttonsRectangle.left(), buttonsRectangle.top() + (buttonsRectangleSize.height() - likedButtonRectangleSize.height()) / 2);
+        QRect likedButtonRectangle = QRect(likedButtonRectanglePoint, likedButtonRectangleSize);
+        painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+
+        //BOTÓN DE FAVORITOS
+        QPixmap likedButtonPixmap(isLiked ? ":/assets/CorazonSeleccionado.png" : ":/assets/Corazon.png");
+        likedButtonPixmap = likedButtonPixmap.scaled(QSize(50, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPoint likedButtonPixmapPoint = QPoint(likedButtonRectangle.left() + (likedButtonRectangle.width() - likedButtonPixmap.width()) / 2, likedButtonRectangle.top() + (likedButtonRectangle.height() - likedButtonPixmap.height()) / 2);
+        painter->drawPixmap(likedButtonPixmapPoint, likedButtonPixmap);
+
+        //CONTENEDOR DE BOTÓN DE DETALLE O INFORMACIÓN
+        int totalMargin = 10;
+        qreal borderRadiusInfoButtonRectangle = 18;
+        QSize infoButtonRectangleSize = QSize(buttonsRectangle.width() - (likedButtonRectangle.width() * 2) - totalMargin, 50);
+        QPoint infoButtonRectanglePoint = QPoint(likedButtonRectangle.right() + (totalMargin / 2), buttonsRectangle.top() + (buttonsRectangleSize.height() - infoButtonRectangleSize.height()) / 2);
+        QRect infoButtonRectangle = QRect(infoButtonRectanglePoint, infoButtonRectangleSize);
+        painter->drawRoundedRect(infoButtonRectangle, borderRadiusInfoButtonRectangle, borderRadiusInfoButtonRectangle);
+
+        //BOTÓN DE DETALLE O INFORMACIÓN
+        QPixmap infoButtonPixmap(":/assets/Icon_Info.png");
+        infoButtonPixmap = infoButtonPixmap.scaled(QSize(45, 45), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPoint infoButtonPixmapPoint = QPoint(infoButtonRectangle.left() + (infoButtonRectangle.width() - infoButtonPixmap.width()) / 2, infoButtonRectangle.top() + (infoButtonRectangle.height() - infoButtonPixmap.height()) / 2);
+        painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
+
+        //CONTENEDOR DE BOTÓN DE INSTALADO
+        QSize installedButtonRectangleSize = QSize(50, 50);
+        QPoint installedButtonRectanglePoint = QPoint(buttonsRectangle.right() - installedButtonRectangleSize.width(), buttonsRectangle.top() + (buttonsRectangleSize.height() - installedButtonRectangleSize.height()) / 2);
+        QRect installedButtonRectangle = QRect(installedButtonRectanglePoint, installedButtonRectangleSize);
+        painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+
+        //BOTÓN DE INSTALADO
+        QPixmap installedButtonPixmap(isDownloaded ? ":/assets/papelera.png" : ":/assets/Icon_Download.png");
+        installedButtonPixmap = installedButtonPixmap.scaled(QSize(50, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        QPoint installedButtonPixmapPoint = QPoint(installedButtonRectangle.left() + (installedButtonRectangle.width() - installedButtonPixmap.height()) / 2, installedButtonRectangle.top() + (installedButtonRectangle.height() - installedButtonPixmap.height()) / 2);
+        painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
     }
-
-    //CONTENEDOR QUE TENDRÁ LA IMÁGEN
-    QSize imageRectangleSize = QSize(140, 70);
-    QPoint imageRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - imageRectangleSize.width()) / 2, mainRectangle.top() + 25);
-    QRect imageRectangle(imageRectanglePoint, imageRectangleSize);
-    painter->drawRoundedRect(imageRectangle, borderRadius, borderRadius);
-
-    //IMAGEN
-    QPixmap pixmap = QPixmap(imageUrl);
-    pixmap = pixmap.scaled(QSize(60, 60), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    QPoint pixmapPoint = QPoint(imageRectangle.left() + (imageRectangle.width() - pixmap.width()) / 2, imageRectangle.top() + (imageRectangle.height() - pixmap.height()) / 2);
-    painter->drawPixmap(pixmapPoint, pixmap);
-
-    //NOMBRE DE APLICACIÓN
-    QPoint nameRectanglePoint = QPoint(mainRectangle.left(), imageRectangle.bottom());
-    QRect nameRectangle(nameRectanglePoint, QSize(mainRectangle.width(), 40));
-    painter->drawText(nameRectangle, Qt::AlignCenter, name);
-
-    //CONTENEDOR DE BOTONES
-    QSize buttonsRectangleSize = QSize(140, 40);
-    QPoint buttonsRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - buttonsRectangleSize.width()) / 2, nameRectangle.top() + 50);
-    QRect buttonsRectangle(buttonsRectanglePoint, buttonsRectangleSize);
-
-    //CONTENEDOR DE BOTÓN DE FAVORITOS
-    QSize likedButtonRectangleSize = QSize(30, 30);
-    QPoint likedButtonRectanglePoint = QPoint(buttonsRectangle.left(), buttonsRectangle.top());
-    QRect likedButtonRectangle = QRect(likedButtonRectanglePoint, likedButtonRectangleSize);
-    painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
-
-    //BOTÓN DE FAVORITOS
-    QStyleOptionButton likedButton;
-    likedButton.rect = likedButtonRectangle;
-    likedButton.icon = isLiked ? QIcon(":/assets/CorazonSeleccionado.png") : QIcon(":/assets/Corazon.png");
-    likedButton.iconSize = QSize(25, 25);
-    likedButton.state = QStyle::State_Enabled;
-
-    QApplication::style()->drawControl(QStyle::CE_PushButton, &likedButton, painter);
-
-    //CONTENEDOR DE BOTÓN DE DETALLE O INFORMACIÓN
-    int totalMargin = 10;
-    qreal borderRadiusInfoButtonRectangle = 18;
-    QSize infoButtonRectangleSize = QSize(buttonsRectangle.width() - (likedButtonRectangle.width() * 2) - totalMargin, 30);
-    QPoint infoButtonRectanglePoint = QPoint(likedButtonRectangle.right() + (totalMargin / 2), buttonsRectangle.top());
-    QRect infoButtonRectangle = QRect(infoButtonRectanglePoint, infoButtonRectangleSize);
-    painter->drawRoundedRect(infoButtonRectangle, borderRadiusInfoButtonRectangle, borderRadiusInfoButtonRectangle);
-
-    //BOTÓN DE DETALLE O INFORMACIÓN
-    QStyleOptionButton infoButton;
-    infoButton.rect = infoButtonRectangle;
-    infoButton.icon = QPixmap(":/assets/Icon_Info.png");
-    infoButton.iconSize = QSize(25, 25);
-    infoButton.state = QStyle::State_Enabled;
-
-    QApplication::style()->drawControl(QStyle::CE_PushButton, &infoButton, painter);
-
-    //CONTENEDOR DE BOTÓN DE INSTALADO
-    QSize installedButtonRectangleSize = QSize(30, 30);
-    QPoint installedButtonRectanglePoint = QPoint(buttonsRectangle.right() - installedButtonRectangleSize.width(), buttonsRectangle.top());
-    QRect installedButtonRectangle = QRect(installedButtonRectanglePoint, installedButtonRectangleSize);
-    painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
-
-    //BOTÓN DE INSTALADO
-    QStyleOptionButton installedButton;
-    installedButton.rect = installedButtonRectangle;
-    installedButton.icon = isDownloaded ? QIcon(":/assets/papelera.png") : QIcon(":/assets/Icon_Download.png");
-    installedButton.iconSize = QSize(25, 25);
-    installedButton.state = QStyle::State_Enabled;
-
-    QApplication::style()->drawControl(QStyle::CE_PushButton, &installedButton, painter);
 
     painter->restore();
 }
 
 QSize ApplicationDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
-    return QSize(180, 190);
+    return mIsMenuStyle ? QSize(option.rect.width() - 5, 60) : QSize(180, 190);
 }
 
 bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
@@ -141,22 +208,46 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
 
         QRect rect = option.rect;
 
-        int x = rect.left() + 20;
-        int y = rect.top() + 154;
+        bool isUpdated = model->data(index, ApplicationModel::UpdateRole).toBool();
+
+        int x;
+        int y;
 
         int notificationButtonWidth = 20;
-        int likedButtonWidth = 30;
-        int infoButtonWidth = 70;
-        int installedButtonWidth = 30;
-        int buttonsHeight = 40;
+        int likedButtonWidth;
+        int infoButtonWidth;
+        int installedButtonWidth;
+        int buttonsHeight;
 
         QRect notificationButtonRectangle = QRect(QPoint(rect.right() - 5 - notificationButtonWidth, rect.top() + 5), QSize(notificationButtonWidth, notificationButtonWidth));
-        QRect likedButtonRectangle = QRect(QPoint(x, y), QSize(likedButtonWidth, buttonsHeight));
-        QRect infoButtonRectangle = QRect(QPoint(likedButtonRectangle.x() + likedButtonWidth + 5, y), QSize(infoButtonWidth, buttonsHeight));
-        QRect installedButtonRectangle = QRect(QPoint(infoButtonRectangle.x() + infoButtonWidth + 5, y), QSize(installedButtonWidth, buttonsHeight));
+        QRect likedButtonRectangle;
+        QRect infoButtonRectangle;
+        QRect installedButtonRectangle;
 
+        if ( !mIsMenuStyle ) {
+            x = rect.left() + 20;
+            y = rect.top() + 154;
+
+            likedButtonWidth = 30;
+            infoButtonWidth = 70;
+            installedButtonWidth = 30;
+            buttonsHeight = 40;
+        } else {
+            x = rect.right() - 300 - 30;
+            y = rect.top() + 5;
+
+            likedButtonWidth = 50;
+            infoButtonWidth = 170;
+            installedButtonWidth = 50;
+            buttonsHeight = 50;
+        }
+
+        likedButtonRectangle = QRect(QPoint(x, y), QSize(likedButtonWidth, buttonsHeight));
+        infoButtonRectangle = QRect(QPoint(likedButtonRectangle.x() + likedButtonWidth + 5, y), QSize(infoButtonWidth, buttonsHeight));
+        installedButtonRectangle = QRect(QPoint(infoButtonRectangle.x() + infoButtonWidth + 5, y), QSize(installedButtonWidth, buttonsHeight));
+
+        //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
         if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
-            bool isUpdated = model->data(index, ApplicationModel::UpdateRole).toBool();
             if ( !isUpdated ) {
                 QToolTip::showText(QPoint(QCursor::pos().x() - 100, QCursor::pos().y()), "Tienes actualizaciones pendientes");
             }
@@ -176,4 +267,10 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
     }
 
     return true;
+}
+
+//SEÑALES
+void ApplicationDelegate::onMenuStyleClicked(const bool& isMenuStyle)
+{
+    mIsMenuStyle = isMenuStyle;
 }

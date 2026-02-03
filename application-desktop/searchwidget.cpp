@@ -5,6 +5,7 @@
 SearchWidget::SearchWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SearchWidget)
+    , mIsMenuStyle(false)
 {
     ui->setupUi(this);
 
@@ -16,6 +17,11 @@ SearchWidget::SearchWidget(QWidget *parent)
 
     //CUANDO CAMBIA ALGO DEL INPUT MANDA UNA SEÑAL CON EL TEXTO
     connect(ui->input, &QLineEdit::textChanged, this, &SearchWidget::searchText);
+    connect(ui->viewStyle, &QPushButton::clicked, this, [this] () {
+        mIsMenuStyle = !mIsMenuStyle;
+        ui->viewStyle->setIcon(mIsMenuStyle ? QIcon(":/assets/grid.png") : QIcon(":/assets/menu.png"));
+        emit changeToMenuStyle(mIsMenuStyle);
+    });
 }
 
 SearchWidget::~SearchWidget()

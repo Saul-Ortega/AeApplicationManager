@@ -25,6 +25,9 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
     //RECIBE LA SEÑAL DEL SEARCH Y SE LA MANDA AL METODO DE AVAILABLE APPLICATION
     connect(ui->searchWidget, &SearchWidget::searchText, ui->availableApplicationWidget, &AvailableApplicationsWidget::onSearchText);
     connect(ui->searchWidget, &SearchWidget::searchText, ui->installedApplicationWidget, &InstalledApplicationsWidget::onSearchText);
+
+    //RECIBE LA SEÑAL DEL ESTILO DE VISTA Y LA MANDA AL AVAILABLE E INSTALLED APPLICATION WIDGET
+    connect(ui->searchWidget, &SearchWidget::changeToMenuStyle, ui->installedApplicationWidget, &InstalledApplicationsWidget::changeToMenuStyle);
 }
 
 //DESTRUCTOR

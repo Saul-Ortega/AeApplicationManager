@@ -17,9 +17,11 @@ public:
 
 signals:
     void searchText(const QString& text);
+    void changeToMenuStyle(const bool& isMenuStyle);
 
 private:
     Ui::SearchWidget *ui;
+    bool mIsMenuStyle;
 };
 
 #endif // SEARCHWIDGET_H
