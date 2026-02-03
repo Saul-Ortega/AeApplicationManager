@@ -4,6 +4,7 @@
 #include "applicationdelegate.h"
 #include "applicationinfodialog.h"
 #include "filterproxymodel.h"
+#include <QScrollBar>
 
 AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     : QWidget(parent)
@@ -21,6 +22,7 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewAvailable->setItemDelegate(delegate);
     ui->listViewAvailable->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    ui->listViewAvailable->verticalScrollBar()->setSingleStep(10);
 
     connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
         ui->listViewAvailable->viewport()->update();
