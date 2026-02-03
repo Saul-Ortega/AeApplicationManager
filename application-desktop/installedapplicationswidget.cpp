@@ -53,8 +53,6 @@ void InstalledApplicationsWidget::setApplicationModel(ApplicationModel* model)
 
 void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
 {
-    //ELIMINA LA APLICACIÓN
-    mProxyModel->setData(index, false, ApplicationModel::IsDownloadedRole);
 
     //ELIMINA TODAS LAS VERSIONES DE DICHA APLICACIÓN
     QList<Version> versions = mProxyModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
@@ -63,7 +61,11 @@ void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
         versions[i].setIsInstalled(false);
     }
 
-    mProxyModel->setData(index, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+    //ELIMINA LA APLICACIÓN
+    QModelIndex sourceIndex = mProxyModel->mapToSource(index);
+    mModel->setData(sourceIndex, false, ApplicationModel::IsDownloadedRole);
+
+    mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 }
 
 void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
