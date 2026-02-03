@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include <QApplication>
 #include <QToolTip>
+#include <QTimer>
 
 ApplicationDelegate::ApplicationDelegate(QObject* parent) : QStyledItemDelegate(parent)
 {
@@ -119,6 +120,24 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
     //BOTÓN DE INSTALADO
     QStyleOptionButton installedButton;
+    QStyleOptionProgressBar progressBar;
+
+    QRect progressRect(imageRectangle.left(), imageRectangle.bottom() + 5, imageRectangle.width(), 8);
+    int progress = mProgress.value(QPersistentModelIndex(index), -1);
+
+    if (progress >= 0 && progress < 100) {
+
+        QStyleOptionProgressBar progressBar;
+        progressBar.rect = progressRect;
+        progressBar.minimum = 0;
+        progressBar.maximum = 100;
+        progressBar.progress = progress;
+        progressBar.textVisible = false;
+
+        QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBar, painter);
+    }
+
+
     installedButton.rect = installedButtonRectangle;
     installedButton.icon = isDownloaded ? QIcon(":/assets/papelera.png") : QIcon(":/assets/Icon_Download.png");
     installedButton.iconSize = QSize(25, 25);
@@ -170,10 +189,52 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
             emit infoButtonClicked(index);
         }
 
-        if ( installedButtonRectangle.contains(mouseEvent->pos()) ) {
-            emit isDownloadedButtonClicked(index);
+        if (installedButtonRectangle.contains(mouseEvent->pos())) {
+
+            // GUARDARMOS EL INDEX PARA EMITIRLO CUANDO TERMINE LA BARRA
+            QPersistentModelIndex persistentIndex(index);
+            // INICIAR PROGRESO EN 0
+            mProgress[persistentIndex] = 0;
+
+            //CREAMOS QTIMER QUE LLAME A updateProgress cada 100ms
+            QTimer *timer = new QTimer(this);
+            mTimerIndex[timer] = persistentIndex;
+            connect(timer, &QTimer::timeout, this, &ApplicationDelegate::updateProgress);
+            timer->start(50);
+
+            return true;
         }
     }
 
     return true;
 }
+
+void ApplicationDelegate::updateProgress()
+{
+    QTimer *timer = qobject_cast<QTimer*>(sender());
+    QPersistentModelIndex persistentIndex = mTimerIndex[timer];
+
+    // INCREMENTA EL PROGRESO
+    mProgress[persistentIndex] += 1;
+
+    if (mProgress[persistentIndex] >= 100) {
+
+        // LIMPIAMOS EL TIMER
+        timer->stop();
+        mTimerIndex.remove(timer);
+        timer->deleteLater();
+
+        // GUARDAMOS EL INDICE ANTES DE BORRAR EL PROGRESO
+        QModelIndex finalIndex = QModelIndex(persistentIndex);
+
+        // LIMPIAMOS EL PROGRESO
+        mProgress.remove(persistentIndex);
+
+        // EMITIMOS EL INDEX FINAL PARA CAMBIAR EL JSON
+        emit isDownloadedButtonClicked(finalIndex);
+    }
+
+    // REPINTAMOS LA VISTA
+    emit progressUpdated();
+}
+

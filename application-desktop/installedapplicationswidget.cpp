@@ -16,6 +16,10 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewInstalled->setItemDelegate(delegate);
 
+    connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
+        ui->listViewInstalled->viewport()->update();
+    });
+
 
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &InstalledApplicationsWidget::onLikedClicked);
     connect(delegate, &ApplicationDelegate::infoButtonClicked, this, [this] (const QModelIndex &index) {
