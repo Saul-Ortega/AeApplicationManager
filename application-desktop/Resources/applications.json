@@ -5,9 +5,10 @@
         "expiration_date": "2026-11-11",
         "id": 1,
         "image_url": ":/apps/aeCloud.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeCloud",
+        "update": false,
         "versions": [
             {
                 "expiration_date": "2023-07-10",
@@ -33,9 +34,10 @@
         "expiration_date": "2027-12-15",
         "id": 2,
         "image_url": ":/apps/aeMaps.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": false,
         "name": "aeMaps",
+        "update": false,
         "versions": [
             {
                 "expiration_date": "2027-06-20",
@@ -69,9 +71,10 @@
         "expiration_date": "2026-12-01",
         "id": 3,
         "image_url": ":/apps/aeScann.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeScann",
+        "update": false,
         "versions": [
             {
                 "expiration_date": "2026-08-10",
@@ -108,6 +111,7 @@
         "is_downloaded": false,
         "is_liked": false,
         "name": "aeSync",
+        "update": false,
         "versions": [
             {
                 "expiration_date": "2026-09-05",
@@ -128,7 +132,7 @@
             {
                 "expiration_date": "2026-02-28",
                 "id": 3,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2025-03-10",
                 "name": "1.2.0",
                 "size": 2.4
@@ -144,6 +148,7 @@
         "is_downloaded": false,
         "is_liked": false,
         "name": "aeTools",
+        "update": false,
         "versions": [
             {
                 "expiration_date": "2026-10-18",
@@ -180,6 +185,7 @@
         "is_downloaded": false,
         "is_liked": false,
         "name": "aeViewer",
+        "update": false,
         "versions": [
             {
                 "expiration_date": "2026-11-12",

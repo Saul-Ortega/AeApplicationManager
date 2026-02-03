@@ -22,6 +22,11 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewAvailable->setItemDelegate(delegate);
 
+    connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
+        ui->listViewAvailable->viewport()->update();
+    });
+
+
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &AvailableApplicationsWidget::onLikedClicked);
     connect(delegate, &ApplicationDelegate::infoButtonClicked, this, [this] (const QModelIndex& index) {
         QModelIndex sourceIndex = mProxyModel->mapToSource(index);

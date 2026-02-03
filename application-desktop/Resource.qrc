@@ -19,4 +19,7 @@
         <file>apps/aeTools.png</file>
         <file>apps/aeViewer.png</file>
     </qresource>
+    <qresource prefix="/resources">
+        <file>styles.qss</file>
+    </qresource>
 </RCC>

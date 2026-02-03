@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include "applicationmodel.h"
 #include "applicationinfodialog.h"
+#include <QFile>
 
 //CONSTRUCTOR
 ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
@@ -28,6 +29,14 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
 
     //RECIBE LA SEÑAL DEL ESTILO DE VISTA Y LA MANDA AL AVAILABLE E INSTALLED APPLICATION WIDGET
     connect(ui->searchWidget, &SearchWidget::changeToMenuStyle, ui->installedApplicationWidget, &InstalledApplicationsWidget::changeToMenuStyle);
+    QFile file(":/resources/styles.qss");
+    if (file.open(QFile::ReadOnly)) {
+        QString style = QLatin1String(file.readAll());
+        qApp->setStyleSheet(style);
+    }
+
+
+
 }
 
 //DESTRUCTOR
@@ -36,29 +45,29 @@ ApplicationManagerWidget::~ApplicationManagerWidget()
     delete ui;
 }
 
-//MÉTODOS
+//METODOS
 void ApplicationManagerWidget::setApplicationModel(ApplicationModel* model)
 {
     mModel = model;
     ui->availableApplicationWidget->setApplicationModel(mModel);
     ui->installedApplicationWidget->setApplicationModel(mModel);
-    //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
 void ApplicationManagerWidget::setApplicationSelectionModel(QItemSelectionModel* applicationSelectionModel)
 {
-    //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
 void ApplicationManagerWidget::setVersionModel(VersionModel* versionModel)
 {
     mVersionModel = versionModel;
-    //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
 void ApplicationManagerWidget::setVersionSelectionModel(QItemSelectionModel* versionSelectionModel)
 {
-    //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
 void ApplicationManagerWidget::onInfoClicked(const QModelIndex& index)

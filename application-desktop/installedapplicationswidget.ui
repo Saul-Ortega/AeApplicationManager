@@ -93,7 +93,7 @@
    <item>
     <widget class="QListView" name="listViewInstalled">
      <property name="styleSheet">
-      <string notr="true">background-color: #FFFFFF; border: none;</string>
+      <string notr="true"/>
      </property>
     </widget>
    </item>

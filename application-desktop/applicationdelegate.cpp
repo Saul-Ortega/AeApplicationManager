@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include <QApplication>
 #include <QToolTip>
+#include <QTimer>
 
 ApplicationDelegate::ApplicationDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
@@ -261,8 +262,20 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
             emit infoButtonClicked(index);
         }
 
-        if ( installedButtonRectangle.contains(mouseEvent->pos()) ) {
-            emit isDownloadedButtonClicked(index);
+        if (installedButtonRectangle.contains(mouseEvent->pos())) {
+
+            // GUARDARMOS EL INDEX PARA EMITIRLO CUANDO TERMINE LA BARRA
+            QPersistentModelIndex persistentIndex(index);
+            // INICIAR PROGRESO EN 0
+            mProgress[persistentIndex] = 0;
+
+            //CREAMOS QTIMER QUE LLAME A updateProgress cada 100ms
+            QTimer *timer = new QTimer(this);
+            mTimerIndex[timer] = persistentIndex;
+            connect(timer, &QTimer::timeout, this, &ApplicationDelegate::updateProgress);
+            timer->start(50);
+
+            return true;
         }
     }
 
@@ -274,3 +287,33 @@ void ApplicationDelegate::onMenuStyleClicked(const bool& isMenuStyle)
 {
     mIsMenuStyle = isMenuStyle;
 }
+
+void ApplicationDelegate::updateProgress()
+{
+    QTimer *timer = qobject_cast<QTimer*>(sender());
+    QPersistentModelIndex persistentIndex = mTimerIndex[timer];
+
+    // INCREMENTA EL PROGRESO
+    mProgress[persistentIndex] += 1;
+
+    if (mProgress[persistentIndex] >= 100) {
+
+        // LIMPIAMOS EL TIMER
+        timer->stop();
+        mTimerIndex.remove(timer);
+        timer->deleteLater();
+
+        // GUARDAMOS EL INDICE ANTES DE BORRAR EL PROGRESO
+        QModelIndex finalIndex = QModelIndex(persistentIndex);
+
+        // LIMPIAMOS EL PROGRESO
+        mProgress.remove(persistentIndex);
+
+        // EMITIMOS EL INDEX FINAL PARA CAMBIAR EL JSON
+        emit isDownloadedButtonClicked(finalIndex);
+    }
+
+    // REPINTAMOS LA VISTA
+    emit progressUpdated();
+}
+

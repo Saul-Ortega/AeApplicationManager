@@ -57,3 +57,5 @@ DEPENDPATH += $$PWD/../application-core
 
 RESOURCES += \
     Resource.qrc
+
+DISTFILES +=
