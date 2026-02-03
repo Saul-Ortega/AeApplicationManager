@@ -1,0 +1,94 @@
+/*  LISTVIEW (FONDO)    */
+
+QListView {
+    background-color: #454545;
+    border: none;
+    padding: 10px;
+    outline: 0;
+}
+
+
+
+/*  ITEMS DEL DELEGATE  */
+
+QListView::item {
+    background: transparent;
+    border: none;
+    margin: 10px;
+}
+
+
+
+/* SCROLLBAR VERTICAL */
+
+QScrollBar:vertical {
+    background: #1E1E1E;
+    width: 10px;
+    margin: 0px;
+}
+
+QScrollBar::groove:vertical {
+    background: #1E1E1E;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical {
+    background: #FFFFFF;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #DDDDDD;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: #1E1E1E;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+
+
+/* SCROLLBAR HORIZONTAL */
+
+QScrollBar:horizontal {
+    background: #1E1E1E;
+    width: 10px;
+    margin: 0px;
+}
+
+QScrollBar::groove:horizontal {
+    background: #1E1E1E;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal {
+    background: #FFFFFF;
+    border-radius: 5px;
+}
+
+QScrollBar::handle:horizontal:hover {
+    background: #DDDDDD;
+}
+
+QScrollBar::add-page:horizontal,
+QScrollBar::sub-page:horizontal {
+    background: #1E1E1E;
+}
+
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    height: 0px;
+}
+
+
+
+/*  VENTANA DE VISUALIZACION    */
+
+QListView QWidget {
+    background-color: #454545;
+}

@@ -21,7 +21,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -34,7 +34,7 @@
         "expiration_date": "2027-12-15",
         "id": 2,
         "image_url": ":/apps/aeMaps.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": false,
         "name": "aeMaps",
         "update": false,
@@ -58,7 +58,7 @@
             {
                 "expiration_date": "2027-02-12",
                 "id": 3,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2025-02-12",
                 "name": "1.2.0",
                 "size": 3.4
@@ -95,7 +95,7 @@
             {
                 "expiration_date": "2026-01-30",
                 "id": 3,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2025-02-12",
                 "name": "1.2.0",
                 "size": 3.4
@@ -145,7 +145,7 @@
         "expiration_date": "2027-05-09",
         "id": 5,
         "image_url": ":/apps/aeTools.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeTools",
         "update": false,
@@ -182,7 +182,7 @@
         "expiration_date": "2027-08-21",
         "id": 6,
         "image_url": ":/apps/aeViewer.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeViewer",
         "update": false,
@@ -206,7 +206,7 @@
             {
                 "expiration_date": "2026-04-18",
                 "id": 3,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2025-05-02",
                 "name": "1.2.0",
                 "size": 3.3

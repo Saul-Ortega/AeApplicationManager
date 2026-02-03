@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include "applicationmodel.h"
 #include "applicationinfodialog.h"
+#include <QFile>
 
 //CONSTRUCTOR
 ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
@@ -25,6 +26,15 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
     //RECIBE LA SEÑAL DEL SEARCH Y SE LA MANDA AL METODO DE AVAILABLE APPLICATION
     connect(ui->searchWidget, &SearchWidget::searchText, ui->availableApplicationWidget, &AvailableApplicationsWidget::onSearchText);
     connect(ui->searchWidget, &SearchWidget::searchText, ui->installedApplicationWidget, &InstalledApplicationsWidget::onSearchText);
+
+    QFile file(":/resources/styles.qss");
+    if (file.open(QFile::ReadOnly)) {
+        QString style = QLatin1String(file.readAll());
+        qApp->setStyleSheet(style);
+    }
+
+
+
 }
 
 //DESTRUCTOR
@@ -33,29 +43,29 @@ ApplicationManagerWidget::~ApplicationManagerWidget()
     delete ui;
 }
 
-//MÉTODOS
+//METODOS
 void ApplicationManagerWidget::setApplicationModel(ApplicationModel* model)
 {
     mModel = model;
     ui->availableApplicationWidget->setApplicationModel(mModel);
     ui->installedApplicationWidget->setApplicationModel(mModel);
-    //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
 void ApplicationManagerWidget::setApplicationSelectionModel(QItemSelectionModel* applicationSelectionModel)
 {
-    //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
 void ApplicationManagerWidget::setVersionModel(VersionModel* versionModel)
 {
     mVersionModel = versionModel;
-    //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
 void ApplicationManagerWidget::setVersionSelectionModel(QItemSelectionModel* versionSelectionModel)
 {
-    //TODO: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
+    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
 void ApplicationManagerWidget::onInfoClicked(const QModelIndex& index)

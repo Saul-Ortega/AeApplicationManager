@@ -31,9 +31,15 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     qreal borderRadius = 5;
     qreal borderRadiusCircle = 100;
 
-    //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
+    //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO Y EL FONDO BLANCO
     QRect mainRectangle(option.rect.topLeft(), QSize(180, 190));
+    painter->save();
+    painter->setRenderHint(QPainter::Antialiasing, true);
+    painter->setBrush(Qt::white);
+    painter->setPen(Qt::NoPen);
     painter->drawRoundedRect(mainRectangle, borderRadius, borderRadius);
+    painter->restore();  // RESTAURAMOS BOTONES E ICONOS
+
 
     if ( !isUpdated ) {
         //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
