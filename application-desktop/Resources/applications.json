@@ -8,7 +8,7 @@
         "is_downloaded": false,
         "is_liked": false,
         "name": "aeCloud",
-        "update": false,
+        "update": true,
         "versions": [
             {
                 "expiration_date": "2023-07-10",
@@ -66,7 +66,7 @@
         "is_downloaded": false,
         "is_liked": false,
         "name": "aeScann",
-        "update": false,
+        "update": true,
         "versions": [
             {
                 "expiration_date": "2023-07-10",
@@ -95,7 +95,7 @@
         "is_downloaded": false,
         "is_liked": false,
         "name": "aeSync",
-        "update": false,
+        "update": true,
         "versions": [
             {
                 "expiration_date": "2023-07-10",

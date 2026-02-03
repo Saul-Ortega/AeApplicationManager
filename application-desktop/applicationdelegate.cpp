@@ -60,7 +60,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
         mainRectangle = QRect(option.rect.topLeft(), QSize(180, 190));
 
-        if ( !isUpdated ) {
+        if ( isUpdated ) {
             //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
             int margin = 5;
             QSize notificationButtonRectangleSize = QSize(20, 20);
@@ -219,6 +219,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
     painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
     painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
+    paintProgressBar(painter, mainRectangle, nameRectangle, index);
 
     painter->restore();
 }
@@ -275,7 +276,7 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
 
         //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
         if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
-            if ( !isUpdated ) {
+            if ( isUpdated ) {
                 QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), "Tienes actualizaciones pendientes");
             }
         }
@@ -342,4 +343,43 @@ void ApplicationDelegate::updateProgress()
     // REPINTAMOS LA VISTA
     emit progressUpdated();
 }
+
+void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainRectangle, const QRect& nameRectangle, const QModelIndex& index) const
+{
+    // SI EXISTE PROGRESO PARA ESTE INDICE DIBUJA LA BARRA
+    if (mProgress.contains(index)) {
+
+        // VALOR DEL PROGRESO (0–100)
+        int progress = mProgress[index];
+
+        // ALTURA DE LA LINEA
+        int lineHeight = 4;
+
+        // POSICIÓN VERTICAL
+        int y = nameRectangle.bottom() + 0;
+
+        // RECTANGULO DEL FONDO DE LA BARRA
+        QRect progressBackground(
+            mainRectangle.left() + 20,
+            y,
+            mainRectangle.width() - 40,
+            lineHeight
+            );
+
+        // COLOR DEL FONDO
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(QColor("#5e5e5e"));
+        painter->drawRoundedRect(progressBackground, 2, 2);
+
+        int filledWidth = (progressBackground.width() * progress) / 100;
+
+        QRect progressFilled(progressBackground.left(),progressBackground.top(),filledWidth,lineHeight);
+
+        // COLOR DE LA BARRA AZUL
+        painter->setBrush(QColor("#4fa0d8"));
+        painter->drawRoundedRect(progressFilled, 2, 2);
+    }
+}
+
+
 
