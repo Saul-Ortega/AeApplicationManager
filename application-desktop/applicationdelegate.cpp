@@ -165,7 +165,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
         //BOTÓN DE FAVORITOS
         likedButtonPixmap = QPixmap(isLiked ? ":/assets/CorazonSeleccionado.png" : ":/assets/Corazon.png");
-        likedButtonPixmap = likedButtonPixmap.scaled(QSize(50, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        likedButtonPixmap = likedButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         likedButtonPixmapPoint = QPoint(likedButtonRectangle.left() + (likedButtonRectangle.width() - likedButtonPixmap.width()) / 2, likedButtonRectangle.top() + (likedButtonRectangle.height() - likedButtonPixmap.height()) / 2);
 
         //CONTENEDOR DE BOTÓN DE DETALLE O INFORMACIÓN
@@ -176,7 +176,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
         //BOTÓN DE DETALLE O INFORMACIÓN
         infoButtonPixmap = QPixmap(":/assets/Icon_Info.png");
-        infoButtonPixmap = infoButtonPixmap.scaled(QSize(45, 45), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        infoButtonPixmap = infoButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         infoButtonPixmapPoint = QPoint(infoButtonRectangle.left() + (infoButtonRectangle.width() - infoButtonPixmap.width()) / 2, infoButtonRectangle.top() + (infoButtonRectangle.height() - infoButtonPixmap.height()) / 2);
 
         //CONTENEDOR DE BOTÓN DE INSTALADO
@@ -186,7 +186,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
         //BOTÓN DE INSTALADO
         installedButtonPixmap = QPixmap(isDownloaded ? ":/assets/papelera.png" : ":/assets/Icon_Download.png");
-        installedButtonPixmap = installedButtonPixmap.scaled(QSize(50, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        installedButtonPixmap = installedButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         installedButtonPixmapPoint = QPoint(installedButtonRectangle.left() + (installedButtonRectangle.width() - installedButtonPixmap.height()) / 2, installedButtonRectangle.top() + (installedButtonRectangle.height() - installedButtonPixmap.height()) / 2);
     }
 
