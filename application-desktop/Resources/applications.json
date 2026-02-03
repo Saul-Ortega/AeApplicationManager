@@ -71,7 +71,7 @@
         "expiration_date": "2026-12-01",
         "id": 3,
         "image_url": ":/apps/aeScann.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": false,
         "name": "aeScann",
         "update": false,

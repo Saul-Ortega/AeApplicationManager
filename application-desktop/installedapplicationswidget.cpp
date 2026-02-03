@@ -15,6 +15,7 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     ui->listViewInstalled->setWrapping(true);
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewInstalled->setItemDelegate(delegate);
+    ui->listViewInstalled->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
         ui->listViewInstalled->viewport()->update();

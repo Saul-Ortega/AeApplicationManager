@@ -21,6 +21,7 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setWrapping(true);
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewAvailable->setItemDelegate(delegate);
+    ui->listViewAvailable->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
         ui->listViewAvailable->viewport()->update();
