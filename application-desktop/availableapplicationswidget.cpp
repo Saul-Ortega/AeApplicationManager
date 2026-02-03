@@ -1,10 +1,10 @@
 #include "availableapplicationswidget.h"
 #include "ui_availableapplicationswidget.h"
 #include "applicationmodel.h"
-#include "AvailableItemWidget.h"
+#include "applicationdelegate.h"
 #include "applicationinfodialog.h"
 #include "filterproxymodel.h"
-#include <QTimer>
+#include <QScrollBar>
 
 AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     : QWidget(parent)
@@ -21,6 +21,8 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setWrapping(true);
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewAvailable->setItemDelegate(delegate);
+    ui->listViewAvailable->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    ui->listViewAvailable->verticalScrollBar()->setSingleStep(10);
 
     connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
         ui->listViewAvailable->viewport()->update();
@@ -130,12 +132,9 @@ void AvailableApplicationsWidget::onFavoriteClicked(){
     }
 }
 
-
 // MODIFICAMOS EL ROL DE LA DESCARGA DE LA APP
 void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& index)
 {
-    //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
-
     //GUARDAMOS LAS VERSIONES EN QLIST
 
     QList<Version> versions = mProxyModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
@@ -148,34 +147,10 @@ void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& index)
     //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
     mProxyModel->setData(index, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 
+    //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
     mProxyModel->setData(index, true, ApplicationModel::IsDownloadedRole);
 
 }
-
-// CUANDO LA DESCARGA FINALIZA ELIMINAMOS EL WIDGET
-// void AvailableApplicationsWidget::onDownloadFinished(int row)
-// {
-//     QModelIndex index = mProxyModel->index(row, 0);
-//     QString name = mProxyModel->data(index, ApplicationModel::NameRole).toString();
-//     qDebug() << "Descarga finalizada:" << name;
-
-//     // RECIBIMOS EL WIDGET QUE TERMINO LA DESCARGA
-//     QWidget* widget = ui->listViewAvailable->indexWidget(index);
-
-//     if (widget) {
-//         // SI EXISTE EL WIDGET LO DESCONECTAMOS
-//         widget->disconnect();
-
-//         // QUITAMOS EL WIDGET DE LA LISTA
-//         ui->listViewAvailable->setIndexWidget(index, nullptr);
-
-//         // OCULTAMOS LA FILA PARA QUE OTRO WIDGET OCUPE SU LUGAR
-//         ui->listViewAvailable->setRowHidden(row, true);
-
-//         // ELIMINAMOS EL WIDGET
-//         widget->deleteLater();
-//     }
-// }
 
 void AvailableApplicationsWidget::onSearchText(const QString& text) {
     if(mProxyModel){

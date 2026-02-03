@@ -15,6 +15,7 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     ui->listViewInstalled->setWrapping(true);
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewInstalled->setItemDelegate(delegate);
+    ui->listViewInstalled->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
 
     //ENVÍA LA SEÑAL DE SI EL USUARIO QUIERE LA VISTA DE TIPO GRID O MENU
     connect(this, &InstalledApplicationsWidget::changeToMenuStyle, delegate, &ApplicationDelegate::onMenuStyleClicked);
@@ -50,8 +51,6 @@ void InstalledApplicationsWidget::setApplicationModel(ApplicationModel* model)
 
 void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
 {
-    //ELIMINA LA APLICACIÓN
-    mProxyModel->setData(index, false, ApplicationModel::IsDownloadedRole);
 
     //ELIMINA TODAS LAS VERSIONES DE DICHA APLICACIÓN
     QList<Version> versions = mProxyModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
@@ -60,7 +59,11 @@ void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
         versions[i].setIsInstalled(false);
     }
 
-    mProxyModel->setData(index, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+    //ELIMINA LA APLICACIÓN
+    QModelIndex sourceIndex = mProxyModel->mapToSource(index);
+    mModel->setData(sourceIndex, false, ApplicationModel::IsDownloadedRole);
+
+    mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 }
 
 void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
