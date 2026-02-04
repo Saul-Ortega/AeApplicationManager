@@ -19,6 +19,10 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
 
     //ENVÍA LA SEÑAL DE SI EL USUARIO QUIERE LA VISTA DE TIPO GRID O MENU
     connect(this, &InstalledApplicationsWidget::changeToMenuStyle, delegate, &ApplicationDelegate::onMenuStyleClicked);
+    connect(this, &InstalledApplicationsWidget::changeToMenuStyle, this, [this](){
+        ui->listViewInstalled->reset();
+    });
+
     connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
         ui->listViewInstalled->viewport()->update();
     });

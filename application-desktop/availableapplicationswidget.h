@@ -23,6 +23,7 @@ public:
 
 signals:
     void infoClicked(const QModelIndex& index);
+    void changeToMenuStyle(const bool& isMenuStyle);
 
 public slots:
     void onSearchText(const QString& text);

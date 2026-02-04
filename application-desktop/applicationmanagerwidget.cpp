@@ -29,6 +29,8 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
 
     //RECIBE LA SEÑAL DEL ESTILO DE VISTA Y LA MANDA AL AVAILABLE E INSTALLED APPLICATION WIDGET
     connect(ui->searchWidget, &SearchWidget::changeToMenuStyle, ui->installedApplicationWidget, &InstalledApplicationsWidget::changeToMenuStyle);
+    connect(ui->searchWidget, &SearchWidget::changeToMenuStyle, ui->availableApplicationWidget, &AvailableApplicationsWidget::changeToMenuStyle);
+
     QFile file(":/resources/styles.qss");
     if (file.open(QFile::ReadOnly)) {
         QString style = QLatin1String(file.readAll());

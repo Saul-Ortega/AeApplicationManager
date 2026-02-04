@@ -24,6 +24,11 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->listViewAvailable->verticalScrollBar()->setSingleStep(10);
 
+    connect(this, &AvailableApplicationsWidget::changeToMenuStyle, delegate, &ApplicationDelegate::onMenuStyleClicked);
+    connect(this, &AvailableApplicationsWidget::changeToMenuStyle, this, [this](){
+        ui->listViewAvailable->reset();
+    });
+
     connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
         ui->listViewAvailable->viewport()->update();
     });

@@ -5,7 +5,7 @@
         "expiration_date": "2026-11-11",
         "id": 1,
         "image_url": ":/apps/aeCloud.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": false,
         "name": "aeCloud",
         "update": true,
@@ -21,7 +21,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -63,7 +63,7 @@
         "expiration_date": "2026-12-01",
         "id": 3,
         "image_url": ":/apps/aeScann.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": false,
         "name": "aeScann",
         "update": true,
@@ -79,7 +79,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
