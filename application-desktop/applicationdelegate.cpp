@@ -60,7 +60,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
         mainRectangle = QRect(option.rect.topLeft(), QSize(180, 190));
 
-        if ( isUpdated ) {
+        if ( isUpdated && isDownloaded ) {
             //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
             int margin = 5;
             QSize notificationButtonRectangleSize = QSize(20, 20);
@@ -289,20 +289,9 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
             emit infoButtonClicked(index);
         }
 
+        //BOTON DE DOWNLOAD
         if (installedButtonRectangle.contains(mouseEvent->pos())) {
-
-            // GUARDARMOS EL INDEX PARA EMITIRLO CUANDO TERMINE LA BARRA
-            QPersistentModelIndex persistentIndex(index);
-            // INICIAR PROGRESO EN 0
-            mProgress[persistentIndex] = 0;
-
-            //CREAMOS QTIMER QUE LLAME A updateProgress cada 100ms
-            QTimer *timer = new QTimer(this);
-            mTimerIndex[timer] = persistentIndex;
-            connect(timer, &QTimer::timeout, this, &ApplicationDelegate::updateProgress);
-            timer->start(50);
-
-            return true;
+            emit isDownloadedButtonClicked(index);
         }
     }
 
@@ -315,43 +304,16 @@ void ApplicationDelegate::onMenuStyleClicked(const bool& isMenuStyle)
     mIsMenuStyle = isMenuStyle;
 }
 
-void ApplicationDelegate::updateProgress()
-{
-    QTimer *timer = qobject_cast<QTimer*>(sender());
-    QPersistentModelIndex persistentIndex = mTimerIndex[timer];
-
-    // INCREMENTA EL PROGRESO
-    mProgress[persistentIndex] += 1;
-
-    if (mProgress[persistentIndex] >= 100) {
-
-        // LIMPIAMOS EL TIMER
-        timer->stop();
-        mTimerIndex.remove(timer);
-        timer->deleteLater();
-
-        // GUARDAMOS EL INDICE ANTES DE BORRAR EL PROGRESO
-        QModelIndex finalIndex = QModelIndex(persistentIndex);
-
-        // LIMPIAMOS EL PROGRESO
-        mProgress.remove(persistentIndex);
-
-        // EMITIMOS EL INDEX FINAL PARA CAMBIAR EL JSON
-        emit isDownloadedButtonClicked(finalIndex);
-    }
-
-    // REPINTAMOS LA VISTA
-    emit progressUpdated();
-}
-
 void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainRectangle, const QRect& nameRectangle, const QModelIndex& index) const
 {
-    // SI EXISTE PROGRESO PARA ESTE INDICE DIBUJA LA BARRA
-    if (mProgress.contains(index)) {
-
-        // VALOR DEL PROGRESO (0–100)
-        int progress = mProgress[index];
-
+    qDebug() << "pinta la barra";
+    //LEE EL PROGRESO DESDE EL MODELO
+    int progress = index.data(ApplicationModel::ProgressRole).toInt();
+    qDebug()<<progress;
+    // SI NO HAY PROGRESO, NO PINTAMOS NADA
+    if (progress <= 0 || progress > 100){
+        return;
+    }
         // ALTURA DE LA LINEA
         int lineHeight = 4;
 
@@ -378,7 +340,6 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
         // COLOR DE LA BARRA AZUL
         painter->setBrush(QColor("#4fa0d8"));
         painter->drawRoundedRect(progressFilled, 2, 2);
-    }
 }
 
 

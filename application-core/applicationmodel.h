@@ -25,7 +25,8 @@ public:
         UpdateRole,
         IsDownloadedRole,
         VersionsRole,
-        SizeHintRole
+        SizeHintRole,
+        ProgressRole
     };
 
     ApplicationModel(QObject* parent = 0);
@@ -34,6 +35,7 @@ public:
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     bool setData(const QModelIndex& index, const QVariant& value, int role) override;
     QHash<int, QByteArray> roleNames() const override;
+    QModelIndex indexForAppId(int appId) const ;
 
 private:
     ApplicationDao mApplicationDao;

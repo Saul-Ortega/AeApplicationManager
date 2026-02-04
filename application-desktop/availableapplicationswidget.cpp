@@ -4,7 +4,9 @@
 #include "applicationdelegate.h"
 #include "applicationinfodialog.h"
 #include "filterproxymodel.h"
+#include "installerworker.h"
 #include <QScrollBar>
+#include <QThread>
 
 AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     : QWidget(parent)
@@ -27,10 +29,6 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     connect(this, &AvailableApplicationsWidget::changeToMenuStyle, delegate, &ApplicationDelegate::onMenuStyleClicked);
     connect(this, &AvailableApplicationsWidget::changeToMenuStyle, this, [this](){
         ui->listViewAvailable->reset();
-    });
-
-    connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
-        ui->listViewAvailable->viewport()->update();
     });
 
 
@@ -138,23 +136,74 @@ void AvailableApplicationsWidget::onFavoriteClicked(){
 }
 
 // MODIFICAMOS EL ROL DE LA DESCARGA DE LA APP
-void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& index)
+void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& proxyIndex)
 {
-    //GUARDAMOS LAS VERSIONES EN QLIST
+    // RECIBIMOS EL INDEX DEL PROXY Y LO PASAMOS A INDICE DEL MODELO
+    QModelIndex sourceIndex = mProxyModel->mapToSource(proxyIndex);
+    if (!sourceIndex.isValid()){
+        return;
+    }
 
-    QList<Version> versions = mProxyModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
+    // COGEMOS EL ID DE LA APLICACIÓN QUE QUIERE INSTALAR
+    int appId = sourceIndex.data(ApplicationModel::IdRole).toInt();
 
-    //MODIFICAMOS EL ROL DE VERSION "IsInstalledRole" A TRUE LA ULTIMA VERSION
+    // CREAMOS EL WORKER Y EL HILO
+    installerWorker *worker = new installerWorker(appId);
+    QThread *thread = new QThread(this);
+
+    worker->moveToThread(thread);
+
+    // CUANDO EL HILO EMITA LA SEÑAL STARTED EJECUTARA EL METODO DEL WORKER
+    connect(thread, &QThread::started, worker, &installerWorker::install);
+
+    // CADA 50MS ACTUALIZAMOS LA BARRA
+    connect(worker, &installerWorker::progress, this, &AvailableApplicationsWidget::onInstallProgress);
+
+    // CUANDO LA BARRA TERMINA ACTUALIZAMOS EL MODELO
+    connect(worker, &installerWorker::finished, this, &AvailableApplicationsWidget::onInstallFinished);
+
+    // QUITAMOS EL WORKER DEL THREAD
+    connect(worker, &installerWorker::finished, thread, &QThread::quit);
+
+    // ESPERAMOS A QUE EL THREAD TERMINE ANTES DE ELIMINAR
+    connect(thread, &QThread::finished, worker, &installerWorker::deleteLater);
+    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+
+    thread->start();
+}
+
+void AvailableApplicationsWidget::onInstallProgress(int appId, int progress)
+{
+    // RECIBIMOS EL INDEX DEL MODELO (sourceIndex)
+    QModelIndex sourceIndex = mModel->indexForAppId(appId);
+    if (!sourceIndex.isValid()){
+        return;
+    }
+
+    // ACTUALIZAMOS EL PROGRESO AL MODELO
+    mModel->setData(sourceIndex, progress, ApplicationModel::ProgressRole);
+
+}
+
+void AvailableApplicationsWidget::onInstallFinished(int appId)
+{
+    QModelIndex sourceIndex = mModel->indexForAppId(appId);
+    if (!sourceIndex.isValid()){
+        return;
+    }
+
+    // PONEMOS EL PROGRESO A CERO
+    mModel->setData(sourceIndex, 0, ApplicationModel::ProgressRole);
+
+    // MARCAMOS COMO INSTALADA LA APLICACION
+    mModel->setData(sourceIndex, true, ApplicationModel::IsDownloadedRole);
+
+    // INSTALAMOS LA ULTIMA VERSION
+    QList<Version> versions = mModel->data(sourceIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
     if(!versions.empty()){
         versions.last().setIsInstalled(true);
     }
-
-    //GUARDAMOS LAS VERSIONES MODIFICADAS AL MODELO
-    mProxyModel->setData(index, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
-
-    //MODIFICAMOS EL ROL APPLICATION "IsDownloadRole" A TRUE CUANDO SE PULSA
-    mProxyModel->setData(index, true, ApplicationModel::IsDownloadedRole);
-
+    mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 }
 
 void AvailableApplicationsWidget::onSearchText(const QString& text) {

@@ -42,9 +42,11 @@ QVariant ApplicationModel::data(const QModelIndex& index, int role) const
         return application.isDownloaded();
     case ApplicationRoles::VersionsRole :
         return QVariant::fromValue(application.versions());
-
     case Qt::SizeHintRole:
         return QSize(180, 170);
+    case ApplicationModel::ProgressRole:
+        return application.progress();
+
     default :
         return QVariant();
     }
@@ -87,6 +89,14 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
     case VersionsRole:
         application.setVersions(value.value<QList<Version>>());
         break;
+    case ProgressRole:{
+        beginResetModel();
+        application.setProgress(value.toInt());
+        endResetModel();
+        // emit dataChanged(index, index, {role}); //DATACHANGED PARA PINTAR LA PROGRESSBAR
+        return true; //para no aplicar cambios en el json
+    }
+
     default:
         return false;
     }
@@ -119,5 +129,21 @@ QHash<int, QByteArray> ApplicationModel::roleNames() const
     roles[ApplicationRoles::UpdateRole] = "update";
     roles[ApplicationRoles::IsDownloadedRole] = "isDownloaded";
     roles[ApplicationRoles::VersionsRole] = "versions";
+    roles[ApplicationRoles::ProgressRole] = "progress";
+
     return roles;
+}
+
+QModelIndex ApplicationModel::indexForAppId(int appId) const
+{
+    //REVISAMOS TODAS LAS APLICACIONES
+    for (int row=0; row<mApplications->size(); row++){
+
+        //SI LA APLICACION DE ESA FILA TIENE EL MISMO ID QUE EL SELECCIONADO
+        if (mApplications->at(row)->id()==appId) {
+            return index(row);
+        }
+    }
+    // DEVOLVEMOS EL ÍNDICE VACÍO SI NO ENCONTRÓ NINGUNO
+    return QModelIndex();
 }

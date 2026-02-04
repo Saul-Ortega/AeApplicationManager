@@ -10,6 +10,7 @@ SOURCES += \
     applicationcore.cpp \
     applicationdao.cpp \
     applicationmodel.cpp \
+    installerworker.cpp \
     version.cpp \
     versionmodel.cpp
 
@@ -20,6 +21,7 @@ HEADERS += \
     applicationcore.h \
     applicationdao.h \
     applicationmodel.h \
+    installerworker.h \
     version.h \
     versionmodel.h
 

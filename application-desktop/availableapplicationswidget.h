@@ -28,6 +28,9 @@ signals:
 public slots:
     void onSearchText(const QString& text);
 
+    void onInstallProgress(int appId, int progress);
+    void onInstallFinished(int appId);
+
 
 private slots:
     void onLikedClicked(const QModelIndex& index);

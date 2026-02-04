@@ -15,26 +15,16 @@ public:
     QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index) override;
 
-
-
-private slots:
-    void updateProgress();
-
 signals:
     void isLikedButtonClicked(const QModelIndex& index);
     void infoButtonClicked(const QModelIndex& index);
     void isDownloadedButtonClicked(const QModelIndex& index);
-
-    void progressUpdated();
     
 public slots:
     void onMenuStyleClicked(const bool& isMenuStyle);
 
 private:
     bool mIsMenuStyle;
-
-    mutable QHash<QPersistentModelIndex, int> mProgress; //PROGRESO DE CADA FILA
-    mutable QHash<QTimer*, QPersistentModelIndex> mTimerIndex; //TIMER DE CADA FILA
     void paintProgressBar(QPainter* painter, const QRect& mainRectangle, const QRect& nameRectangle, const QModelIndex& index) const;
 
 

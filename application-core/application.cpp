@@ -1,7 +1,7 @@
 #include "application.h"
 
 //CONSTRUCTOR
-Application::Application(const QString& name, const QString& description, const QString& imageUrl, const QString& executableFile, const QDate& expirationDate, const bool& isLiked, const bool& update, const bool& isDownloaded, const QList<Version>& versions)
+Application::Application(const QString& name, const QString& description, const QString& imageUrl, const QString& executableFile, const QDate& expirationDate, const bool& isLiked, const bool& update, const bool& isDownloaded, const QList<Version>& versions, const int& progress)
     : mId(-1)
     , mName(name)
     , mDescription(description)
@@ -12,6 +12,7 @@ Application::Application(const QString& name, const QString& description, const 
     , mUpdate (update)
     , mIsDownloaded(isDownloaded)
     , mVersions(versions)
+    , mProgress(progress)
 {
 }
 
@@ -66,6 +67,11 @@ QList<Version> Application::versions() const
     return mVersions;
 }
 
+int Application::progress() const
+{
+    return mProgress;
+}
+
 //SETTERS
 void Application::setId(int id)
 {
@@ -115,4 +121,9 @@ void Application::setIsDownloaded(const bool& isDownloaded)
 void Application::setVersions(const QList<Version>& versions)
 {
     mVersions = versions;
+}
+
+void Application::setProgress(const int& progress)
+{
+    mProgress = progress;
 }

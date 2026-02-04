@@ -1,5 +1,6 @@
 #include "installedapplicationswidget.h"
 #include "ui_installedapplicationswidget.h"
+#include <QScrollBar>
 
 InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     : QWidget(parent)
@@ -16,15 +17,13 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewInstalled->setItemDelegate(delegate);
     ui->listViewInstalled->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    ui->listViewInstalled->verticalScrollBar()->setSingleStep(10);
+
 
     //ENVÍA LA SEÑAL DE SI EL USUARIO QUIERE LA VISTA DE TIPO GRID O MENU
     connect(this, &InstalledApplicationsWidget::changeToMenuStyle, delegate, &ApplicationDelegate::onMenuStyleClicked);
     connect(this, &InstalledApplicationsWidget::changeToMenuStyle, this, [this](){
         ui->listViewInstalled->reset();
-    });
-
-    connect(delegate, &ApplicationDelegate::progressUpdated, [this]() {
-        ui->listViewInstalled->viewport()->update();
     });
 
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &InstalledApplicationsWidget::onLikedClicked);
