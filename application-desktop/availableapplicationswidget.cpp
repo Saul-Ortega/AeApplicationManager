@@ -37,7 +37,6 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
         ui->listViewAvailable->viewport()->update();
     });
 
-
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &AvailableApplicationsWidget::onLikedClicked);
     connect(delegate, &ApplicationDelegate::infoButtonClicked, this, [this] (const QModelIndex& index) {
         QModelIndex sourceIndex = mProxyModel->mapToSource(index);
@@ -60,9 +59,7 @@ void AvailableApplicationsWidget::setApplicationModel(ApplicationModel* model)
     ui->listViewAvailable->setModel(mProxyModel);
 }
 
-
 // === BUTTONS ===
-
 
 // CAMBIAMOS EL ROL DE FAVORITOS Y ACTUALIZAMOS EL CORAZON
 void AvailableApplicationsWidget::onLikedClicked(const QModelIndex& index)

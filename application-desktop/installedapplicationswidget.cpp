@@ -5,6 +5,7 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::InstalledApplicationsWidget)
     , mModel(nullptr)
+    , mProxyModel(nullptr)
 {
     ui->setupUi(this);
 

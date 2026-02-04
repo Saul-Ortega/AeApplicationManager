@@ -13,6 +13,9 @@
 ApplicationDelegate::ApplicationDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
     , mIsMenuStyle(false)
+    , mIsButtonPressed(false)
+    , mIsButtonHover(false)
+    , mIsAtButtonsPosition(false)
 {
 }
 
@@ -210,10 +213,10 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
     QBrush greyBackground = QBrush("#d1d1d1");
     QBrush lightBlueBackground = QBrush("#c5def2");
+    QBrush darkBlueBackground = QBrush("#4fa0d8");
 
     QCursor pointingHandCursor = QCursor(Qt::PointingHandCursor);
     QCursor arrowCursor = QCursor(Qt::ArrowCursor);
-
 
     QFont font;
     font.setPixelSize(14);
@@ -242,39 +245,39 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     //HOVERS
     if ( notificationButtonRectangle.contains(position) ) {
         isMouseHovering = true;
+        painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
         widget->setCursor(pointingHandCursor);
-        painter->setBrush(lightBlueBackground);
         painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
         painter->drawPixmap(notificationButtonPixmapPoint, notificationButtonPixmap);
     }
 
     if ( likedButtonRectangle.contains(position) ) {
         isMouseHovering = true;
+        painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
         widget->setCursor(pointingHandCursor);
-        painter->setBrush(lightBlueBackground);
         painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
         painter->drawPixmap(likedButtonPixmapPoint, likedButtonPixmap);
     }
 
     if ( infoButtonRectangle.contains(position) ) {
         isMouseHovering = true;
+        painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
         widget->setCursor(pointingHandCursor);
-        painter->setBrush(lightBlueBackground);
         painter->drawRoundedRect(infoButtonRectangle, borderRadiusInfoButtonRectangle, borderRadiusInfoButtonRectangle);
         painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
     }
 
     if ( installedButtonRectangle.contains(position) ) {
         isMouseHovering = true;
+        painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
         widget->setCursor(pointingHandCursor);
-        painter->setBrush(lightBlueBackground);
         painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
         painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
     }
 
     //COMPRUEBA SI EL CURSOR YA NO ESTÁ HACIENDO HOVER EN ALGÚN ELEMENTO
     //Y LE ASIGNA EL ARROW CURSOR
-    if ( !isMouseHovering ) {
+    if ( !mIsAtButtonsPosition ) {
         widget->setCursor(arrowCursor);
     }
 
@@ -331,6 +334,9 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
     installedButtonRectangle = QRect(QPoint(infoButtonRectangle.x() + infoButtonWidth + 5, y), QSize(installedButtonWidth, buttonsHeight));
 
     if ( event->type() == QEvent::MouseButtonRelease ) {
+        //CUANDO EL USUARIO DEJA DE PULSAR EL BOTÓN, ASIGNO FALSE AL MIEMBRO DE LA CLASE IS PRESSED
+        mIsButtonPressed = false;
+
         //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
         if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
             if ( !isUpdated ) {
@@ -362,6 +368,35 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
             return true;
         }
     }
+
+    if ( event->type() == QEvent::MouseButtonPress ) {
+        /*ASIGNA TRUE AL MIEMBRO DE LA CLASE CUANDO EL USUARIO MANTIENE
+        * EL CURSOR APRETADO Y ESTÁ DENTRO DEL ÁREA DE LOS RECTÁNGULOS
+        * A LOS QUE SE QUIERE CAMBIAR EL COLOR
+        */
+        if (
+            notificationButtonRectangle.contains(mouseEvent->pos())
+            || likedButtonRectangle.contains(mouseEvent->pos())
+            || infoButtonRectangle.contains(mouseEvent->pos())
+            || installedButtonRectangle.contains(mouseEvent->pos())
+            ) {
+            mIsButtonHover = false;
+            mIsButtonPressed = true;
+        }
+    }
+
+    if ( event->type() == QEvent::MouseMove ) {
+        if (
+            notificationButtonRectangle.contains(mouseEvent->pos())
+            || likedButtonRectangle.contains(mouseEvent->pos())
+            || infoButtonRectangle.contains(mouseEvent->pos())
+            || installedButtonRectangle.contains(mouseEvent->pos())
+            ) {
+            mIsButtonHover = true;
+        }
+    }
+
+    mIsAtButtonsPosition = ( notificationButtonRectangle.contains(mouseEvent->pos()) || likedButtonRectangle.contains(mouseEvent->pos()) || infoButtonRectangle.contains(mouseEvent->pos()) || installedButtonRectangle.contains(mouseEvent->pos()) );
 
     return true;
 }

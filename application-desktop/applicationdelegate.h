@@ -32,6 +32,9 @@ public slots:
 
 private:
     bool mIsMenuStyle;
+    bool mIsButtonPressed;
+    bool mIsButtonHover;
+    bool mIsAtButtonsPosition;
 
     mutable QHash<QPersistentModelIndex, int> mProgress; //PROGRESO DE CADA FILA
     mutable QHash<QTimer*, QPersistentModelIndex> mTimerIndex; //TIMER DE CADA FILA

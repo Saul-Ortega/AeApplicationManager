@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include "applicationmodel.h"
-#include "installeditemwidget.h"
 #include "applicationdelegate.h"
 #include "filterproxymodel.h"
 #include <QScrollBar>
