@@ -318,8 +318,7 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
             }
         }
 
-        if ( likedButtonRectangle.contains(mouseEvent->pos()) ) {
-            emit isLikedButtonClicked(index);
+        if ( likedButtonRectangle.contains(mouseEvent->pos()) ) { emit isLikedButtonClicked(index);
         }
 
         if ( infoButtonRectangle.contains(mouseEvent->pos()) ) {

@@ -44,6 +44,7 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
             }
         }
 
+        mModel->setData(mIndex, versions.last().isInstalled(), ApplicationModel::UpdateRole);
         mModel->setData(mIndex, isApplicationDownloaded, ApplicationModel::IsDownloadedRole);
     });
 

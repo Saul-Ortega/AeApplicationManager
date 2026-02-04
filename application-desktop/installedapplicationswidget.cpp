@@ -70,7 +70,7 @@ void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
     //ELIMINA LA APLICACIÓN
     QModelIndex sourceIndex = mProxyModel->mapToSource(index);
     mModel->setData(sourceIndex, false, ApplicationModel::IsDownloadedRole);
-
+    mModel->setData(sourceIndex, true, ApplicationModel::UpdateRole);
     mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 }
 
