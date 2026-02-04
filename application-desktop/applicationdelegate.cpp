@@ -135,7 +135,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     } else {
         //SI EL USUARIO QUIERE EL TIPO DE LISTA EN MENU
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
-        mainRectangle = QRect(option.rect.topLeft(), QSize(option.rect.width() - 5, 60));
+        mainRectangle = QRect(option.rect.topLeft(), QSize(option.rect.width() - 15, 60));
 
         if ( !isUpdated ) {
             //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
@@ -297,11 +297,11 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
         installedButtonWidth = 30;
         buttonsHeight = 40;
     } else {
-        x = rect.right() - 300 - 30;
+        x = rect.right() - 300 - 45;
         y = rect.top() + 5;
 
         likedButtonWidth = 50;
-        infoButtonWidth = 170;
+        infoButtonWidth = 190;
         installedButtonWidth = 50;
         buttonsHeight = 50;
     }
@@ -318,7 +318,8 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
             }
         }
 
-        if ( likedButtonRectangle.contains(mouseEvent->pos()) ) { emit isLikedButtonClicked(index);
+        if ( likedButtonRectangle.contains(mouseEvent->pos()) ) {
+            emit isLikedButtonClicked(index);
         }
 
         if ( infoButtonRectangle.contains(mouseEvent->pos()) ) {
