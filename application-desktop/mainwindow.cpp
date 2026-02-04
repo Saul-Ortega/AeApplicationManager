@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //EVITA QUE SE CIERRE LA APP CUANDO SE CIERRA LA ULTIMA VENTANA
-     QApplication::setQuitOnLastWindowClosed(false);
+    QApplication::setQuitOnLastWindowClosed(false);
 
     //PONE UN TITULO A LA APLICACION Y EL LOGO
     this->setWindowTitle("AeApplicationManager");

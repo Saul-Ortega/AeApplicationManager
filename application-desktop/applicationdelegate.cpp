@@ -8,6 +8,7 @@
 #include <QApplication>
 #include <QToolTip>
 #include <QTimer>
+#include <QListView>
 
 ApplicationDelegate::ApplicationDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
@@ -57,10 +58,13 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
     //SE RECOGE LA POSICIÓN DEL CURSOR DEL USUARIO
     QPoint cursor = QCursor::pos();
+
+    //SE DECLARA UN OBJETO DE TIPO QLISTVIEW PARA PODER MAPEAR LA POSICIÓN GLOBAL DEL CURSOR
+    const auto widget = qobject_cast<QListView*>(option.styleObject);
+
     //SE TRADUCE EL QPOINT GLOBAL AL QPOINT CORRESPONDIENTE DEL WIDGET
-    QPoint position = option.widget->mapFromGlobal(cursor);
-    qDebug() << "Position X: " << position.x();
-    qDebug() << "Position Y: " << position.y();
+    QPoint position = widget->viewport()->mapFromGlobal(cursor);
+
 
     //SI EL USUARIO QUIERE EL TIPO DE LISTA EN GRID
     if ( !mIsMenuStyle ) {
@@ -230,14 +234,28 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     paintProgressBar(painter, mainRectangle, nameRectangle, index);
 
     //HOVERS
-    if ( likedButtonRectangle.contains(position) ) {
-        bool hover = option.state & QStyle::State_MouseOver;
+    if ( notificationButtonRectangle.contains(position) ) {
+        painter->setBrush(lightBlueBackground);
+        painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+        painter->drawPixmap(notificationButtonPixmapPoint, notificationButtonPixmap);
+    }
 
-        if ( hover ) {
-            painter->setBrush(lightBlueBackground);
-            painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
-            painter->drawPixmap(likedButtonPixmapPoint, likedButtonPixmap);
-        }
+    if ( likedButtonRectangle.contains(position) ) {
+        painter->setBrush(lightBlueBackground);
+        painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+        painter->drawPixmap(likedButtonPixmapPoint, likedButtonPixmap);
+    }
+
+    if ( infoButtonRectangle.contains(position) ) {
+        painter->setBrush(lightBlueBackground);
+        painter->drawRoundedRect(infoButtonRectangle, borderRadiusInfoButtonRectangle, borderRadiusInfoButtonRectangle);
+        painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
+    }
+
+    if ( installedButtonRectangle.contains(position) ) {
+        painter->setBrush(lightBlueBackground);
+        painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+        painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
     }
 
     painter->restore();
@@ -250,49 +268,49 @@ QSize ApplicationDelegate::sizeHint(const QStyleOptionViewItem& option, const QM
 
 bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
+    QMouseEvent* mouseEvent = (QMouseEvent *)event;
+
+    QRect rect = option.rect;
+
+    bool isUpdated = model->data(index, ApplicationModel::UpdateRole).toBool();
+
+    int x;
+    int y;
+
+    int notificationButtonWidth = 20;
+    int likedButtonWidth;
+    int infoButtonWidth;
+    int installedButtonWidth;
+    int buttonsHeight;
+
+    QRect notificationButtonRectangle = QRect(QPoint(rect.right() - 5 - notificationButtonWidth, rect.top() + 5), QSize(notificationButtonWidth, notificationButtonWidth));
+    QRect likedButtonRectangle;
+    QRect infoButtonRectangle;
+    QRect installedButtonRectangle;
+
+    if ( !mIsMenuStyle ) {
+        x = rect.left() + 20;
+        y = rect.top() + 154;
+
+        likedButtonWidth = 30;
+        infoButtonWidth = 70;
+        installedButtonWidth = 30;
+        buttonsHeight = 40;
+    } else {
+        x = rect.right() - 300 - 30;
+        y = rect.top() + 5;
+
+        likedButtonWidth = 50;
+        infoButtonWidth = 170;
+        installedButtonWidth = 50;
+        buttonsHeight = 50;
+    }
+
+    likedButtonRectangle = QRect(QPoint(x, y), QSize(likedButtonWidth, buttonsHeight));
+    infoButtonRectangle = QRect(QPoint(likedButtonRectangle.x() + likedButtonWidth + 5, y), QSize(infoButtonWidth, buttonsHeight));
+    installedButtonRectangle = QRect(QPoint(infoButtonRectangle.x() + infoButtonWidth + 5, y), QSize(installedButtonWidth, buttonsHeight));
+
     if ( event->type() == QEvent::MouseButtonRelease ) {
-        QMouseEvent* mouseEvent = (QMouseEvent *)event;
-
-        QRect rect = option.rect;
-
-        bool isUpdated = model->data(index, ApplicationModel::UpdateRole).toBool();
-
-        int x;
-        int y;
-
-        int notificationButtonWidth = 20;
-        int likedButtonWidth;
-        int infoButtonWidth;
-        int installedButtonWidth;
-        int buttonsHeight;
-
-        QRect notificationButtonRectangle = QRect(QPoint(rect.right() - 5 - notificationButtonWidth, rect.top() + 5), QSize(notificationButtonWidth, notificationButtonWidth));
-        QRect likedButtonRectangle;
-        QRect infoButtonRectangle;
-        QRect installedButtonRectangle;
-
-        if ( !mIsMenuStyle ) {
-            x = rect.left() + 20;
-            y = rect.top() + 154;
-
-            likedButtonWidth = 30;
-            infoButtonWidth = 70;
-            installedButtonWidth = 30;
-            buttonsHeight = 40;
-        } else {
-            x = rect.right() - 300 - 30;
-            y = rect.top() + 5;
-
-            likedButtonWidth = 50;
-            infoButtonWidth = 170;
-            installedButtonWidth = 50;
-            buttonsHeight = 50;
-        }
-
-        likedButtonRectangle = QRect(QPoint(x, y), QSize(likedButtonWidth, buttonsHeight));
-        infoButtonRectangle = QRect(QPoint(likedButtonRectangle.x() + likedButtonWidth + 5, y), QSize(infoButtonWidth, buttonsHeight));
-        installedButtonRectangle = QRect(QPoint(infoButtonRectangle.x() + infoButtonWidth + 5, y), QSize(installedButtonWidth, buttonsHeight));
-
         //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
         if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
             if ( isUpdated ) {

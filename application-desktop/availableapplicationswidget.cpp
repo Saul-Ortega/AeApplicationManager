@@ -24,6 +24,9 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->listViewAvailable->verticalScrollBar()->setSingleStep(10);
 
+    //PERMITE SEGUIR EL MOVIMIENTO DEL CURSOR PARA HACER EL EFECTO HOVER EN EL DELEGATE
+    ui->listViewAvailable->setMouseTracking(true);
+
     //ENVÍA LA SEÑAL DE SI EL USUARIO QUIERE LA VISTA DE TIPO GRID O MENU
     connect(this, &AvailableApplicationsWidget::changeToMenuStyle, delegate, [this, delegate] (const bool& isMenuStyle) {
         ui->listViewAvailable->reset();
