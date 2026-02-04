@@ -41,6 +41,8 @@ QVariant FilterProxyModel::data(const QModelIndex& index, int role) const
         return sourceModel()->data(sourceIndex, ApplicationModel::IsDownloadedRole);
     case ApplicationModel::VersionsRole :
         return sourceModel()->data(sourceIndex, ApplicationModel::VersionsRole);
+    case ApplicationModel::ProgressRole:
+        return sourceModel()->data(sourceIndex, ApplicationModel::ProgressRole);
     default :
         return QVariant();
     }

@@ -5,7 +5,7 @@
         "expiration_date": "2026-11-11",
         "id": 1,
         "image_url": ":/apps/aeCloud.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeCloud",
         "update": true,
@@ -21,7 +21,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -34,7 +34,7 @@
         "expiration_date": "2027-12-15",
         "id": 2,
         "image_url": ":/apps/aeMaps.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeMaps",
         "update": false,
@@ -50,7 +50,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -63,7 +63,7 @@
         "expiration_date": "2026-12-01",
         "id": 3,
         "image_url": ":/apps/aeScann.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeScann",
         "update": true,
@@ -79,7 +79,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -92,7 +92,7 @@
         "expiration_date": "2027-03-18",
         "id": 4,
         "image_url": ":/apps/aeSync.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeSync",
         "update": true,
@@ -108,7 +108,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -150,7 +150,7 @@
         "expiration_date": "2027-08-21",
         "id": 6,
         "image_url": ":/apps/aeViewer.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": false,
         "name": "aeViewer",
         "update": false,
@@ -174,7 +174,7 @@
             {
                 "expiration_date": "2026-04-18",
                 "id": 3,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2025-05-02",
                 "name": "1.2.0",
                 "size": 3.3
