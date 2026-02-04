@@ -55,6 +55,13 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     QPixmap installedButtonPixmap;
     QPoint installedButtonPixmapPoint;
 
+    //SE RECOGE LA POSICIÓN DEL CURSOR DEL USUARIO
+    QPoint cursor = QCursor::pos();
+    //SE TRADUCE EL QPOINT GLOBAL AL QPOINT CORRESPONDIENTE DEL WIDGET
+    QPoint position = option.widget->mapFromGlobal(cursor);
+    qDebug() << "Position X: " << position.x();
+    qDebug() << "Position Y: " << position.y();
+
     //SI EL USUARIO QUIERE EL TIPO DE LISTA EN GRID
     if ( !mIsMenuStyle ) {
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
@@ -198,6 +205,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     blackPen.setWidth(2);
 
     QBrush greyBackground = QBrush("#d1d1d1");
+    QBrush lightBlueBackground = QBrush("#c5def2");
 
     QFont font;
     font.setPixelSize(14);
@@ -219,6 +227,17 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
     painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
     painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
+
+    //HOVERS
+    if ( likedButtonRectangle.contains(position) ) {
+        bool hover = option.state & QStyle::State_MouseOver;
+
+        if ( hover ) {
+            painter->setBrush(lightBlueBackground);
+            painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+            painter->drawPixmap(likedButtonPixmapPoint, likedButtonPixmap);
+        }
+    }
 
     painter->restore();
 }
