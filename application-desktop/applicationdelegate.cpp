@@ -211,6 +211,10 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     QBrush greyBackground = QBrush("#d1d1d1");
     QBrush lightBlueBackground = QBrush("#c5def2");
 
+    QCursor pointingHandCursor = QCursor(Qt::PointingHandCursor);
+    QCursor arrowCursor = QCursor(Qt::ArrowCursor);
+
+
     QFont font;
     font.setPixelSize(14);
     painter->setFont(font);
@@ -233,29 +237,45 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
     paintProgressBar(painter, mainRectangle, nameRectangle, index);
 
+    bool isMouseHovering = false;
+
     //HOVERS
     if ( notificationButtonRectangle.contains(position) ) {
+        isMouseHovering = true;
+        widget->setCursor(pointingHandCursor);
         painter->setBrush(lightBlueBackground);
         painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
         painter->drawPixmap(notificationButtonPixmapPoint, notificationButtonPixmap);
     }
 
     if ( likedButtonRectangle.contains(position) ) {
+        isMouseHovering = true;
+        widget->setCursor(pointingHandCursor);
         painter->setBrush(lightBlueBackground);
         painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
         painter->drawPixmap(likedButtonPixmapPoint, likedButtonPixmap);
     }
 
     if ( infoButtonRectangle.contains(position) ) {
+        isMouseHovering = true;
+        widget->setCursor(pointingHandCursor);
         painter->setBrush(lightBlueBackground);
         painter->drawRoundedRect(infoButtonRectangle, borderRadiusInfoButtonRectangle, borderRadiusInfoButtonRectangle);
         painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
     }
 
     if ( installedButtonRectangle.contains(position) ) {
+        isMouseHovering = true;
+        widget->setCursor(pointingHandCursor);
         painter->setBrush(lightBlueBackground);
         painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
         painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
+    }
+
+    //COMPRUEBA SI EL CURSOR YA NO ESTÁ HACIENDO HOVER EN ALGÚN ELEMENTO
+    //Y LE ASIGNA EL ARROW CURSOR
+    if ( !isMouseHovering ) {
+        widget->setCursor(arrowCursor);
     }
 
     painter->restore();
