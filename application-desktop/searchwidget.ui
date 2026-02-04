@@ -145,11 +145,21 @@
        <height>50</height>
       </size>
      </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
 	background-color: &quot;#d1d1d1&quot;;
 	border-radius: 5px;
 	border: 2px solid &quot;#4fa0d8&quot;;
+}
+
+QPushButton:hover {
+	background-color: &quot;#c5def2&quot;;
+}
+QPushButton:pressed {
+	background-color: &quot;#4fa0d8&quot;;
 }</string>
      </property>
      <property name="text">

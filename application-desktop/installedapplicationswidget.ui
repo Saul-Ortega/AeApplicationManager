@@ -60,6 +60,7 @@
 	border: 2px solid #4fa0d8;
 	border-radius: 5px;
 	font-weight: bold;
+	color: black;
 }
 
 QPushButton:hover {
@@ -94,6 +95,7 @@ QPushButton:hover {
 	border: 2px solid #4fa0d8;
 	border-radius: 5px;
 	font-weight: bold;
+	color: black;
 }
 
 QPushButton:hover {
