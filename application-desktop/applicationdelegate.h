@@ -33,9 +33,10 @@ public slots:
 private:
     bool mIsMenuStyle;
 
-private:
     mutable QHash<QPersistentModelIndex, int> mProgress; //PROGRESO DE CADA FILA
     mutable QHash<QTimer*, QPersistentModelIndex> mTimerIndex; //TIMER DE CADA FILA
+    void paintProgressBar(QPainter* painter, const QRect& mainRectangle, const QRect& nameRectangle, const QModelIndex& index) const;
+
 
 };
 
