@@ -16,6 +16,7 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     ApplicationDelegate* delegate = new ApplicationDelegate();
     ui->listViewInstalled->setItemDelegate(delegate);
     ui->listViewInstalled->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
+    ui->listViewInstalled->verticalScrollBar()->setSingleStep(10);
 
     //PERMITE SEGUIR EL MOVIMIENTO DEL CURSOR PARA HACER EL EFECTO HOVER EN EL DELEGATE
     ui->listViewInstalled->setMouseTracking(true);

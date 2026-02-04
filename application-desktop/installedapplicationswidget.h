@@ -6,6 +6,7 @@
 #include "installeditemwidget.h"
 #include "applicationdelegate.h"
 #include "filterproxymodel.h"
+#include <QScrollBar>
 
 namespace Ui {
 class InstalledApplicationsWidget;
