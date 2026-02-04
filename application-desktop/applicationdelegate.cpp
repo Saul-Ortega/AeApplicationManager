@@ -71,7 +71,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
         mainRectangle = QRect(option.rect.topLeft(), QSize(180, 190));
 
-        if ( isUpdated ) {
+        if ( !isUpdated ) {
             //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
             int margin = 5;
             QSize notificationButtonRectangleSize = QSize(20, 20);
@@ -313,7 +313,7 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
     if ( event->type() == QEvent::MouseButtonRelease ) {
         //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
         if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
-            if ( isUpdated ) {
+            if ( !isUpdated ) {
                 QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), "Tienes actualizaciones pendientes");
             }
         }
