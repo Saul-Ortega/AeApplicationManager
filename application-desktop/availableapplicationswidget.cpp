@@ -183,8 +183,14 @@ void AvailableApplicationsWidget::onDownloadAllClicked()
     for ( int row = 0; row < allUninstalledApplications; row++ ) {
         //SELECCIONA EL QMODELINDEX CORRESPONDIENTE BASÁNDOSE EN LA FILA
         QModelIndex currentIndex = mProxyModel->index(row, 0);
-        //EMITE LA SEÑAL DE DESCARGA
-        emit onDownloadClicked(currentIndex);
+        //ALMACENA EL VALOR ACTUAL DEL PROGRESS BAR
+        int progressbar = mProxyModel->data(currentIndex, ApplicationModel::ProgressRole).toInt();
+
+        //COMPRUEBA SI EL PROGRESSBAR ES 0 PARA NO EJECUTAR OTRO HILO DE DESCARGA EN LA MISMA APLICACIÓN
+        if ( progressbar == 0 ) {
+            //EMITE LA SEÑAL DE DESCARGA
+            emit onDownloadClicked(currentIndex);
+        }
     }
 }
 

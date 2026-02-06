@@ -239,11 +239,8 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
     paintProgressBar(painter, mainRectangle, nameRectangle, index);
 
-    bool isMouseHovering = false;
-
     //HOVERS
     if ( notificationButtonRectangle.contains(position) ) {
-        isMouseHovering = true;
         painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
         widget->setCursor(pointingHandCursor);
         painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
@@ -251,7 +248,6 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     }
 
     if ( likedButtonRectangle.contains(position) ) {
-        isMouseHovering = true;
         painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
         widget->setCursor(pointingHandCursor);
         painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
@@ -259,7 +255,6 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     }
 
     if ( infoButtonRectangle.contains(position) ) {
-        isMouseHovering = true;
         painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
         widget->setCursor(pointingHandCursor);
         painter->drawRoundedRect(infoButtonRectangle, borderRadiusInfoButtonRectangle, borderRadiusInfoButtonRectangle);
@@ -267,7 +262,6 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     }
 
     if ( installedButtonRectangle.contains(position) ) {
-        isMouseHovering = true;
         painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
         widget->setCursor(pointingHandCursor);
         painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
