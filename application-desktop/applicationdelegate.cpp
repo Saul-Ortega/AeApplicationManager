@@ -398,10 +398,8 @@ void ApplicationDelegate::onMenuStyleClicked(const bool& isMenuStyle)
 
 void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainRectangle, const QRect& nameRectangle, const QModelIndex& index) const
 {
-    qDebug() << "pinta la barra";
     //LEE EL PROGRESO DESDE EL MODELO
     int progress = index.data(ApplicationModel::ProgressRole).toInt();
-    qDebug()<<progress;
     // SI NO HAY PROGRESO, NO PINTAMOS NADA
     if (progress <= 0 || progress > 100){
         return;
