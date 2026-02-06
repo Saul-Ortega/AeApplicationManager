@@ -150,7 +150,7 @@ void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& proxyInde
 
     // CREAMOS EL WORKER Y EL HILO
     QThread *thread = new QThread(this);
-    installerWorker *worker = new installerWorker(appId);
+    installerWorker *worker = new installerWorker(sourceIndex);
 
     worker->moveToThread(thread);
 
@@ -173,10 +173,8 @@ void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& proxyInde
     thread->start();
 }
 
-void AvailableApplicationsWidget::onInstallProgress(int appId, int progress)
+void AvailableApplicationsWidget::onInstallProgress(QModelIndex sourceIndex, int progress)
 {
-    // RECIBIMOS EL INDEX DEL MODELO (sourceIndex)
-    QModelIndex sourceIndex = mModel->indexForAppId(appId);
     if (!sourceIndex.isValid()){
         return;
     }
@@ -186,9 +184,8 @@ void AvailableApplicationsWidget::onInstallProgress(int appId, int progress)
 
 }
 
-void AvailableApplicationsWidget::onInstallFinished(int appId)
+void AvailableApplicationsWidget::onInstallFinished(QModelIndex sourceIndex)
 {
-    QModelIndex sourceIndex = mModel->indexForAppId(appId);
     if (!sourceIndex.isValid()){
         return;
     }

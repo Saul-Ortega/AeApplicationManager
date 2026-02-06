@@ -34,7 +34,7 @@
         "expiration_date": "2027-12-15",
         "id": 2,
         "image_url": ":/apps/aeMaps.png",
-        "is_downloaded": true,
+        "is_downloaded": false,
         "is_liked": true,
         "name": "aeMaps",
         "update": true,
@@ -50,7 +50,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": true,
+                "is_installed": false,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1
@@ -92,7 +92,7 @@
         "expiration_date": "2027-03-18",
         "id": 4,
         "image_url": ":/apps/aeSync.png",
-        "is_downloaded": false,
+        "is_downloaded": true,
         "is_liked": true,
         "name": "aeSync",
         "update": true,
@@ -108,7 +108,7 @@
             {
                 "expiration_date": "2023-07-23",
                 "id": 2,
-                "is_installed": false,
+                "is_installed": true,
                 "last_modification": "2024-06-15",
                 "name": "1.1.0",
                 "size": 1.1

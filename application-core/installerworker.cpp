@@ -1,9 +1,9 @@
 #include "installerworker.h"
 #include <QThread>
 
-installerWorker::installerWorker(int appId, QObject* parent) :
+installerWorker::installerWorker(QModelIndex sourceIndex, QObject* parent) :
     QObject(parent),
-    mAppId(appId)
+    mSourceIndex(sourceIndex)
 {
 }
 
@@ -14,8 +14,8 @@ void installerWorker::install(){
         //PARAMOS EL HILO POR CADA VUELTA DEL FOR PARA QUE SE VEA EN LA UI
         QThread::msleep(50);
         //EMITIMOS EL ID Y EL PROGRESO QUE LLEVA
-        emit progress(mAppId, i);
+        emit progress(mSourceIndex, i);
     }
     //ENVIAMOS EL ID DE LA APP QUE TERMINÓ
-    emit finished(mAppId);
+    emit finished(mSourceIndex);
 }
