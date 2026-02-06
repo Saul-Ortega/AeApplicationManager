@@ -68,7 +68,6 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     //SE TRADUCE EL QPOINT GLOBAL AL QPOINT CORRESPONDIENTE DEL WIDGET
     QPoint position = widget->viewport()->mapFromGlobal(cursor);
 
-
     //SI EL USUARIO QUIERE EL TIPO DE LISTA EN GRID
     if ( !mIsMenuStyle ) {
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
@@ -313,12 +312,13 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
 
     if ( !mIsMenuStyle ) {
         x = rect.left() + 20;
-        y = rect.top() + 154;
+        y = rect.top() + 144;
 
         likedButtonWidth = 30;
         infoButtonWidth = 70;
         installedButtonWidth = 30;
-        buttonsHeight = 40;
+        buttonsHeight = 30;
+
     } else {
         x = rect.right() - 300 - 45;
         y = rect.top() + 5;
