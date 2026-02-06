@@ -93,6 +93,17 @@ void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
         connect (thread, &QThread::finished, worker, &installerWorker::deleteLater);
         connect (thread, &QThread::finished, thread, &QThread::deleteLater);
 
+        /*
+        * CUANDO LA APLICACIÓN EMITE LA SEÑAL DE QUE SE VA A DEJAR DE EJECUTAR,
+        * ELIMINA EL HILO, ESPERA A QUE SE ELIMINE Y LUEGO YA DEJA DE EJECUTAR LA
+        * APLICACIÓN
+        */
+        connect(qApp, &QApplication::aboutToQuit, thread, [this, thread] () {
+            thread->quit();
+            thread->wait();
+            emit deleteLater();
+        });
+
         thread->start();
     }
 }

@@ -49,6 +49,12 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
         connect(thread, &QThread::finished, worker, &installerWorker::deleteLater);
         connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
+        connect(qApp, &QApplication::aboutToQuit, thread, [this, thread] () {
+            thread->quit();
+            thread->wait();
+            emit deleteLater();
+        });
+
         //MUESTRA LA PROGRESS BAR EN LA UI
         ui->progressBar->setVisible(true);
         thread->start();
