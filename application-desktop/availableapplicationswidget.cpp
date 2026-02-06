@@ -146,9 +146,6 @@ void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& proxyInde
         return;
     }
 
-    // COGEMOS EL ID DE LA APLICACIÓN QUE QUIERE INSTALAR
-    int appId = sourceIndex.data(ApplicationModel::IdRole).toInt();
-
     // CREAMOS EL WORKER Y EL HILO
     QThread *thread = new QThread(this);
     installerWorker *worker = new installerWorker(sourceIndex);
