@@ -27,8 +27,8 @@ signals:
 
 public slots:
     void onSearchText(const QString& text);
-    void onInstallProgress(int appId, int progress);
-    void onInstallFinished(int appId);
+    void onInstallProgress(QModelIndex sourceIndex, int progress);
+    void onInstallFinished(QModelIndex sourceIndex);
 
 private slots:
     void onLikedClicked(const QModelIndex& index);
@@ -37,6 +37,7 @@ private slots:
     void onDownloadClicked(const QModelIndex& index);
     // void onDownloadFinished(int row);
     void onDownloadAllClicked();
+
 
 private:
     Ui::AvailableApplicationsWidget *ui;

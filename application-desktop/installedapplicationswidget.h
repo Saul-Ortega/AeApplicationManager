@@ -20,8 +20,8 @@ public:
     ~InstalledApplicationsWidget();
 
     void setApplicationModel(ApplicationModel* model);
-    void onUninstallProgress(int appId, int progress);
-    void onUnistallFinished(int appId);
+    void onUninstallProgress(QModelIndex sourceIndex, int progress);
+    void onUnistallFinished(QModelIndex sourceIndex);
 
 signals:
     void infoClicked(const QModelIndex& index);
@@ -32,7 +32,7 @@ public slots:
 
 private slots:
     void onLikedClicked(const QModelIndex& index);
-    void onDeleteClicked(const QModelIndex& index);
+    void onDeleteClicked(const QModelIndex& sourceIndex);
 
     void onInstalledClicked();
     void onFavoriteClicked();

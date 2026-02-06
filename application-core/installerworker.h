@@ -3,22 +3,23 @@
 #include "application-core_global.h"
 #include <QObject>
 #include <QString>
+#include <QModelIndex>
 
 class APPLICATION_CORE_EXPORT installerWorker : public QObject
 {
     Q_OBJECT
 public:
-    explicit installerWorker(int appId, QObject* parent = nullptr);
+    explicit installerWorker(QModelIndex sourceIndex, QObject* parent = nullptr);
 
 public slots:
     void install();
 
 signals:
-    void progress(int, int);
-    void finished(int);
+    void progress(QModelIndex, int);
+    void finished(QModelIndex);
 
 private:
-    int mAppId;
+    QModelIndex mSourceIndex;
 };
 
 #endif // INSTALLERWORKER_H

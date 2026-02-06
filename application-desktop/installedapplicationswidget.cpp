@@ -61,21 +61,34 @@ void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
 {
     //PASAMOS DEL PROXY INDEX AL MODEL INDEX
     QModelIndex sourceIndex = mProxyModel->mapToSource(index);
-    //RECIBIMOS EL ID DEL MODELO
-    int appId = mModel->data(sourceIndex, ApplicationModel::IdRole).toInt();
 
     if (!sourceIndex.isValid()){
         return;
     }
 
+    // CREAMOS EL WORKER Y EL HILO
     QThread *thread = new QThread(this);
-    installerWorker *worker = new installerWorker(appId);
+    installerWorker *worker = new installerWorker(sourceIndex);
 
+    worker->moveToThread(thread);
+
+    // CUANDO EL HILO EMITA LA SEÑAL STARTED EJECUTARA EL METODO DEL WORKER
     connect (thread, &QThread::started, worker, &installerWorker::install);
 
-    connect (worker, &installerWorker::progress, &InstalledApplicationsWidget::onUninstallProgress);
+    // CADA 50MS ACTUALIZAMOS LA PROGRESSBAR
+    connect (worker, &installerWorker::progress, this, &InstalledApplicationsWidget::onUninstallProgress);
 
-    connect (worker, &installerWorker::finished, &InstalledApplicationsWidget::onUnistallFinished);
+    // CUANDO LA BARRA TERMINA ACTUALIZAMOS EL MODELO
+    connect (worker, &installerWorker::finished, this, &InstalledApplicationsWidget::onUnistallFinished);
+
+    // QUITAMOS EL WORKER DEL THREAD
+    connect (worker, &installerWorker::finished, thread, &QThread::quit);
+
+    // ESPERAMOS A QUE EL THREAD TERMINE ANTES DE ELIMINAR
+    connect (thread, &QThread::finished, worker, &installerWorker::deleteLater);
+    connect (thread, &QThread::finished, thread, &QThread::deleteLater);
+
+    thread->start();
 }
 
 void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
@@ -154,11 +167,8 @@ void InstalledApplicationsWidget::onFavoriteClicked()
     }
 }
 
-void InstalledApplicationsWidget::onUninstallProgress(int appId, int progress)
+void InstalledApplicationsWidget::onUninstallProgress(QModelIndex sourceIndex, int progress)
 {
-    //RECIBIMOS NUEVAMENTE EL INDEX POR SI HUBO ALGUN CAMBIO
-    QModelIndex sourceIndex = mModel->indexForAppId(appId);
-
     if (!sourceIndex.isValid()){
         return;
     }
@@ -167,22 +177,22 @@ void InstalledApplicationsWidget::onUninstallProgress(int appId, int progress)
     mModel->setData(sourceIndex, progress, ApplicationModel::ProgressRole);
 }
 
-void InstalledApplicationsWidget::onUnistallFinished(int appId)
+void InstalledApplicationsWidget::onUnistallFinished(QModelIndex sourceIndex)
 {
-    // QModelIndex
+    // PONEMOS EL PROGRESO A CERO
+    mModel->setData(sourceIndex, 0, ApplicationModel::ProgressRole);
 
-    // //ELIMINA TODAS LAS VERSIONES DE DICHA APLICACIÓN
-    // QList<Version> versions = mProxyModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
+    //ELIMINA TODAS LAS VERSIONES DE DICHA APLICACIÓN
+    QList<Version> versions = mModel->data(sourceIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
 
-    // for ( int i = 0; i < versions.size(); i++ ) {
-    //     versions[i].setIsInstalled(false);
-    // }
+    for ( int i = 0; i < versions.size(); i++ ) {
+        versions[i].setIsInstalled(false);
+    }
 
-    //ELIMINA LA APLICACIÓN
-    // QModelIndex sourceIndex = mProxyModel->mapToSource(index);
-    // mModel->setData(sourceIndex, false, ApplicationModel::IsDownloadedRole);
-    // mModel->setData(sourceIndex, true, ApplicationModel::UpdateRole);
-    // mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+    // ELIMINA LA APLICACIÓN
+    mModel->setData(sourceIndex, false, ApplicationModel::IsDownloadedRole);
+    mModel->setData(sourceIndex, true, ApplicationModel::UpdateRole);
+    mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 }
 
 
