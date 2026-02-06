@@ -112,6 +112,7 @@ void InstalledApplicationsWidget::onInstalledClicked()
         border: 2px solid #4fa0d8;
         border-radius: 5px;
         font-weight: bold;
+        color: black;
     }
 
     QPushButton:hover {
@@ -124,6 +125,7 @@ void InstalledApplicationsWidget::onInstalledClicked()
         border: 2px solid #4fa0d8;
         border-radius: 5px;
         font-weight: bold;
+        color: black;
     }
 
     QPushButton:hover {
@@ -147,6 +149,7 @@ void InstalledApplicationsWidget::onFavoriteClicked()
         border: 2px solid #4fa0d8;
         border-radius: 5px;
         font-weight: bold;
+        color: black;
     }
 
     QPushButton:hover {
@@ -159,6 +162,7 @@ void InstalledApplicationsWidget::onFavoriteClicked()
         border: 2px solid #4fa0d8;
         border-radius: 5px;
         font-weight: bold;
+        color: black;
     }
 
     QPushButton:hover {

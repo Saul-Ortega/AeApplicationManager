@@ -3,9 +3,11 @@
 
 #include <QDialog>
 #include <QItemSelection>
+#include <QThread>
 #include "applicationmodel.h"
 #include "versionmodel.h"
 #include "filterproxymodel.h"
+#include "installerworker.h"
 
 namespace Ui {
 class ApplicationInfoDialog;
@@ -26,7 +28,10 @@ public:
 
     void loadApplication(const QModelIndex& index);
     void loadVersion(const Version& version);
-    void onDownloadVersionClicked(const QString& versionName);
+
+public slots:
+    void onInstallProgress(QModelIndex sourceIndex, int progress);
+    void onInstallFinished(QModelIndex sourceIndex);
 
 signals:
     void buttonClicked();

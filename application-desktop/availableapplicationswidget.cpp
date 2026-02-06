@@ -77,6 +77,7 @@ void AvailableApplicationsWidget::onAvailableClicked()
         border: 2px solid #4fa0d8;
         border-radius: 5px;
         font-weight: bold;
+        color: black;
     }
 
     QPushButton:hover {
@@ -89,6 +90,7 @@ void AvailableApplicationsWidget::onAvailableClicked()
         border: 2px solid #4fa0d8;
         border-radius: 5px;
         font-weight: bold;
+        color: black;
     }
 
     QPushButton:hover {
@@ -112,6 +114,7 @@ void AvailableApplicationsWidget::onFavoriteClicked(){
         border: 2px solid #4fa0d8;
         border-radius: 5px;
         font-weight: bold;
+        color: black;
     }
 
     QPushButton:hover {
@@ -124,6 +127,7 @@ void AvailableApplicationsWidget::onFavoriteClicked(){
         border: 2px solid #4fa0d8;
         border-radius: 5px;
         font-weight: bold;
+        color: black;
     }
 
     QPushButton:hover {
@@ -205,7 +209,6 @@ void AvailableApplicationsWidget::onInstallProgress(QModelIndex sourceIndex, int
 
     // ACTUALIZAMOS EL PROGRESO AL MODELO
     mModel->setData(sourceIndex, progress, ApplicationModel::ProgressRole);
-
 }
 
 void AvailableApplicationsWidget::onInstallFinished(QModelIndex sourceIndex)

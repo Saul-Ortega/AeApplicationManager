@@ -274,7 +274,7 @@ QComboBox QListView::item:hover {
        </property>
        <property name="styleSheet">
         <string notr="true">QLabel {
-	margin-bottom: 50px;
+	margin-bottom: 40px;
 }</string>
        </property>
        <property name="text">
@@ -294,7 +294,7 @@ QComboBox QListView::item:hover {
        </property>
        <property name="styleSheet">
         <string notr="true">QLabel {
-	margin-bottom: 50px;
+	margin-bottom: 40px;
 	margin-left: 10px;
 }</string>
        </property>
@@ -304,6 +304,46 @@ QComboBox QListView::item:hover {
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="progressBar">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>6</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QProgressBar {
+    background: #5e5e5e;
+    border-color: #74c8ff;
+	border-radius: 2px;
+}
+
+QProgressBar::chunk {
+    background-color: #ff6982;
+	border-radius: 2px;
+}</string>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="textVisible">
+      <bool>false</bool>
+     </property>
+     <property name="format">
+      <string/>
+     </property>
+    </widget>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_6">
