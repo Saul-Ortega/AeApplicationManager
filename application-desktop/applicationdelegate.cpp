@@ -401,32 +401,48 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
     if (progress <= 0 || progress > 100){
         return;
     }
-        // ALTURA DE LA LINEA
-        int lineHeight = 4;
 
-        // POSICIÓN VERTICAL
-        int y = nameRectangle.bottom() + 0;
+    // ALTURA DE LA LINEA
+    int lineHeight = 4;
 
-        // RECTANGULO DEL FONDO DE LA BARRA
-        QRect progressBackground(
+    // POSICIÓN VERTICAL
+    int y;
+
+    // RECTANGULO DEL FONDO DE LA BARRA
+    QRect progressBackground;
+
+    if ( !mIsMenuStyle ) {
+        y = nameRectangle.bottom();
+
+        progressBackground = QRect(
             mainRectangle.left() + 20,
             y,
             mainRectangle.width() - 40,
             lineHeight
-            );
+        );
+    } else {
+        y = nameRectangle.top() + (nameRectangle.height() / 2);
 
-        // COLOR DEL FONDO
-        painter->setPen(Qt::NoPen);
-        painter->setBrush(QColor("#5e5e5e"));
-        painter->drawRoundedRect(progressBackground, 2, 2);
+        progressBackground = QRect(
+            mainRectangle.left() + 20,
+            y,
+            mainRectangle.width() - 40,
+            lineHeight
+        );
+    }
 
-        int filledWidth = (progressBackground.width() * progress) / 100;
+    // COLOR DEL FONDO
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(QColor("#5e5e5e"));
+    painter->drawRoundedRect(progressBackground, 2, 2);
 
-        QRect progressFilled(progressBackground.left(),progressBackground.top(),filledWidth,lineHeight);
+    int filledWidth = (progressBackground.width() * progress) / 100;
 
-        // COLOR DE LA BARRA AZUL
-        painter->setBrush(QColor("#4fa0d8"));
-        painter->drawRoundedRect(progressFilled, 2, 2);
+    QRect progressFilled(progressBackground.left(),progressBackground.top(),filledWidth,lineHeight);
+
+    // COLOR DE LA BARRA ROJA
+    painter->setBrush(QColor("#ff6982"));
+    painter->drawRoundedRect(progressFilled, 2, 2);
 }
 
 
