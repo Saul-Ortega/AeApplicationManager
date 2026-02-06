@@ -149,6 +149,49 @@ QPushButton:hover {
        </property>
       </spacer>
      </item>
+     <item>
+      <widget class="QPushButton" name="btn_Download_All">
+       <property name="minimumSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="toolTip">
+        <string>Descargar Todas Las Aplicaciones</string>
+       </property>
+       <property name="toolTipDuration">
+        <number>-1</number>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+	background-color: &quot;#d1d1d1&quot;;
+	border-radius: 5px;
+	border: 2px solid &quot;#4fa0d8&quot;;
+}
+
+QPushButton:hover {
+	background-color: &quot;#c5def2&quot;;
+}
+QPushButton:pressed {
+	background-color: &quot;#4fa0d8&quot;;
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="Resource.qrc">
+         <normaloff>:/assets/Icon_Download.png</normaloff>:/assets/Icon_Download.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>40</width>
+         <height>40</height>
+        </size>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
@@ -160,6 +203,8 @@ QPushButton:hover {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="Resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

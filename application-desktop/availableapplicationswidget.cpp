@@ -44,6 +44,7 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
 
     connect(ui->btn_Disponibles, &QPushButton::clicked, this, &AvailableApplicationsWidget::onAvailableClicked);
     connect(ui->btn_Deseados, &QPushButton::clicked, this, &AvailableApplicationsWidget::onFavoriteClicked);
+    connect(ui->btn_Download_All, &QPushButton::clicked, this, &AvailableApplicationsWidget::onDownloadAllClicked);
 }
 
 
@@ -171,6 +172,20 @@ void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& proxyInde
     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
     thread->start();
+}
+
+void AvailableApplicationsWidget::onDownloadAllClicked()
+{
+    //ALMACENA EL NÚMERO DE APLICACIONES QUE ESTÁN EN EL PROXYMODEL
+    int allUninstalledApplications = mProxyModel->rowCount(QModelIndex());
+
+    //ITERA SOBRE CADA APLICACIÓN
+    for ( int row = 0; row < allUninstalledApplications; row++ ) {
+        //SELECCIONA EL QMODELINDEX CORRESPONDIENTE BASÁNDOSE EN LA FILA
+        QModelIndex currentIndex = mProxyModel->index(row, 0);
+        //EMITE LA SEÑAL DE DESCARGA
+        emit onDownloadClicked(currentIndex);
+    }
 }
 
 void AvailableApplicationsWidget::onInstallProgress(int appId, int progress)

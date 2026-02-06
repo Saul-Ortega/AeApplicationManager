@@ -32,12 +32,11 @@ public slots:
 
 private slots:
     void onLikedClicked(const QModelIndex& index);
-
     void onAvailableClicked();
     void onFavoriteClicked();
-
     void onDownloadClicked(const QModelIndex& index);
     // void onDownloadFinished(int row);
+    void onDownloadAllClicked();
 
 private:
     Ui::AvailableApplicationsWidget *ui;

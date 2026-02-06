@@ -61,7 +61,6 @@ ApplicationModel* FilterProxyModel::applicationModel() const {
     return static_cast<ApplicationModel*>(sourceModel());
 }
 
-//
 void FilterProxyModel::setFilterText(const QString& text)
 {
     //GUARDAMOS EL TEXTO PARA EL FILTRADO
