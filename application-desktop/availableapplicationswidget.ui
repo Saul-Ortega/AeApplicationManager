@@ -77,6 +77,9 @@
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
+       <property name="toolTip">
+        <string>Filtrar Aplicaciones Disponibles</string>
+       </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
 	background-color: #4fa0d8;
@@ -117,6 +120,9 @@ QPushButton:hover {
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="toolTip">
+        <string>Filtrar Aplicaciones Disponibles y Favoritas</string>
        </property>
        <property name="styleSheet">
         <string notr="true">QPushButton {
