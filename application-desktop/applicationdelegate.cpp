@@ -376,6 +376,9 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
             || installedButtonRectangle.contains(mouseEvent->pos())
             ) {
             mIsButtonHover = true;
+        } else {
+            mIsButtonPressed = false;
+            mIsButtonHover = false;
         }
     }
 
