@@ -27,37 +27,31 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
 
     //CAMBIA SI LA VERSIÓN ESTÁ INSTALADA O NO
     connect(ui->isInstalledBtn, &QToolButton::clicked, this, [this] () {
-        //ALMACENA EL VALOR DEL PROGRESS BAR
-        int progressbar = mModel->data(mIndex, ApplicationModel::ProgressRole).toInt();
+        // CREAMOS EL WORKER Y EL HILO
+        QThread *thread = new QThread(this);
+        installerWorker *worker = new installerWorker(mIndex);
 
-        //COMPRUEBA SI EL HILO NO SE HA LANZADO YA
-        if ( progressbar == 0 ) {
-            // CREAMOS EL WORKER Y EL HILO
-            QThread *thread = new QThread(this);
-            installerWorker *worker = new installerWorker(mIndex);
+        worker->moveToThread(thread);
 
-            worker->moveToThread(thread);
+        // CUANDO EL HILO EMITA LA SEÑAL STARTED EJECUTARA EL METODO DEL WORKER
+        connect(thread, &QThread::started, worker, &installerWorker::install);
 
-            // CUANDO EL HILO EMITA LA SEÑAL STARTED EJECUTARA EL METODO DEL WORKER
-            connect(thread, &QThread::started, worker, &installerWorker::install);
+        // CADA 50MS ACTUALIZAMOS LA BARRA
+        connect(worker, &installerWorker::progress, this, &ApplicationInfoDialog::onInstallProgress);
 
-            // CADA 50MS ACTUALIZAMOS LA BARRA
-            connect(worker, &installerWorker::progress, this, &ApplicationInfoDialog::onInstallProgress);
+        // CUANDO LA BARRA TERMINA ACTUALIZAMOS EL MODELO
+        connect(worker, &installerWorker::finished, this, &ApplicationInfoDialog::onInstallFinished);
 
-            // CUANDO LA BARRA TERMINA ACTUALIZAMOS EL MODELO
-            connect(worker, &installerWorker::finished, this, &ApplicationInfoDialog::onInstallFinished);
+        // QUITAMOS EL WORKER DEL THREAD
+        connect(worker, &installerWorker::finished, thread, &QThread::quit);
 
-            // QUITAMOS EL WORKER DEL THREAD
-            connect(worker, &installerWorker::finished, thread, &QThread::quit);
+        // ESPERAMOS A QUE EL THREAD TERMINE ANTES DE ELIMINAR
+        connect(thread, &QThread::finished, worker, &installerWorker::deleteLater);
+        connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
-            // ESPERAMOS A QUE EL THREAD TERMINE ANTES DE ELIMINAR
-            connect(thread, &QThread::finished, worker, &installerWorker::deleteLater);
-            connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-
-            //MUESTRA LA PROGRESS BAR EN LA UI
-            ui->progressBar->setVisible(true);
-            thread->start();
-        }
+        //MUESTRA LA PROGRESS BAR EN LA UI
+        ui->progressBar->setVisible(true);
+        thread->start();
     });
 
     //CAMBIA SI LA VERSIÓN ESTÁ EN FAVORITOS O NO
@@ -125,6 +119,8 @@ void ApplicationInfoDialog::onInstallProgress(QModelIndex sourceIndex, int progr
     // ACTUALIZAMOS EL PROGRESO AL MODELO
     mModel->setData(sourceIndex, progress, ApplicationModel::ProgressRole);
     //ACTUALIZAMOS EL VALOR DE LA PROGRESS BAR EN LA UI
+    ui->isLikedBtn->setEnabled(false);
+    ui->isInstalledBtn->setEnabled(false);
     ui->progressBar->setValue(progress);
 }
 
@@ -159,6 +155,8 @@ void ApplicationInfoDialog::onInstallFinished(QModelIndex sourceIndex)
 
     //ESCONDE LA PROGRESS BAR
     ui->progressBar->setVisible(false);
+    ui->isLikedBtn->setEnabled(true);
+    ui->isInstalledBtn->setEnabled(true);
 
     //ASIGNAMOS EL PROGRESO A CERO
     mModel->setData(sourceIndex, 0, ApplicationModel::ProgressRole);

@@ -331,24 +331,23 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
         //CUANDO EL USUARIO DEJA DE PULSAR EL BOTÓN, ASIGNO FALSE AL MIEMBRO DE LA CLASE IS PRESSED
         mIsButtonPressed = false;
 
-        //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
-        if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
-            if ( !isUpdated ) {
-                QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), "Tienes actualizaciones pendientes");
+        int progress = index.data(ApplicationModel::ProgressRole).toInt();
+
+        //COMPRUEBA SI NO SE ESTÁ DESCARGANDO O ELIMINANDO LA APLICACIÓN
+        if ( progress <= 0 ) {
+            //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
+            if ( likedButtonRectangle.contains(mouseEvent->pos()) ) {
+                emit isLikedButtonClicked(index);
             }
-        }
 
-        if ( likedButtonRectangle.contains(mouseEvent->pos()) ) {
-            emit isLikedButtonClicked(index);
-        }
+            if ( infoButtonRectangle.contains(mouseEvent->pos()) ) {
+                emit infoButtonClicked(index);
+            }
 
-        if ( infoButtonRectangle.contains(mouseEvent->pos()) ) {
-            emit infoButtonClicked(index);
-        }
-
-        //BOTON DE DOWNLOAD
-        if (installedButtonRectangle.contains(mouseEvent->pos())) {
-            emit isDownloadedButtonClicked(index);
+            //BOTON DE DOWNLOAD
+            if (installedButtonRectangle.contains(mouseEvent->pos())) {
+                emit isDownloadedButtonClicked(index);
+            }
         }
     }
 
