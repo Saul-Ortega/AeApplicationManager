@@ -368,7 +368,21 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
         }
     }
 
+    bool isDownloaded = model->data(index, ApplicationModel::IsDownloadedRole).toBool();
+
     if ( event->type() == QEvent::MouseMove ) {
+
+        if (likedButtonRectangle.contains(mouseEvent->pos()))
+            QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), "Favorito");
+        else if (infoButtonRectangle.contains(mouseEvent->pos()))
+            QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), "Detalles");
+        else if (installedButtonRectangle.contains(mouseEvent->pos()))
+            QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), isDownloaded ? "Desinstalar" : "Instalar");
+        else if (notificationButtonRectangle.contains(mouseEvent->pos()))
+            if ( !isUpdated && isDownloaded ) {
+                QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), "Tienes actualizaciones pendientes");
+            }
+
         if (
             notificationButtonRectangle.contains(mouseEvent->pos())
             || likedButtonRectangle.contains(mouseEvent->pos())
@@ -444,6 +458,7 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
     painter->setBrush(QColor("#ff6982"));
     painter->drawRoundedRect(progressFilled, 2, 2);
 }
+
 
 
 

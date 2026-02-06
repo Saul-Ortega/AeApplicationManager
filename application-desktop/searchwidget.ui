@@ -148,6 +148,9 @@
      <property name="cursor">
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
+     <property name="toolTip">
+      <string>Cambiar Tipo De Vista</string>
+     </property>
      <property name="styleSheet">
       <string notr="true">QPushButton {
 	background-color: &quot;#d1d1d1&quot;;
