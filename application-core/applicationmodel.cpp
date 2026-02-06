@@ -90,9 +90,8 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
         application.setVersions(value.value<QList<Version>>());
         break;
     case ProgressRole:{
-        beginResetModel();
         application.setProgress(value.toInt());
-        endResetModel();
+        emit dataChanged(index, index, {role});
         return true; //para no aplicar cambios en el json
     }
 
