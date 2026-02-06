@@ -66,29 +66,35 @@ void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
         return;
     }
 
-    // CREAMOS EL WORKER Y EL HILO
-    QThread *thread = new QThread(this);
-    installerWorker *worker = new installerWorker(sourceIndex);
+    //ALMACENA EL VALOR DEL PROGRESS BAR
+    int progressbar = mProxyModel->data(index, ApplicationModel::ProgressRole).toInt();
 
-    worker->moveToThread(thread);
+    //COMPRUEBA SI EL HILO NO SE HA LANZADO YA
+    if ( progressbar == 0 ) {
+        // CREAMOS EL WORKER Y EL HILO
+        QThread *thread = new QThread(this);
+        installerWorker *worker = new installerWorker(sourceIndex);
 
-    // CUANDO EL HILO EMITA LA SEÑAL STARTED EJECUTARA EL METODO DEL WORKER
-    connect (thread, &QThread::started, worker, &installerWorker::install);
+        worker->moveToThread(thread);
 
-    // CADA 50MS ACTUALIZAMOS LA PROGRESSBAR
-    connect (worker, &installerWorker::progress, this, &InstalledApplicationsWidget::onUninstallProgress);
+        // CUANDO EL HILO EMITA LA SEÑAL STARTED EJECUTARA EL METODO DEL WORKER
+        connect (thread, &QThread::started, worker, &installerWorker::install);
 
-    // CUANDO LA BARRA TERMINA ACTUALIZAMOS EL MODELO
-    connect (worker, &installerWorker::finished, this, &InstalledApplicationsWidget::onUnistallFinished);
+        // CADA 50MS ACTUALIZAMOS LA PROGRESSBAR
+        connect (worker, &installerWorker::progress, this, &InstalledApplicationsWidget::onUninstallProgress);
 
-    // QUITAMOS EL WORKER DEL THREAD
-    connect (worker, &installerWorker::finished, thread, &QThread::quit);
+        // CUANDO LA BARRA TERMINA ACTUALIZAMOS EL MODELO
+        connect (worker, &installerWorker::finished, this, &InstalledApplicationsWidget::onUnistallFinished);
 
-    // ESPERAMOS A QUE EL THREAD TERMINE ANTES DE ELIMINAR
-    connect (thread, &QThread::finished, worker, &installerWorker::deleteLater);
-    connect (thread, &QThread::finished, thread, &QThread::deleteLater);
+        // QUITAMOS EL WORKER DEL THREAD
+        connect (worker, &installerWorker::finished, thread, &QThread::quit);
 
-    thread->start();
+        // ESPERAMOS A QUE EL THREAD TERMINE ANTES DE ELIMINAR
+        connect (thread, &QThread::finished, worker, &installerWorker::deleteLater);
+        connect (thread, &QThread::finished, thread, &QThread::deleteLater);
+
+        thread->start();
+    }
 }
 
 void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
