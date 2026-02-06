@@ -444,6 +444,3 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
     painter->setBrush(QColor("#ff6982"));
     painter->drawRoundedRect(progressFilled, 2, 2);
 }
-
-
-

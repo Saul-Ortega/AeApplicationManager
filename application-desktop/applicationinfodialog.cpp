@@ -10,6 +10,7 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
     , mVersion()
 {
     ui->setupUi(this);
+    ui->progressBar->setVisible(false);
 
     //CARGA LOS DETALLES DE LA VERSIÓN CUANDO SE CAMBIA DE ÍNDICE EN EL COMBOBOX
     connect(ui->versionComboBox, &QComboBox::currentIndexChanged, this, [this] (int row) {
@@ -26,28 +27,38 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
 
     //CAMBIA SI LA VERSIÓN ESTÁ INSTALADA O NO
     connect(ui->isInstalledBtn, &QToolButton::clicked, this, [this] () {
-        QList<Version> versions = mModel->data(mIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
-        QString versionName = ui->versionComboBox->currentText();
+        //ALMACENA EL VALOR DEL PROGRESS BAR
+        int progressbar = mModel->data(mIndex, ApplicationModel::ProgressRole).toInt();
 
-        bool isApplicationDownloaded = false;
+        //COMPRUEBA SI EL HILO NO SE HA LANZADO YA
+        if ( progressbar == 0 ) {
+            // CREAMOS EL WORKER Y EL HILO
+            QThread *thread = new QThread(this);
+            installerWorker *worker = new installerWorker(mIndex);
 
-        for ( int i = versions.size() - 1; i >= 0; i-- ) {
-            if ( versions[i].name() == versionName ) {
-                bool isInstalled = versions[i].isInstalled();
-                versions[i].setIsInstalled(!isInstalled);
-                mModel->setData(mIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
-                !isInstalled ? ui->isInstalledBtn->setIcon(QIcon(":/assets/papelera.png")) : ui->isInstalledBtn->setIcon(QIcon(":/assets/Icon_Download.png"));
-            }
+            worker->moveToThread(thread);
 
-            if ( versions[i].isInstalled() ) {
-                isApplicationDownloaded = true;
-            }
+            // CUANDO EL HILO EMITA LA SEÑAL STARTED EJECUTARA EL METODO DEL WORKER
+            connect(thread, &QThread::started, worker, &installerWorker::install);
+
+            // CADA 50MS ACTUALIZAMOS LA BARRA
+            connect(worker, &installerWorker::progress, this, &ApplicationInfoDialog::onInstallProgress);
+
+            // CUANDO LA BARRA TERMINA ACTUALIZAMOS EL MODELO
+            connect(worker, &installerWorker::finished, this, &ApplicationInfoDialog::onInstallFinished);
+
+            // QUITAMOS EL WORKER DEL THREAD
+            connect(worker, &installerWorker::finished, thread, &QThread::quit);
+
+            // ESPERAMOS A QUE EL THREAD TERMINE ANTES DE ELIMINAR
+            connect(thread, &QThread::finished, worker, &installerWorker::deleteLater);
+            connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+
+            //MUESTRA LA PROGRESS BAR EN LA UI
+            ui->progressBar->setVisible(true);
+            thread->start();
         }
-
-        mModel->setData(mIndex, versions.last().isInstalled(), ApplicationModel::UpdateRole);
-        mModel->setData(mIndex, isApplicationDownloaded, ApplicationModel::IsDownloadedRole);
     });
-
 
     //CAMBIA SI LA VERSIÓN ESTÁ EN FAVORITOS O NO
     connect(ui->isLikedBtn, &QToolButton::clicked, this, [this] () {
@@ -103,4 +114,58 @@ void ApplicationInfoDialog::loadVersion(const Version& version)
     ui->applicationSize->setText(QString::number(version.size()) + " GB");
     ui->applicationLastModificationDate->setText(version.lastModification().toString("dd/MM/yyyy"));
     version.isInstalled() ? ui->isInstalledBtn->setIcon(QIcon(":/assets/papelera.png")) : ui->isInstalledBtn->setIcon(QIcon(":/assets/Icon_Download.png"));
+}
+
+void ApplicationInfoDialog::onInstallProgress(QModelIndex sourceIndex, int progress)
+{
+    if (!sourceIndex.isValid()){
+        return;
+    }
+
+    // ACTUALIZAMOS EL PROGRESO AL MODELO
+    mModel->setData(sourceIndex, progress, ApplicationModel::ProgressRole);
+    //ACTUALIZAMOS EL VALOR DE LA PROGRESS BAR EN LA UI
+    ui->progressBar->setValue(progress);
+}
+
+void ApplicationInfoDialog::onInstallFinished(QModelIndex sourceIndex)
+{
+    if (!sourceIndex.isValid()){
+        return;
+    }
+
+    QList<Version> versions = mModel->data(mIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
+    QString versionName = ui->versionComboBox->currentText();
+
+    bool isApplicationDownloaded = false;
+
+    //RECORRE LAS VERSIONES DESDE LA MÁS RECIENTE HASTA LA MÁS ANTIGUA
+    for ( int i = versions.size() - 1; i >= 0; i-- ) {
+        //SI ENCUENTRA EL NOMBRE DE LA VERSIÓN
+        if ( versions[i].name() == versionName ) {
+            //ALMACENA SI ESTÁ INSTALADA O NO
+            bool isInstalled = versions[i].isInstalled();
+            //ASIGNA EL VALOR CONTRARIO
+            versions[i].setIsInstalled(!isInstalled);
+            //CAMBIA EL ICONO DEPENDIENDO DE SI ESTÁ INSTALADO O NO
+            !isInstalled ? ui->isInstalledBtn->setIcon(QIcon(":/assets/papelera.png")) : ui->isInstalledBtn->setIcon(QIcon(":/assets/Icon_Download.png"));
+        }
+
+        //COMPRUEBA SI ALGUNA VERSIÓN ESTÁ INSTALADA
+        if ( versions[i].isInstalled() ) {
+            isApplicationDownloaded = true;
+        }
+    }
+
+    //ESCONDE LA PROGRESS BAR
+    ui->progressBar->setVisible(false);
+
+    //ASIGNAMOS EL PROGRESO A CERO
+    mModel->setData(sourceIndex, 0, ApplicationModel::ProgressRole);
+    //ASIGNAMOS LAS VERSIONES
+    mModel->setData(mIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+    //ASIGNAMOS AL UPDATE EL VALOR DE SI LA ÚLTIMA VERSIÓN ESTÁ INSTALADA PARA MOSTRAR LA NOTIFICACIÓN O NO
+    mModel->setData(mIndex, versions.last().isInstalled(), ApplicationModel::UpdateRole);
+    //ASIGNAMOS SI LA APLICACIÓN ESTÁ DESCARGADA
+    mModel->setData(mIndex, isApplicationDownloaded, ApplicationModel::IsDownloadedRole);
 }

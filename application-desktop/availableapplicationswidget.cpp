@@ -205,7 +205,6 @@ void AvailableApplicationsWidget::onInstallProgress(QModelIndex sourceIndex, int
 
     // ACTUALIZAMOS EL PROGRESO AL MODELO
     mModel->setData(sourceIndex, progress, ApplicationModel::ProgressRole);
-
 }
 
 void AvailableApplicationsWidget::onInstallFinished(QModelIndex sourceIndex)
