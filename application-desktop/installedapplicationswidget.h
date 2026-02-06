@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include "applicationmodel.h"
-#include "installeditemwidget.h"
 #include "applicationdelegate.h"
 #include "filterproxymodel.h"
 
@@ -20,6 +19,8 @@ public:
     ~InstalledApplicationsWidget();
 
     void setApplicationModel(ApplicationModel* model);
+    void onUninstallProgress(int appId, int progress);
+    void onUnistallFinished(int appId);
 
 signals:
     void infoClicked(const QModelIndex& index);

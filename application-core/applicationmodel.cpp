@@ -93,7 +93,6 @@ bool ApplicationModel::setData(const QModelIndex& index, const QVariant& value, 
         beginResetModel();
         application.setProgress(value.toInt());
         endResetModel();
-        // emit dataChanged(index, index, {role}); //DATACHANGED PARA PINTAR LA PROGRESSBAR
         return true; //para no aplicar cambios en el json
     }
 

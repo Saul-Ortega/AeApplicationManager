@@ -148,8 +148,8 @@ void AvailableApplicationsWidget::onDownloadClicked(const QModelIndex& proxyInde
     int appId = sourceIndex.data(ApplicationModel::IdRole).toInt();
 
     // CREAMOS EL WORKER Y EL HILO
-    installerWorker *worker = new installerWorker(appId);
     QThread *thread = new QThread(this);
+    installerWorker *worker = new installerWorker(appId);
 
     worker->moveToThread(thread);
 

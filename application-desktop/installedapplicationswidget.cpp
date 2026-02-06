@@ -1,6 +1,8 @@
 #include "installedapplicationswidget.h"
 #include "ui_installedapplicationswidget.h"
+#include "installerworker.h"
 #include <QScrollBar>
+#include <QThread>
 
 InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     : QWidget(parent)
@@ -54,19 +56,25 @@ void InstalledApplicationsWidget::setApplicationModel(ApplicationModel* model)
 
 void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
 {
+    //PASAMOS DEL PROXY INDEX AL MODEL INDEX
+    QModelIndex sourceIndex = mProxyModel->mapToSource(index);
+    //RECIBIMOS EL ID DEL MODELO
+    int appId = mModel->data(sourceIndex, ApplicationModel::IdRole).toInt();
 
-    //ELIMINA TODAS LAS VERSIONES DE DICHA APLICACIÓN
-    QList<Version> versions = mProxyModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
-
-    for ( int i = 0; i < versions.size(); i++ ) {
-        versions[i].setIsInstalled(false);
+    if (!sourceIndex.isValid()){
+        return;
     }
 
-    //ELIMINA LA APLICACIÓN
-    QModelIndex sourceIndex = mProxyModel->mapToSource(index);
-    mModel->setData(sourceIndex, false, ApplicationModel::IsDownloadedRole);
+    QThread *thread = new QThread(this);
+    installerWorker *worker = new installerWorker(appId);
 
-    mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+    connect (thread, &QThread::started, worker, &installerWorker::install);
+
+    // connect (worker, &installerWorker::progress, &InstalledApplicationsWidget::onUninstallProgress);
+
+    // connect (worker, &installerWorker::finished, &InstalledApplicationsWidget::onUnistallFinished);
+
+
 }
 
 void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
@@ -144,6 +152,38 @@ void InstalledApplicationsWidget::onFavoriteClicked()
         mProxyModel->setShowOnlyFavorites(true);
     }
 }
+
+void InstalledApplicationsWidget::onUninstallProgress(int appId, int progress)
+{
+    //RECIBIMOS NUEVAMENTE EL INDEX POR SI HUBO ALGUN CAMBIO
+    QModelIndex sourceIndex = mModel->indexForAppId(appId);
+
+    if (!sourceIndex.isValid()){
+        return;
+    }
+
+    //VAMOS ACTUALIZANDO EL PROGRESO EN EL MODELO
+    mModel->setData(sourceIndex, progress, ApplicationModel::ProgressRole);
+}
+
+void InstalledApplicationsWidget::onUnistallFinished(int appId)
+{
+    // QModelIndex
+
+    // //ELIMINA TODAS LAS VERSIONES DE DICHA APLICACIÓN
+    // QList<Version> versions = mProxyModel->data(index, ApplicationModel::VersionsRole).value<QList<Version>>();
+
+    // for ( int i = 0; i < versions.size(); i++ ) {
+    //     versions[i].setIsInstalled(false);
+    // }
+
+    // //ELIMINA LA APLICACIÓN
+    // QModelIndex sourceIndex = mProxyModel->mapToSource(index);
+    // mModel->setData(sourceIndex, false, ApplicationModel::IsDownloadedRole);
+
+    // mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
+}
+
 
 void InstalledApplicationsWidget::onSearchText(const QString& text)
 {
