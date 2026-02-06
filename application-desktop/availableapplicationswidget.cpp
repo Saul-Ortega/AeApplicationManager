@@ -26,11 +26,14 @@ AvailableApplicationsWidget::AvailableApplicationsWidget(QWidget *parent)
     ui->listViewAvailable->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->listViewAvailable->verticalScrollBar()->setSingleStep(10);
 
-    connect(this, &AvailableApplicationsWidget::changeToMenuStyle, delegate, &ApplicationDelegate::onMenuStyleClicked);
-    connect(this, &AvailableApplicationsWidget::changeToMenuStyle, this, [this](){
-        ui->listViewAvailable->reset();
-    });
+    //PERMITE SEGUIR EL MOVIMIENTO DEL CURSOR PARA HACER EL EFECTO HOVER EN EL DELEGATE
+    ui->listViewAvailable->setMouseTracking(true);
 
+    //ENVÍA LA SEÑAL DE SI EL USUARIO QUIERE LA VISTA DE TIPO GRID O MENU
+    connect(this, &AvailableApplicationsWidget::changeToMenuStyle, delegate, [this, delegate] (const bool& isMenuStyle) {
+        ui->listViewAvailable->reset();
+        emit delegate->onMenuStyleClicked(isMenuStyle);
+    });
 
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &AvailableApplicationsWidget::onLikedClicked);
     connect(delegate, &ApplicationDelegate::infoButtonClicked, this, [this] (const QModelIndex& index) {
@@ -54,9 +57,7 @@ void AvailableApplicationsWidget::setApplicationModel(ApplicationModel* model)
     ui->listViewAvailable->setModel(mProxyModel);
 }
 
-
 // === BUTTONS ===
-
 
 // CAMBIAMOS EL ROL DE FAVORITOS Y ACTUALIZAMOS EL CORAZON
 void AvailableApplicationsWidget::onLikedClicked(const QModelIndex& index)

@@ -162,8 +162,31 @@ margin-top: 10px;</string>
          <pointsize>16</pointsize>
         </font>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
-        <string notr="true">margin-left: 10px;</string>
+        <string notr="true">QComboBox {
+	background-color: &quot;#d1d1d1&quot;;
+	color: black;
+}
+
+QComboBox QListView {
+	background: &quot;#d1d1d1&quot;;
+	color: black;
+	border-radius: 15px;
+	border: 2px solid &quot;#4fa0d8&quot;;
+	selection-color: black;
+}
+
+QComboBox QListView:item {
+	border-radius: 5px;
+}
+
+QComboBox QListView::item:hover {
+	background: &quot;#c5def2&quot;;
+}
+</string>
        </property>
        <property name="sizeAdjustPolicy">
         <enum>QComboBox::SizeAdjustPolicy::AdjustToContents</enum>
@@ -298,12 +321,18 @@ margin-top: 10px;</string>
          <height>120</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QToolButton {
-	background-color: white;
+	background-color: &quot;#d1d1d1&quot;;
 	border-radius: 60%;
 }
 QToolButton:hover {
+	background-color: &quot;#c5def2&quot;;
+}
+QToolButton:pressed {
 	background-color: &quot;#4fa0d8&quot;;
 }</string>
        </property>
@@ -326,12 +355,18 @@ QToolButton:hover {
          <height>120</height>
         </size>
        </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
        <property name="styleSheet">
         <string notr="true">QToolButton {
-	background-color: white;
+	background-color: &quot;#d1d1d1&quot;;
 	border-radius: 60%;
 }
 QToolButton:hover {
+	background-color: &quot;#c5def2&quot;;
+}
+QToolButton:pressed {
 	background-color: &quot;#4fa0d8&quot;;
 }</string>
        </property>

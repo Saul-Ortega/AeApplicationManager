@@ -8,10 +8,14 @@
 #include <QApplication>
 #include <QToolTip>
 #include <QTimer>
+#include <QListView>
 
 ApplicationDelegate::ApplicationDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
     , mIsMenuStyle(false)
+    , mIsButtonPressed(false)
+    , mIsButtonHover(false)
+    , mIsAtButtonsPosition(false)
 {
 }
 
@@ -55,12 +59,21 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     QPixmap installedButtonPixmap;
     QPoint installedButtonPixmapPoint;
 
+    //SE RECOGE LA POSICIÓN DEL CURSOR DEL USUARIO
+    QPoint cursor = QCursor::pos();
+
+    //SE DECLARA UN OBJETO DE TIPO QLISTVIEW PARA PODER MAPEAR LA POSICIÓN GLOBAL DEL CURSOR
+    const auto widget = qobject_cast<QListView*>(option.styleObject);
+
+    //SE TRADUCE EL QPOINT GLOBAL AL QPOINT CORRESPONDIENTE DEL WIDGET
+    QPoint position = widget->viewport()->mapFromGlobal(cursor);
+
     //SI EL USUARIO QUIERE EL TIPO DE LISTA EN GRID
     if ( !mIsMenuStyle ) {
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
         mainRectangle = QRect(option.rect.topLeft(), QSize(180, 190));
 
-        if ( isUpdated && isDownloaded ) {
+        if ( !isUpdated ) {
             //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
             int margin = 5;
             QSize notificationButtonRectangleSize = QSize(20, 20);
@@ -124,7 +137,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     } else {
         //SI EL USUARIO QUIERE EL TIPO DE LISTA EN MENU
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
-        mainRectangle = QRect(option.rect.topLeft(), QSize(option.rect.width() - 5, 60));
+        mainRectangle = QRect(option.rect.topLeft(), QSize(option.rect.width() - 15, 60));
 
         if ( !isUpdated ) {
             //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
@@ -165,7 +178,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
         //BOTÓN DE FAVORITOS
         likedButtonPixmap = QPixmap(isLiked ? ":/assets/CorazonSeleccionado.png" : ":/assets/Corazon.png");
-        likedButtonPixmap = likedButtonPixmap.scaled(QSize(50, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        likedButtonPixmap = likedButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         likedButtonPixmapPoint = QPoint(likedButtonRectangle.left() + (likedButtonRectangle.width() - likedButtonPixmap.width()) / 2, likedButtonRectangle.top() + (likedButtonRectangle.height() - likedButtonPixmap.height()) / 2);
 
         //CONTENEDOR DE BOTÓN DE DETALLE O INFORMACIÓN
@@ -176,7 +189,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
         //BOTÓN DE DETALLE O INFORMACIÓN
         infoButtonPixmap = QPixmap(":/assets/Icon_Info.png");
-        infoButtonPixmap = infoButtonPixmap.scaled(QSize(45, 45), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        infoButtonPixmap = infoButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         infoButtonPixmapPoint = QPoint(infoButtonRectangle.left() + (infoButtonRectangle.width() - infoButtonPixmap.width()) / 2, infoButtonRectangle.top() + (infoButtonRectangle.height() - infoButtonPixmap.height()) / 2);
 
         //CONTENEDOR DE BOTÓN DE INSTALADO
@@ -186,7 +199,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
 
         //BOTÓN DE INSTALADO
         installedButtonPixmap = QPixmap(isDownloaded ? ":/assets/papelera.png" : ":/assets/Icon_Download.png");
-        installedButtonPixmap = installedButtonPixmap.scaled(QSize(50, 50), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        installedButtonPixmap = installedButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         installedButtonPixmapPoint = QPoint(installedButtonRectangle.left() + (installedButtonRectangle.width() - installedButtonPixmap.height()) / 2, installedButtonRectangle.top() + (installedButtonRectangle.height() - installedButtonPixmap.height()) / 2);
     }
 
@@ -198,6 +211,11 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     blackPen.setWidth(2);
 
     QBrush greyBackground = QBrush("#d1d1d1");
+    QBrush lightBlueBackground = QBrush("#c5def2");
+    QBrush darkBlueBackground = QBrush("#4fa0d8");
+
+    QCursor pointingHandCursor = QCursor(Qt::PointingHandCursor);
+    QCursor arrowCursor = QCursor(Qt::ArrowCursor);
 
     QFont font;
     font.setPixelSize(14);
@@ -221,6 +239,47 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
     paintProgressBar(painter, mainRectangle, nameRectangle, index);
 
+    bool isMouseHovering = false;
+
+    //HOVERS
+    if ( notificationButtonRectangle.contains(position) ) {
+        isMouseHovering = true;
+        painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
+        widget->setCursor(pointingHandCursor);
+        painter->drawRoundedRect(notificationButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+        painter->drawPixmap(notificationButtonPixmapPoint, notificationButtonPixmap);
+    }
+
+    if ( likedButtonRectangle.contains(position) ) {
+        isMouseHovering = true;
+        painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
+        widget->setCursor(pointingHandCursor);
+        painter->drawRoundedRect(likedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+        painter->drawPixmap(likedButtonPixmapPoint, likedButtonPixmap);
+    }
+
+    if ( infoButtonRectangle.contains(position) ) {
+        isMouseHovering = true;
+        painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
+        widget->setCursor(pointingHandCursor);
+        painter->drawRoundedRect(infoButtonRectangle, borderRadiusInfoButtonRectangle, borderRadiusInfoButtonRectangle);
+        painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
+    }
+
+    if ( installedButtonRectangle.contains(position) ) {
+        isMouseHovering = true;
+        painter->setBrush(mIsButtonPressed ? darkBlueBackground : lightBlueBackground);
+        widget->setCursor(pointingHandCursor);
+        painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
+        painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
+    }
+
+    //COMPRUEBA SI EL CURSOR YA NO ESTÁ HACIENDO HOVER EN ALGÚN ELEMENTO
+    //Y LE ASIGNA EL ARROW CURSOR
+    if ( !mIsAtButtonsPosition ) {
+        widget->setCursor(arrowCursor);
+    }
+
     painter->restore();
 }
 
@@ -231,52 +290,56 @@ QSize ApplicationDelegate::sizeHint(const QStyleOptionViewItem& option, const QM
 
 bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
+    QMouseEvent* mouseEvent = (QMouseEvent *)event;
+
+    QRect rect = option.rect;
+
+    bool isUpdated = model->data(index, ApplicationModel::UpdateRole).toBool();
+
+    int x;
+    int y;
+
+    int notificationButtonWidth = 20;
+    int likedButtonWidth;
+    int infoButtonWidth;
+    int installedButtonWidth;
+    int buttonsHeight;
+
+    QRect notificationButtonRectangle = QRect(QPoint(rect.right() - 5 - notificationButtonWidth, rect.top() + 5), QSize(notificationButtonWidth, notificationButtonWidth));
+    QRect likedButtonRectangle;
+    QRect infoButtonRectangle;
+    QRect installedButtonRectangle;
+
+    if ( !mIsMenuStyle ) {
+        x = rect.left() + 20;
+        y = rect.top() + 144;
+
+        likedButtonWidth = 30;
+        infoButtonWidth = 70;
+        installedButtonWidth = 30;
+        buttonsHeight = 30;
+
+    } else {
+        x = rect.right() - 300 - 45;
+        y = rect.top() + 5;
+
+        likedButtonWidth = 50;
+        infoButtonWidth = 190;
+        installedButtonWidth = 50;
+        buttonsHeight = 50;
+    }
+
+    likedButtonRectangle = QRect(QPoint(x, y), QSize(likedButtonWidth, buttonsHeight));
+    infoButtonRectangle = QRect(QPoint(likedButtonRectangle.x() + likedButtonWidth + 5, y), QSize(infoButtonWidth, buttonsHeight));
+    installedButtonRectangle = QRect(QPoint(infoButtonRectangle.x() + infoButtonWidth + 5, y), QSize(installedButtonWidth, buttonsHeight));
+
     if ( event->type() == QEvent::MouseButtonRelease ) {
-        QMouseEvent* mouseEvent = (QMouseEvent *)event;
-
-        QRect rect = option.rect;
-
-        bool isUpdated = model->data(index, ApplicationModel::UpdateRole).toBool();
-
-        int x;
-        int y;
-
-        int notificationButtonWidth = 20;
-        int likedButtonWidth;
-        int infoButtonWidth;
-        int installedButtonWidth;
-        int buttonsHeight;
-
-        QRect notificationButtonRectangle = QRect(QPoint(rect.right() - 5 - notificationButtonWidth, rect.top() + 5), QSize(notificationButtonWidth, notificationButtonWidth));
-        QRect likedButtonRectangle;
-        QRect infoButtonRectangle;
-        QRect installedButtonRectangle;
-
-        if ( !mIsMenuStyle ) {
-            x = rect.left() + 20;
-            y = rect.top() + 154;
-
-            likedButtonWidth = 30;
-            infoButtonWidth = 70;
-            installedButtonWidth = 30;
-            buttonsHeight = 40;
-        } else {
-            x = rect.right() - 300 - 30;
-            y = rect.top() + 5;
-
-            likedButtonWidth = 50;
-            infoButtonWidth = 170;
-            installedButtonWidth = 50;
-            buttonsHeight = 50;
-        }
-
-        likedButtonRectangle = QRect(QPoint(x, y), QSize(likedButtonWidth, buttonsHeight));
-        infoButtonRectangle = QRect(QPoint(likedButtonRectangle.x() + likedButtonWidth + 5, y), QSize(infoButtonWidth, buttonsHeight));
-        installedButtonRectangle = QRect(QPoint(infoButtonRectangle.x() + infoButtonWidth + 5, y), QSize(installedButtonWidth, buttonsHeight));
+        //CUANDO EL USUARIO DEJA DE PULSAR EL BOTÓN, ASIGNO FALSE AL MIEMBRO DE LA CLASE IS PRESSED
+        mIsButtonPressed = false;
 
         //EMITE LAS SEÑALES CUANDO SE PULSA DENTRO DEL QRECT DE CADA UNO
         if ( notificationButtonRectangle.contains(mouseEvent->pos()) ) {
-            if ( isUpdated ) {
+            if ( !isUpdated ) {
                 QToolTip::showText(QPoint(QCursor::pos().x(), QCursor::pos().y()), "Tienes actualizaciones pendientes");
             }
         }
@@ -294,6 +357,35 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
             emit isDownloadedButtonClicked(index);
         }
     }
+
+    if ( event->type() == QEvent::MouseButtonPress ) {
+        /*ASIGNA TRUE AL MIEMBRO DE LA CLASE CUANDO EL USUARIO MANTIENE
+        * EL CURSOR APRETADO Y ESTÁ DENTRO DEL ÁREA DE LOS RECTÁNGULOS
+        * A LOS QUE SE QUIERE CAMBIAR EL COLOR
+        */
+        if (
+            notificationButtonRectangle.contains(mouseEvent->pos())
+            || likedButtonRectangle.contains(mouseEvent->pos())
+            || infoButtonRectangle.contains(mouseEvent->pos())
+            || installedButtonRectangle.contains(mouseEvent->pos())
+            ) {
+            mIsButtonHover = false;
+            mIsButtonPressed = true;
+        }
+    }
+
+    if ( event->type() == QEvent::MouseMove ) {
+        if (
+            notificationButtonRectangle.contains(mouseEvent->pos())
+            || likedButtonRectangle.contains(mouseEvent->pos())
+            || infoButtonRectangle.contains(mouseEvent->pos())
+            || installedButtonRectangle.contains(mouseEvent->pos())
+            ) {
+            mIsButtonHover = true;
+        }
+    }
+
+    mIsAtButtonsPosition = ( notificationButtonRectangle.contains(mouseEvent->pos()) || likedButtonRectangle.contains(mouseEvent->pos()) || infoButtonRectangle.contains(mouseEvent->pos()) || installedButtonRectangle.contains(mouseEvent->pos()) );
 
     return true;
 }

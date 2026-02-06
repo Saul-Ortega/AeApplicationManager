@@ -24,10 +24,13 @@ public slots:
     void onMenuStyleClicked(const bool& isMenuStyle);
 
 private:
-    bool mIsMenuStyle;
     void paintProgressBar(QPainter* painter, const QRect& mainRectangle, const QRect& nameRectangle, const QModelIndex& index) const;
 
-
+private:
+    bool mIsMenuStyle;
+    bool mIsButtonPressed;
+    bool mIsButtonHover;
+    bool mIsAtButtonsPosition;
 };
 
 #endif // APPLICATIONDELEGATE_H

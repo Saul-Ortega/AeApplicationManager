@@ -8,6 +8,7 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::InstalledApplicationsWidget)
     , mModel(nullptr)
+    , mProxyModel(nullptr)
 {
     ui->setupUi(this);
 
@@ -21,11 +22,13 @@ InstalledApplicationsWidget::InstalledApplicationsWidget(QWidget *parent)
     ui->listViewInstalled->setVerticalScrollMode(QAbstractItemView::ScrollPerPixel);
     ui->listViewInstalled->verticalScrollBar()->setSingleStep(10);
 
+    //PERMITE SEGUIR EL MOVIMIENTO DEL CURSOR PARA HACER EL EFECTO HOVER EN EL DELEGATE
+    ui->listViewInstalled->setMouseTracking(true);
 
     //ENVÍA LA SEÑAL DE SI EL USUARIO QUIERE LA VISTA DE TIPO GRID O MENU
-    connect(this, &InstalledApplicationsWidget::changeToMenuStyle, delegate, &ApplicationDelegate::onMenuStyleClicked);
-    connect(this, &InstalledApplicationsWidget::changeToMenuStyle, this, [this](){
+    connect(this, &InstalledApplicationsWidget::changeToMenuStyle, delegate, [this, delegate] (const bool& isMenuStyle) {
         ui->listViewInstalled->reset();
+        emit delegate->onMenuStyleClicked(isMenuStyle);
     });
 
     connect(delegate, &ApplicationDelegate::isLikedButtonClicked, this, &InstalledApplicationsWidget::onLikedClicked);
@@ -70,11 +73,9 @@ void InstalledApplicationsWidget::onDeleteClicked(const QModelIndex& index)
 
     connect (thread, &QThread::started, worker, &installerWorker::install);
 
-    // connect (worker, &installerWorker::progress, &InstalledApplicationsWidget::onUninstallProgress);
+    connect (worker, &installerWorker::progress, &InstalledApplicationsWidget::onUninstallProgress);
 
-    // connect (worker, &installerWorker::finished, &InstalledApplicationsWidget::onUnistallFinished);
-
-
+    connect (worker, &installerWorker::finished, &InstalledApplicationsWidget::onUnistallFinished);
 }
 
 void InstalledApplicationsWidget::onLikedClicked(const QModelIndex& index)
@@ -177,10 +178,10 @@ void InstalledApplicationsWidget::onUnistallFinished(int appId)
     //     versions[i].setIsInstalled(false);
     // }
 
-    // //ELIMINA LA APLICACIÓN
+    //ELIMINA LA APLICACIÓN
     // QModelIndex sourceIndex = mProxyModel->mapToSource(index);
     // mModel->setData(sourceIndex, false, ApplicationModel::IsDownloadedRole);
-
+    // mModel->setData(sourceIndex, true, ApplicationModel::UpdateRole);
     // mModel->setData(sourceIndex, QVariant::fromValue(versions), ApplicationModel::VersionsRole);
 }
 

@@ -36,9 +36,6 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
         QString style = QLatin1String(file.readAll());
         qApp->setStyleSheet(style);
     }
-
-
-
 }
 
 //DESTRUCTOR
