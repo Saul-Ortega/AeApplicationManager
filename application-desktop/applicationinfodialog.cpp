@@ -10,6 +10,7 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
     , mVersion()
 {
     ui->setupUi(this);
+    ui->progressBarText->setVisible(false);
     ui->progressBar->setVisible(false);
 
     //CARGA LOS DETALLES DE LA VERSIÓN CUANDO SE CAMBIA DE ÍNDICE EN EL COMBOBOX
@@ -60,7 +61,21 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
             emit deleteLater();
         });
 
-        //MUESTRA LA PROGRESS BAR EN LA UI
+        QList<Version> versions = mModel->data(mIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
+        QString versionName = ui->versionComboBox->currentText();
+
+        //RECORRE LAS VERSIONES DESDE LA MÁS RECIENTE HASTA LA MÁS ANTIGUA
+        for ( int i = versions.size() - 1; i >= 0; i-- ) {
+            //SI ENCUENTRA EL NOMBRE DE LA VERSIÓN
+            if ( versions[i].name() == versionName ) {
+                //ALMACENA SI ESTÁ INSTALADA O NO
+                bool isInstalled = versions[i].isInstalled();
+                isInstalled ? ui->progressBarText->setText("Desinstalando...") : ui->progressBarText->setText("Instalando...");
+            }
+        }
+
+        //MUESTRA LA PROGRESS BAR Y EL TEXTO EN LA UI
+        ui->progressBarText->setVisible(true);
         ui->progressBar->setVisible(true);
         /*DESHABILITAMOS EL QCOMBOBOX PARA QUE EL USUARIO NO PUEDA CAMBIAR DE VERSIÓN
         * HASTA QUE SE TERMINE DE INSTALAR O ELIMINAR
@@ -169,7 +184,8 @@ void ApplicationInfoDialog::onInstallFinished(QModelIndex sourceIndex)
         }
     }
 
-    //ESCONDE LA PROGRESS BAR
+    //ESCONDE LA PROGRESS BAR Y EL TEXTO
+    ui->progressBarText->setVisible(false);
     ui->progressBar->setVisible(false);
     ui->isLikedBtn->setEnabled(true);
     ui->isInstalledBtn->setEnabled(true);
