@@ -234,6 +234,9 @@ void AvailableApplicationsWidget::onInstallFinished(QModelIndex sourceIndex)
     // MARCAMOS COMO INSTALADA LA APLICACION
     mModel->setData(sourceIndex, true, ApplicationModel::IsDownloadedRole);
 
+    // MARCAMOS LA APPLICACION COMO ACTUALIZADA
+    mModel->setData(sourceIndex, true, ApplicationModel::UpdateRole);
+
     // INSTALAMOS LA ULTIMA VERSION
     QList<Version> versions = mModel->data(sourceIndex, ApplicationModel::VersionsRole).value<QList<Version>>();
     if(!versions.empty()){
