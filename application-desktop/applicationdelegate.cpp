@@ -73,7 +73,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
         mainRectangle = QRect(option.rect.topLeft(), QSize(180, 190));
 
-        if ( !isUpdated ) {
+        if ( !isUpdated && isDownloaded ) {
             //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
             int margin = 5;
             QSize notificationButtonRectangleSize = QSize(20, 20);
@@ -139,7 +139,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         //CONTENEDOR PRINCIPAL CON EL BORDE REDONDEADO
         mainRectangle = QRect(option.rect.topLeft(), QSize(option.rect.width() - 15, 60));
 
-        if ( !isUpdated ) {
+        if ( !isUpdated && isDownloaded ) {
             //CONTENEDOR QUE TENDRÁ LA NOTIFICACIÓN
             int margin = 5;
             QSize notificationButtonRectangleSize = QSize(20, 20);
