@@ -49,6 +49,12 @@ void MainWindow::onTrayIconActivated(QSystemTrayIcon::ActivationReason reason) {
     if (reason == QSystemTrayIcon::DoubleClick) {
         //SI LA ACCION ES DOUBLE CLICK RESTAURA LA VENTANA Y LA MUESTRA
         showNormal();
+
+        //LO PONE ENCIMA DE OTRAS VENTANAS
+        this->raise();
+
+        //WINDOWS LE PONE EL FOCO
+        this->activateWindow();
     }
 }
 
