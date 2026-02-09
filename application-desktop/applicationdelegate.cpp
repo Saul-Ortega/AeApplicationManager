@@ -240,7 +240,6 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     painter->drawPixmap(infoButtonPixmapPoint, infoButtonPixmap);
     painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
     painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
-    paintProgressBar(painter, mainRectangle, nameRectangle, index);
 
     //HOVERS
     if ( notificationButtonRectangle.contains(position) ) {
@@ -270,6 +269,8 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         painter->drawRoundedRect(installedButtonRectangle, borderRadiusCircle, borderRadiusCircle);
         painter->drawPixmap(installedButtonPixmapPoint, installedButtonPixmap);
     }
+
+    paintProgressBar(painter, mainRectangle, nameRectangle, index);
 
     //COMPRUEBA SI EL CURSOR YA NO ESTÁ HACIENDO HOVER EN ALGÚN ELEMENTO
     //Y LE ASIGNA EL ARROW CURSOR
@@ -418,6 +419,9 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
         return;
     }
 
+    bool isDownloaded = index.data(ApplicationModel::IsDownloadedRole).toBool();
+    QString text = isDownloaded ? "Desinstalando..." : "Instalando...";
+
     // ALTURA DE LA LINEA
     int lineHeight = 4;
 
@@ -426,6 +430,9 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
 
     // RECTANGULO DEL FONDO DE LA BARRA
     QRect progressBackground;
+    QRect textRect;
+    QPoint textRectPoint;
+    QSize textRectSize = QSize(120, 20);
 
     if ( !mIsMenuStyle ) {
         y = nameRectangle.bottom();
@@ -436,6 +443,9 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
             mainRectangle.width() - 40,
             lineHeight
         );
+
+        textRectPoint = QPoint(mainRectangle.left() + (mainRectangle.width() - textRectSize.width() ) / 2, mainRectangle.top() + 50);
+        textRect = QRect(textRectPoint, textRectSize);
     } else {
         y = nameRectangle.top() + (nameRectangle.height() / 2);
 
@@ -445,6 +455,9 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
             mainRectangle.width() - 40,
             lineHeight
         );
+
+        textRectPoint = QPoint(mainRectangle.left() + (mainRectangle.width() - textRectSize.width() ) / 2, y - 10);
+        textRect = QRect(textRectPoint, textRectSize);
     }
 
     // COLOR DEL FONDO
@@ -460,19 +473,16 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
     painter->setBrush(QColor("#ff6982"));
     painter->drawRoundedRect(progressFilled, 2, 2);
 
+    painter->setFont(QFont("Arial", 10));
 
-    // TEXTO ENCIMA DE LA BARRA
-    if (progress > 0) {
+    QPen bluePen;
+    bluePen.setBrush(QColor("#4fa0d8"));
+    bluePen.setWidth(2);
+    QBrush lightBlueBackground = QBrush("#c5def2");
+    painter->setPen(bluePen);
+    painter->setBrush(lightBlueBackground);
+    painter->drawRoundedRect(textRect, qreal(10), qreal(10));
 
-        bool isDownloaded = index.data(ApplicationModel::IsDownloadedRole).toBool();
-        QString text = isDownloaded ? "Desinstalando" : "Instalando";
-
-        // Creamos un rectángulo más alto encima de la barra
-        QRect textRect = progressBackground.adjusted(0, -150, 0, -92);
-
-        painter->setPen(Qt::black);
-        painter->setFont(QFont("Arial", 10, QFont::Bold));
-
-        painter->drawText(textRect, Qt::AlignCenter, text);
-    }
+    painter->setPen(Qt::black);
+    painter->drawText(textRect, Qt::AlignCenter, text);
 }
