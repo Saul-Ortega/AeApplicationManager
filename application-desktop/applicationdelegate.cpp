@@ -465,17 +465,14 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
     if (progress > 0) {
 
         bool isDownloaded = index.data(ApplicationModel::IsDownloadedRole).toBool();
-        QString text = isDownloaded ? "Desinstalando..." : "Instalando...";
+        QString text = isDownloaded ? "Desinstalando" : "Instalando";
 
         // Creamos un rectángulo más alto encima de la barra
-        QRect textRect = progressBackground.adjusted(0, -18, 0, 12);
+        QRect textRect = progressBackground.adjusted(0, -150, 0, -92);
 
         painter->setPen(Qt::black);
         painter->setFont(QFont("Arial", 10, QFont::Bold));
 
         painter->drawText(textRect, Qt::AlignCenter, text);
     }
-
-
-
 }
