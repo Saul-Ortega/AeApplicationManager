@@ -436,29 +436,20 @@ void ApplicationDelegate::paintProgressBar(QPainter* painter, const QRect& mainR
 
     if ( !mIsMenuStyle ) {
         y = nameRectangle.bottom();
-
-        progressBackground = QRect(
-            mainRectangle.left() + 20,
-            y,
-            mainRectangle.width() - 40,
-            lineHeight
-        );
-
         textRectPoint = QPoint(mainRectangle.left() + (mainRectangle.width() - textRectSize.width() ) / 2, mainRectangle.top() + 50);
-        textRect = QRect(textRectPoint, textRectSize);
     } else {
         y = nameRectangle.top() + (nameRectangle.height() / 2);
-
-        progressBackground = QRect(
-            mainRectangle.left() + 20,
-            y,
-            mainRectangle.width() - 40,
-            lineHeight
-        );
-
         textRectPoint = QPoint(mainRectangle.left() + (mainRectangle.width() - textRectSize.width() ) / 2, y - 10);
-        textRect = QRect(textRectPoint, textRectSize);
     }
+
+    progressBackground = QRect(
+        mainRectangle.left() + 20,
+        y,
+        mainRectangle.width() - 40,
+        lineHeight
+    );
+
+    textRect = QRect(textRectPoint, textRectSize);
 
     // COLOR DEL FONDO
     painter->setPen(Qt::NoPen);
