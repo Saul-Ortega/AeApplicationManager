@@ -5,7 +5,6 @@
 #include <QStackedWidget>
 #include <applicationmanagerwidget.h>
 #include <applicationmodel.h>
-#include <versionmodel.h>
 #include "QItemSelectionModel"
 #include <QSystemTrayIcon>
 
