@@ -62,6 +62,11 @@ ApplicationInfoDialog::ApplicationInfoDialog(QWidget *parent)
 
         //MUESTRA LA PROGRESS BAR EN LA UI
         ui->progressBar->setVisible(true);
+        /*DESHABILITAMOS EL QCOMBOBOX PARA QUE EL USUARIO NO PUEDA CAMBIAR DE VERSIÓN
+        * HASTA QUE SE TERMINE DE INSTALAR O ELIMINAR
+        */
+        QWidget* versionComboBox = qobject_cast<QWidget*>(ui->versionComboBox);
+        versionComboBox->setEnabled(false);
         thread->start();
     });
 
@@ -169,6 +174,9 @@ void ApplicationInfoDialog::onInstallFinished(QModelIndex sourceIndex)
     ui->isLikedBtn->setEnabled(true);
     ui->isInstalledBtn->setEnabled(true);
 
+    //ACTIVAMOS EL QCOMBOBOX PARA QUE SE PUEDA CAMBIAR DE VERSIÓN OTRA VEZ
+    QWidget* versionComboBox = qobject_cast<QWidget*>(ui->versionComboBox);
+    versionComboBox->setEnabled(true);
     //ASIGNAMOS EL PROGRESO A CERO
     mModel->setData(sourceIndex, 0, ApplicationModel::ProgressRole);
     //ASIGNAMOS LAS VERSIONES
