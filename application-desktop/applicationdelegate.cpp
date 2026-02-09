@@ -37,6 +37,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     qreal borderRadius = 5;
     qreal borderRadiusCircle = 100;
     qreal borderRadiusInfoButtonRectangle = 18;
+    QFont font;
 
     //QRECTS
     QRect mainRectangle;
@@ -99,6 +100,8 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         QPoint nameRectanglePoint = QPoint(mainRectangle.left(), imageRectangle.bottom());
         nameRectangle = QRect(nameRectanglePoint, QSize(mainRectangle.width(), 40));
 
+        font.setPixelSize(14);
+
         //CONTENEDOR DE BOTONES
         QSize buttonsRectangleSize = QSize(140, 40);
         QPoint buttonsRectanglePoint = QPoint(mainRectangle.left() + (mainRectangle.width() - buttonsRectangleSize.width()) / 2, nameRectangle.top() + 50);
@@ -152,7 +155,7 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         }
 
         //CONTENEDOR QUE TENDRÁ LA IMÁGEN
-        QSize imageRectangleSize = QSize(180, 50);
+        QSize imageRectangleSize = QSize(100, 40);
         QPoint imageRectanglePoint = QPoint(mainRectangle.left() + 30, mainRectangle.top() + (mainRectangle.height() - imageRectangleSize.height()) / 2);
         imageRectangle = QRect(imageRectanglePoint, imageRectangleSize);
 
@@ -166,40 +169,42 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         QPoint nameRectanglePoint = QPoint(imageRectangle.right() + 30, mainRectangle.top() + (mainRectangle.height() - nameRectangleSize.height()) / 2);
         nameRectangle = QRect(nameRectanglePoint, nameRectangleSize);
 
+        font.setPixelSize(18);
+
         //CONTENEDOR DE BOTONES
-        QSize buttonsRectangleSize = QSize(300, mainRectangle.height());
+        QSize buttonsRectangleSize = QSize(180, mainRectangle.height());
         QPoint buttonsRectanglePoint = QPoint(mainRectangle.right() - 30 - buttonsRectangleSize.width(), mainRectangle.top() + (mainRectangle.height() - buttonsRectangleSize.height()) / 2);
         QRect buttonsRectangle(buttonsRectanglePoint, buttonsRectangleSize);
 
         //CONTENEDOR DE BOTÓN DE FAVORITOS
-        QSize likedButtonRectangleSize = QSize(50, 50);
+        QSize likedButtonRectangleSize = QSize(35, 35);
         QPoint likedButtonRectanglePoint = QPoint(buttonsRectangle.left(), buttonsRectangle.top() + (buttonsRectangleSize.height() - likedButtonRectangleSize.height()) / 2);
         likedButtonRectangle = QRect(likedButtonRectanglePoint, likedButtonRectangleSize);
 
         //BOTÓN DE FAVORITOS
         likedButtonPixmap = QPixmap(isLiked ? ":/assets/CorazonSeleccionado.png" : ":/assets/Corazon.png");
-        likedButtonPixmap = likedButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        likedButtonPixmap = likedButtonPixmap.scaled(QSize(30, 30), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         likedButtonPixmapPoint = QPoint(likedButtonRectangle.left() + (likedButtonRectangle.width() - likedButtonPixmap.width()) / 2, likedButtonRectangle.top() + (likedButtonRectangle.height() - likedButtonPixmap.height()) / 2);
 
         //CONTENEDOR DE BOTÓN DE DETALLE O INFORMACIÓN
         int totalMargin = 10;
-        QSize infoButtonRectangleSize = QSize(buttonsRectangle.width() - (likedButtonRectangle.width() * 2) - totalMargin, 50);
+        QSize infoButtonRectangleSize = QSize(buttonsRectangle.width() - (likedButtonRectangle.width() * 2) - totalMargin, 35);
         QPoint infoButtonRectanglePoint = QPoint(likedButtonRectangle.right() + (totalMargin / 2), buttonsRectangle.top() + (buttonsRectangleSize.height() - infoButtonRectangleSize.height()) / 2);
         infoButtonRectangle = QRect(infoButtonRectanglePoint, infoButtonRectangleSize);
 
         //BOTÓN DE DETALLE O INFORMACIÓN
         infoButtonPixmap = QPixmap(":/assets/Icon_Info.png");
-        infoButtonPixmap = infoButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        infoButtonPixmap = infoButtonPixmap.scaled(QSize(30, 30), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         infoButtonPixmapPoint = QPoint(infoButtonRectangle.left() + (infoButtonRectangle.width() - infoButtonPixmap.width()) / 2, infoButtonRectangle.top() + (infoButtonRectangle.height() - infoButtonPixmap.height()) / 2);
 
         //CONTENEDOR DE BOTÓN DE INSTALADO
-        QSize installedButtonRectangleSize = QSize(50, 50);
+        QSize installedButtonRectangleSize = QSize(35, 35);
         QPoint installedButtonRectanglePoint = QPoint(buttonsRectangle.right() - installedButtonRectangleSize.width(), buttonsRectangle.top() + (buttonsRectangleSize.height() - installedButtonRectangleSize.height()) / 2);
         installedButtonRectangle = QRect(installedButtonRectanglePoint, installedButtonRectangleSize);
 
         //BOTÓN DE INSTALADO
         installedButtonPixmap = QPixmap(isDownloaded ? ":/assets/papelera.png" : ":/assets/Icon_Download.png");
-        installedButtonPixmap = installedButtonPixmap.scaled(QSize(40, 40), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        installedButtonPixmap = installedButtonPixmap.scaled(QSize(30, 30), Qt::KeepAspectRatio, Qt::SmoothTransformation);
         installedButtonPixmapPoint = QPoint(installedButtonRectangle.left() + (installedButtonRectangle.width() - installedButtonPixmap.height()) / 2, installedButtonRectangle.top() + (installedButtonRectangle.height() - installedButtonPixmap.height()) / 2);
     }
 
@@ -217,8 +222,6 @@ void ApplicationDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     QCursor pointingHandCursor = QCursor(Qt::PointingHandCursor);
     QCursor arrowCursor = QCursor(Qt::ArrowCursor);
 
-    QFont font;
-    font.setPixelSize(14);
     painter->setFont(font);
 
     painter->setPen(bluePen);
@@ -314,13 +317,13 @@ bool ApplicationDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, 
         buttonsHeight = 30;
 
     } else {
-        x = rect.right() - 300 - 45;
+        x = rect.right() - 180 - 45;
         y = rect.top() + 5;
 
-        likedButtonWidth = 50;
-        infoButtonWidth = 190;
-        installedButtonWidth = 50;
-        buttonsHeight = 50;
+        likedButtonWidth = 35;
+        infoButtonWidth = 100;
+        installedButtonWidth = 35;
+        buttonsHeight = 35;
     }
 
     likedButtonRectangle = QRect(QPoint(x, y), QSize(likedButtonWidth, buttonsHeight));
