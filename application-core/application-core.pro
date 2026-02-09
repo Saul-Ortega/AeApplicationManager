@@ -11,8 +11,7 @@ SOURCES += \
     applicationdao.cpp \
     applicationmodel.cpp \
     installerworker.cpp \
-    version.cpp \
-    versionmodel.cpp
+    version.cpp
 
 HEADERS += \
     application-core_global.h \
@@ -22,8 +21,7 @@ HEADERS += \
     applicationmodel.h \
     installerworker.h \
     version.h \
-    version.h \
-    versionmodel.h
+    version.h
 
 unix {
     target.path = /usr/lib

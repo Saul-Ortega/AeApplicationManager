@@ -5,7 +5,6 @@
 #include <QItemSelection>
 #include <QThread>
 #include "applicationmodel.h"
-#include "versionmodel.h"
 #include "filterproxymodel.h"
 #include "installerworker.h"
 
@@ -14,7 +13,6 @@ class ApplicationInfoDialog;
 }
 
 class ApplicationModel;
-class VersionModel;
 class QItemSelectionModel;
 
 class ApplicationInfoDialog : public QDialog

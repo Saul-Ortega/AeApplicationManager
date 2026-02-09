@@ -16,7 +16,6 @@ ApplicationManagerWidget::ApplicationManagerWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::ApplicationManagerWidget)
     , mModel(nullptr)
-    , mVersionModel(nullptr)
 {
     ui->setupUi(this);
 
@@ -50,22 +49,6 @@ void ApplicationManagerWidget::setApplicationModel(ApplicationModel* model)
     mModel = model;
     ui->availableApplicationWidget->setApplicationModel(mModel);
     ui->installedApplicationWidget->setApplicationModel(mModel);
-    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
-}
-
-void ApplicationManagerWidget::setApplicationSelectionModel(QItemSelectionModel* applicationSelectionModel)
-{
-    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
-}
-
-void ApplicationManagerWidget::setVersionModel(VersionModel* versionModel)
-{
-    mVersionModel = versionModel;
-    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
-}
-
-void ApplicationManagerWidget::setVersionSelectionModel(QItemSelectionModel* versionSelectionModel)
-{
     //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
