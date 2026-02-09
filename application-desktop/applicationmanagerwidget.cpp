@@ -53,19 +53,9 @@ void ApplicationManagerWidget::setApplicationModel(ApplicationModel* model)
     //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 
-void ApplicationManagerWidget::setApplicationSelectionModel(QItemSelectionModel* applicationSelectionModel)
-{
-    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
-}
-
 void ApplicationManagerWidget::setVersionModel(VersionModel* versionModel)
 {
     mVersionModel = versionModel;
-    //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
-}
-
-void ApplicationManagerWidget::setVersionSelectionModel(QItemSelectionModel* versionSelectionModel)
-{
     //TODOS: IMPLEMENTAR LOS MODELOS CUANDO TENGAMOS LA VISTA CREADA
 }
 

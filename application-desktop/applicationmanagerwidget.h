@@ -5,7 +5,6 @@
 #include "QItemSelectionModel"
 #include "applicationmodel.h"
 #include "versionmodel.h"
-#include "filterproxymodel.h"
 
 namespace Ui {
 class ApplicationManagerWidget;
@@ -20,7 +19,6 @@ public:
     ~ApplicationManagerWidget();
 
     void setApplicationModel(ApplicationModel* model);
-    void setApplicationSelectionModel(QItemSelectionModel* applicationSelectionModel);
     void setVersionModel(VersionModel* versionModel);
     void setVersionSelectionModel(QItemSelectionModel* versionSelectionModel);
 
