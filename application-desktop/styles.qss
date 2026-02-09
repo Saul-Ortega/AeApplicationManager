@@ -92,3 +92,10 @@ QScrollBar::sub-line:horizontal {
 QListView QWidget {
     background-color: #454545;
 }
+
+/* INPUT DEL SEARCH */
+
+QLineEdit {
+    color: black;
+}
+
