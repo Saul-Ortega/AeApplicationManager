@@ -8,7 +8,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonParseError>
-#include "Version.h"
+#include "version.h"
 
 //CONSTRUCTOR
 ApplicationDao::ApplicationDao()

@@ -15,13 +15,13 @@ SOURCES += \
     versionmodel.cpp
 
 HEADERS += \
-    Version.h \
     application-core_global.h \
     application.h \
     applicationcore.h \
     applicationdao.h \
     applicationmodel.h \
     installerworker.h \
+    version.h \
     version.h \
     versionmodel.h
 
