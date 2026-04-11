@@ -21,34 +21,30 @@ It allows users to handle multiple version installations, manage favorites, and 
 <table>
   <tr>
     <td align="center">
-      <figure>
-        <img src="readme-assets/grid_view_install.png" alt="Grid View Install" width="500">
-        <figcaption>Grid View Install</figcaption>
-      </figure>
+      <img src="readme-assets/grid_view_install.png" width="500" alt="Grid View Install">
+      <br />
+      <p>Grid View Install</p>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <figure>
-        <img src="readme-assets/information_dialog.png" alt="Information Dialog" width="500">
-        <figcaption>Information Dialog</figcaption>
-      </figure>
+      <img src="readme-assets/information_dialog.png" width="500" alt="Information Dialog">
+      <br />
+      <p>Information Dialog</p>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <figure>
-        <img src="readme-assets/list_view_uninstall.png" alt="List View Uninstall" width="500">
-        <figcaption>List View Uninstall</figcaption>
-      </figure>
+      <img src="readme-assets/list_view_uninstall.png" width="500" alt="List View Uninstall">
+      <br />
+      <p>List View Uninstall</p>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <figure>
-        <img src="readme-assets/name_filter.png" alt="Name Filter" width="500">
-        <figcaption>Name Filter</figcaption>
-      </figure>
+      <img src="readme-assets/name_filter.png" width="500" alt="Name Filter">
+      <br />
+      <p>Name Filter</p>
     </td>
   </tr>
 </table>
