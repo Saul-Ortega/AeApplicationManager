@@ -18,7 +18,7 @@ It allows users to handle multiple version installations, manage favorites, and 
 
 ## ⚙️ Overview
 
-<table>
+<table align="center">
   <tr>
     <td align="center">
       <img src="readme-assets/grid_view_install.png" width="500" alt="Grid View Install">
