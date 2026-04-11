@@ -17,4 +17,38 @@ It allows users to handle multiple version installations, manage favorites, and 
 [![Qt](https://img.shields.io/badge/Qt-2CDE85?logo=Qt&logoColor=fff)](#)
 
 ## ⚙️ Overview
-<!-- TODO: ADD IMAGES AND TABLE -->
+
+<table>
+  <tr>
+    <td align="center">
+      <figure>
+        <img src="readme-assets/grid_view_install.png" alt="Grid View Install" width="500">
+        <figcaption>Grid View Install</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <figure>
+        <img src="readme-assets/information_dialog.png" alt="Information Dialog" width="500">
+        <figcaption>Information Dialog</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <figure>
+        <img src="readme-assets/list_view_uninstall.png" alt="List View Uninstall" width="500">
+        <figcaption>List View Uninstall</figcaption>
+      </figure>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <figure>
+        <img src="readme-assets/name_filter.png" alt="Name Filter" width="500">
+        <figcaption>Name Filter</figcaption>
+      </figure>
+    </td>
+  </tr>
+</table>
